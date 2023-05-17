@@ -25,18 +25,23 @@ SECRET_KEY = "django-insecure-xv=2j_ujk+gwbjw4tcdm%huy7x370wrk%o3t&+1mpxl&)9%7o7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
+CORS_ORIGIN_ALLOW_ALL = True
+
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    "sportista.apps.SportistaConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [

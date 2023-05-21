@@ -1,0 +1,106 @@
+.landing-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height:100vh;
+}
+
+  .logo {
+    width: auto;
+    height: 200px;
+  }
+  .logo-smaller{
+    width: auto;
+    height: 150px;
+  }
+  
+  .buttons {
+    margin-top: 20px;
+  }
+  
+  .login-button {
+    padding: 10px 40px;
+    margin: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    height: 50px;
+    border-radius: 25px;
+    background-color: #3DD47A;
+    color: #303030;
+    border: none;
+    cursor: pointer;
+  }
+
+  .register-button {
+    padding: 10px 40px;
+    margin: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    height: 50px;
+    border-radius: 25px;
+    background-color: #00C2FF;
+    color: #303030;
+    border: none;
+    cursor: pointer;
+  }
+  .app {
+    position: relative;
+  }
+  
+  .toggle-container {
+    position: absolute;
+    bottom: 10px; /* Adjust the desired distance from the bottom */
+    right: 10px; /* Adjust the desired distance from the right */
+    width: 150px;
+  }
+
+  .reg-comp{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height:100vh;
+  }
+
+  .registracija{
+    text-align: center;
+  }
+  .forma {
+    width: max-content;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  
+  label {
+    width: 150px;
+    text-align: left;
+    margin-left: 40px;
+    font-weight: 500;
+  }
+  
+  input {
+    flex: 1;
+    margin-left: 10px;
+    width: 200px;
+  }
+  .form-radio{
+    width: auto;
+    margin: 5px;
+  }
+  .radio-label{
+    margin-right: 0px;
+    font-size: smaller;
+    font-weight: 400;
+  }
+ 
+  

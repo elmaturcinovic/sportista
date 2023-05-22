@@ -1,24 +1,34 @@
-import logo from './logo.svg';
+import React from 'react';
+import { useState } from 'react';
+import { BrowserRouter as Router, Switch, Route } from  'react-router-dom';
+import Registration from './components/auth/Registration';
+import LandingPage from './components/auth/LandingPage';
+import ToggleSwitch from './components/ToggleSwitch';
+
 import './App.css';
+import './stylesheet_auth.css'
+
 
 function App() {
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
+
+  const toggleTheme = () => {
+    setIsDarkTheme(!isDarkTheme);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <div className={`app ${isDarkTheme ? 'dark-theme' : 'light-theme'}`}>
+      <Router>
+        <Switch>
+          <Route exact path="/" component={LandingPage} />
+          <Route path="/registracija" component={Registration} />
+        </Switch>
+      </Router>
+
+      <div className="toggle-container">
+        <ToggleSwitch isDarkTheme={isDarkTheme} onToggle={toggleTheme} />
+      </div>
+    </div> 
   );
 }
 

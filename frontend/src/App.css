@@ -36,3 +36,18 @@
     transform: rotate(360deg);
   }
 }
+
+/* Styles for the light theme */
+.light-theme {
+  /* Specify light theme styles here */
+  background-image: url("../public/background.jpeg");
+  color: #303030;
+}
+
+/* Styles for the dark theme */
+.dark-theme {
+  /* Specify dark theme styles here */
+  background-image: url("../public/background_inverted.png");
+  color: whitesmoke;
+}
+

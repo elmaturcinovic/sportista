@@ -1,0 +1,23 @@
+.nav-logo {
+    font-size: 22px;
+    font-weight: 800;
+    color: #61dafb;
+    opacity: 0.3;
+    margin-right: 50px;
+}
+.me-auto {
+    font-size: 18px;
+    font-weight: 300;
+}
+#nav-button {
+    border-radius: 20px;
+    margin-right: 20px;
+}
+#nav-button:hover {
+    background-color: #61dafb;
+    opacity: 0.5;
+    cursor: pointer;
+}
+#div-nav {
+    height:100vh;
+}

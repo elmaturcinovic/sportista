@@ -1,0 +1,14 @@
+.carousel {
+    margin-top: 20px;
+    box-shadow: 0 0 3px 3px #61dafb;
+}
+
+.w-100 {
+    height: 620px;
+}
+
+p {
+    color: #61dafb;
+    font-weight: 500;
+}
+

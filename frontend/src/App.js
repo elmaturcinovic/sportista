@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from  'react-router-dom';
 import Registration from './components/auth/Registration';
 import LandingPage from './components/auth/LandingPage';
 import ToggleSwitch from './components/ToggleSwitch';
-import MainPage from "./components/main_page/MainPage";
+import MainPageComp from "./components/main_page/MainPageComp";
 
 import './App.css';
 import './stylesheet_auth.css'
@@ -23,7 +23,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={LandingPage} />
           <Route path="/registracija" component={Registration} />
-            <Route path="/main" component={MainPage} />
+            <Route path="/main" component={MainPageComp} />
         </Switch>
       </Router>
 

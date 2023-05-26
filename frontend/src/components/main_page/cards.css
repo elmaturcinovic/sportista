@@ -1,0 +1,18 @@
+.card {
+    width: 280px;
+    display: inline-block;
+    margin: 10px;
+}
+
+.card-body {
+    text-align: center;
+}
+
+#button-card {
+    background-color: #61dafb;
+    border-color: #61dafb;
+}
+
+#button-card:hover {
+    background-color: #3DD47A;
+}

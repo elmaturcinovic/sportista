@@ -118,6 +118,7 @@ function Registration(){
                                         name="usertype"
                                         value="1"
                                         className="form-radio"
+                                        ref={userTypeRef}
                                         />
                                         Vlasnik sportske dvorane
                                     </label>
@@ -126,8 +127,9 @@ function Registration(){
                                         <input
                                         type="radio"
                                         name="usertype"
-                                        value="2"
+                                        value="0"
                                         className="form-radio"
+                                        ref={userTypeRef}
                                         />
                                         Sportista
                                     </label>

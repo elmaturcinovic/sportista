@@ -4,11 +4,12 @@ import { BrowserRouter as Router, Switch, Route } from  'react-router-dom';
 import Registration from './components/auth/Registration';
 import LandingPage from './components/auth/LandingPage';
 import ToggleSwitch from './components/ToggleSwitch';
-import MainPageComp from "./components/main_page/MainPageComp";
+import UserMainPage from "./components/user/UserMainPage";
 
 import './App.css';
 import './stylesheet_auth.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function App() {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
@@ -23,7 +24,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={LandingPage} />
           <Route path="/registracija" component={Registration} />
-            <Route path="/main" component={MainPageComp} />
+            <Route path="/profil" component={UserMainPage} />
         </Switch>
       </Router>
 

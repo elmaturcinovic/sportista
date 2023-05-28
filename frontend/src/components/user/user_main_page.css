@@ -1,0 +1,120 @@
+.user-main-div {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+}
+
+
+
+/* CSS za SideBarComp */
+
+.side-bar-div {
+    height: 100vh;
+    text-align: center;
+    padding: 30px;
+    margin: 15px;
+    background-color: rgba(255,255,255,0.3);
+    border-radius: 50px;
+}
+
+#profile-image {
+    width: 230px;
+    height: 200px;
+    border-radius: 50%;
+
+
+
+}
+.username {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 10px 0 10px 0;
+}
+
+.side-bar-div, .image-username, .user-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-button, .change-password, .interests, .change-profile-image, .save-changes {
+    padding: 10px 40px;
+    margin: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    height: 50px;
+    border-radius: 25px;
+    background-color: #3DD47A;
+    color: #303030;
+    border: none;
+    cursor: pointer;
+}
+
+#user-logo-image {
+    width: 160px;
+    height: 60px;
+    margin-top: auto;
+}
+
+
+/* CSS za ProfileComp  */
+
+.profile-div {
+    padding: 30px;
+    margin: 15px;
+    background-color: rgba(255,255,255,0.3);
+    border-radius: 50px;
+}
+
+.headline-profile {
+    font-weight: 700;
+}
+
+.table-one, .table-two {
+    border-collapse: separate;
+    border-spacing: 20px 15px;
+    font-size: 20px;
+}
+
+td:first-child {
+    font-weight: 800;
+}
+
+.change-password, .interests, .change-profile-image {
+    background-color: #61dafb;
+
+}
+
+#add-interest, .choose-file button, span{
+    border-radius: 20px;
+    border: none;
+    padding: 5px;
+    font-size: 17px;
+}
+
+.choose-file {
+    display: flex;
+    flex-direction: row;
+    flex-shrink: inherit;
+    margin: 60px 20px 20px;
+}
+
+.choose-file button, span {
+    padding: 10px;
+}
+.change-profile-image {
+    margin-left: 20px;
+}
+
+.save-changes {
+    position: absolute;
+    right: 100px;
+    bottom: 100px;
+}
+
+
+
+
+
+
+

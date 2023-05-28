@@ -9,6 +9,7 @@ import UserMainPage from "./components/user/UserMainPage";
 import './App.css';
 import './stylesheet_auth.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import UserScheduledPage from "./components/user/UserScheduledPage";
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
           <Route exact path="/" component={LandingPage} />
           <Route path="/registracija" component={Registration} />
             <Route path="/profil" component={UserMainPage} />
+            <Route path="/rezervirani-termini" component={UserScheduledPage} />
         </Switch>
       </Router>
 

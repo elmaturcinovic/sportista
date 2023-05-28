@@ -1,16 +1,16 @@
 import React from "react";
 import SideBarComp from "./SideBarComp";
-import ProfileComp from "./ProfileComp";
-
+import ScheduledComp from "./ScheduledComp";
 import './styles_user.css'
 
-const UserMainPage = () => {
+
+const UserScheduledPage = () => {
     return (
         <div className="user-main-div">
             <SideBarComp/>
-            <ProfileComp/>
+            <ScheduledComp/>
         </div>
     );
 }
 
-export default UserMainPage;
+export default UserScheduledPage;

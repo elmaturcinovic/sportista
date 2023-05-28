@@ -47,7 +47,7 @@ const ProfileComp = () => {
                     <tr>
                         <td></td>
                         <td>
-                            <button className="change-password">Promijeni lozinku</button>
+                            <button className="change-password" type="submit">Promijeni lozinku</button>
                         </td>
                     </tr>
                 </tfoot>
@@ -104,8 +104,8 @@ const ProfileComp = () => {
                 <button>Odaberi fajl</button>
                 <span>Nije odabran fajl</span>
             </div>
-            <button className="change-profile-image">Promijeni sliku profila</button>
-            <button className="save-changes">Sačuvaj izmjene</button>
+            <button className="change-profile-image" type="submit">Promijeni sliku profila</button>
+            <button className="save-changes" type="submit">Sačuvaj izmjene</button>
         </div>
     );
 }

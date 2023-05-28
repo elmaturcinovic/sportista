@@ -19,8 +19,6 @@ const DeleteButton = ({ name, onDelete }) => {
 
 
 
-
-
 const ProfileComp = () => {
 
     /* Za interese */

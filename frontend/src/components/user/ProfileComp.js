@@ -17,8 +17,6 @@ const DeleteButton = ({ name, onDelete }) => {
 };
 
 
-
-
 const ProfileComp = () => {
 
     /* Za interese */
@@ -32,6 +30,14 @@ const ProfileComp = () => {
         setButtons(buttons.filter((button) => button.name !== name));
     };
 
+
+    const field = {
+        name: "Elma",
+        lastname: "Turcinovic",
+        username: "elma.turcinovic",
+        email: "elma.turcinovic@gmail.com",
+        password: '**********'
+    }
 
     return (
         <div className="profile-div">
@@ -48,23 +54,23 @@ const ProfileComp = () => {
                 <tbody>
                     <tr>
                         <td>Ime:</td>
-                        <td>Elma</td>
+                        <td>{field.name}</td>
                     </tr>
                     <tr>
                         <td>Prezime:</td>
-                        <td>Turcinovic</td>
+                        <td>{field.lastname}</td>
                     </tr>
                     <tr>
                         <td>Korisnicko ime:</td>
-                        <td>elma.turcinovic</td>
+                        <td>{field.username}</td>
                     </tr>
                     <tr>
                         <td>E-mail adresa:</td>
-                        <td>elma.turcinovic@gmail.com</td>
+                        <td>{field.email}</td>
                     </tr>
                     <tr>
                         <td>Lozinka:</td>
-                        <td>************</td>
+                        <td>{field.password}</td>
                     </tr>
                 </tbody>
             </table>

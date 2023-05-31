@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from  'react-router-dom';
 import Registration from './components/auth/Registration';
 import LandingPage from './components/auth/LandingPage';
 import CompanyProfile from './components/Companies/CompanyProfile';
+import EventsCalendar from './components/Companies/EventsCalendar/EventsCalendar';
 import ToggleSwitch from './components/ToggleSwitch';
 
 import './App.css';
@@ -23,7 +24,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={LandingPage} />
           <Route path="/registracija" component={Registration} />
-          <Route path="/companyProfile" component={CompanyProfile} />
+          <Route path="/calendar" component={EventsCalendar} />
         </Switch>
       </Router>
 

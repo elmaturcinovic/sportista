@@ -9,22 +9,22 @@ const FieldCard = () => {
     <Card className={classes.myCard}>
       <img alt='field' src="./teren1.png" className={classes.fieldImage}/>
       <Card.Body>
-        <Card.Title>Card Title</Card.Title>
+        <Card.Title>Vistafon</Card.Title>
         <Card.Text>
           <FaPhone className={classes.icon} />
-          <span>123-456-7890</span>
+          <span>+387 61 186 780</span>
         </Card.Text>
         <Card.Text>
           <FaEnvelope className={classes.icon} />
-          <span>example@example.com</span>
+          <span>vistafon@gmail.com</span>
         </Card.Text>
         <Card.Text>
           <FaMapMarker className={classes.icon} />
-          <span>123 Address Street, City, Country</span>
+          <span>Salke Lagumdzije 14</span>
         </Card.Text>
         <Card.Text>
           <FaMoneyBill className={classes.icon} />
-          <span>$100</span>
+          <span>100KM</span>
         </Card.Text>
       </Card.Body>
     </Card>

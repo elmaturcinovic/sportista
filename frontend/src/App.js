@@ -6,11 +6,12 @@ import LandingPage from './components/auth/LandingPage';
 import CompanyProfile from './components/Companies/CompanyProfile';
 import EventsCalendar from './components/Companies/EventsCalendar/EventsCalendar';
 import ToggleSwitch from './components/ToggleSwitch';
+import UserMainPage from "./components/user/UserMainPage";
 import Login from './components/auth/Login';
-
-
 import './App.css';
 import './stylesheet_auth.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import UserScheduledPage from "./components/user/UserScheduledPage";
 
 
 
@@ -47,6 +48,7 @@ function App() {
             </div>
         </div> 
     );
+
 }
 
 export default App;

@@ -10,7 +10,6 @@ import UserMainPage from "./components/user/UserMainPage";
 import Login from './components/auth/Login';
 import './App.css';
 import './stylesheet_auth.css'
-import 'bootstrap/dist/css/bootstrap.min.css';
 import UserScheduledPage from "./components/user/UserScheduledPage";
 
 
@@ -23,6 +22,7 @@ function App() {
     };
 
     var id = sessionStorage.getItem('id');
+    var type = sessionStorage.getItem('type');
 
     return (
         <div className={`app ${isDarkTheme ? 'dark-theme' : 'light-theme'}`}>
@@ -37,7 +37,8 @@ function App() {
                         {id && <Redirect to="/" />}
                     </Route>
                     <Route path="/">
-                        {id && <CompanyProfile/> }
+                        {id && type==0 && <UserMainPage/> }
+                        {id && type==1 && <CompanyProfile/> }
                         {!id && <LandingPage/>}
                     </Route>
                 </Switch>

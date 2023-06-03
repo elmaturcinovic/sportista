@@ -13,11 +13,8 @@
     "axios": "^1.4.0",
     "bootstrap": "^5.2.3",
     "bootstrap-switch-button-react": "^1.2.0",
-<<<<<<< HEAD
     "date-fns": "^2.30.0",
-=======
     "foundation-sites": "^6.7.5",
->>>>>>> 2a2d973e5543c46e4ef643352e9ccd370499481b
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.4",
     "react-calendar": "^4.2.1",

@@ -1,7 +1,7 @@
 import React, {useRef} from 'react';
 import {IoIosPersonAdd} from 'react-icons/io';
 import {Link} from "react-router-dom";
-import {Container, Row, Col, Form} from "react-bootstrap";
+import {Container} from "react-bootstrap";
 import axios from "axios";
 import '../../stylesheet_auth.css';
 
@@ -30,11 +30,11 @@ function Registration(){
             passwordConfirm: passwordConfirmationRef.current.value
         }
 
-        if (user.name == '' || user.password == '' || user.lastName == '' ||
-            user.email == '' || user.passwordConfirm == '' || user.username == '' || user.userType == '') {
+        if (user.name === '' || user.password === '' || user.lastName === '' ||
+            user.email ===  '' || user.passwordConfirm === '' || user.username === '' || user.userType === '') {
             alert('Unesite sve podatke!');
             return;
-        } else if (user.password != user.passwordConfirm) {
+        } else if (user.password !== user.passwordConfirm) {
             alert('Šifre se ne podudaraju!');
             return;
         }
@@ -61,7 +61,7 @@ function Registration(){
             passwordConfirm: k.passwordConfirm
         }).then((response)=>{
             console.log(response);
-                if (response.data == -1)
+                if (response.data === -1)
                     alert("Korisnik je već registrovan.");
                 else
                     window.location.href="/prijava";
@@ -118,6 +118,7 @@ function Registration(){
                                         name="usertype"
                                         value="1"
                                         className="form-radio"
+                                        ref={userTypeRef}
                                         />
                                         Vlasnik sportske dvorane
                                     </label>
@@ -126,8 +127,9 @@ function Registration(){
                                         <input
                                         type="radio"
                                         name="usertype"
-                                        value="2"
+                                        value="0"
                                         className="form-radio"
+                                        ref={userTypeRef}
                                         />
                                         Sportista
                                     </label>

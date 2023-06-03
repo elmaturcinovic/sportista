@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "bootstrap": "^5.2.3",
+    "bootstrap-switch-button-react": "^1.2.0",
+    "react-bootstrap": "^2.7.4"
+  }
+}

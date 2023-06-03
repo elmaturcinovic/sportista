@@ -21,19 +21,7 @@ function App() {
         setIsDarkTheme(!isDarkTheme);
     };
 
-<<<<<<< HEAD
-  return (
-    <div className={`app ${isDarkTheme ? 'dark-theme' : 'light-theme'}`}>
-      <Router>
-        <Switch>
-          <Route exact path="/" component={LandingPage} />
-          <Route path="/registracija" component={Registration} />
-          <Route path="/calendar" component={EventsCalendar} />
-        </Switch>
-      </Router>
-=======
     var id = sessionStorage.getItem('id');
->>>>>>> 39aa5bb4a45746bb0ab198f141de1fa2808d6e40
 
     return (
         <div className={`app ${isDarkTheme ? 'dark-theme' : 'light-theme'}`}>

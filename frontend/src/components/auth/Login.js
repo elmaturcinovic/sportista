@@ -43,7 +43,7 @@ function Login(){
                 alert('Neispravni podaci.');
             } else {
                 const data = response.data;
-                sessionStorage.setItem('id', data.pk);
+                sessionStorage.setItem('id', data.id);
                 sessionStorage.setItem('username', data.user_username);
                 sessionStorage.setItem('type', data.user_type);
                 sessionStorage.setItem('name', data.user_name);

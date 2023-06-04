@@ -9,7 +9,8 @@ function Registration(){
 
     const nameRef = useRef();
     const lastNameRef = useRef();
-    const userTypeRef = useRef();
+    const userTypeRef0 = useRef();
+    const userTypeRef1 = useRef();
     const usernameRef = useRef();
     const emailRef = useRef();
     const passwordRef = useRef();
@@ -19,16 +20,19 @@ function Registration(){
     function registerUser(e) {
         //Spriječi defaultno ponašanje tj. refresh stranice
         e.preventDefault();
+        const selectedUserType = userTypeRef1.current.checked ? '1' : '0';
+        console.log('Selected user type:', selectedUserType);
 
         let user = {
             name: nameRef.current.value,
             lastName: lastNameRef.current.value,
-            userType: userTypeRef.current.value,
+            userType: selectedUserType,
             username: usernameRef.current.value,
             email: emailRef.current.value,
             password: passwordRef.current.value,
             passwordConfirm: passwordConfirmationRef.current.value
         }
+        console.log(user)
 
         if (user.name === '' || user.password === '' || user.lastName === '' ||
             user.email ===  '' || user.passwordConfirm === '' || user.username === '' || user.userType === '') {
@@ -44,7 +48,8 @@ function Registration(){
         nameRef.current.value = '';
         lastNameRef.current.value = '';
         usernameRef.current.value = '';
-        userTypeRef.current.value = '';
+        userTypeRef0.current.value = '';
+        userTypeRef1.current.value = '';
         emailRef.current.value = '';
         passwordRef.current.value = '';
         passwordConfirmationRef.current.value = '';
@@ -118,7 +123,7 @@ function Registration(){
                                         name="usertype"
                                         value="1"
                                         className="form-radio"
-                                        ref={userTypeRef}
+                                        ref={userTypeRef1}
                                         />
                                         Vlasnik sportske dvorane
                                     </label>
@@ -129,7 +134,7 @@ function Registration(){
                                         name="usertype"
                                         value="0"
                                         className="form-radio"
-                                        ref={userTypeRef}
+                                        ref={userTypeRef0}
                                         />
                                         Sportista
                                     </label>

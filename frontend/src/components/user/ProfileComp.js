@@ -1,5 +1,7 @@
 import React from "react";
 import {useState} from 'react';
+import ChangePasswordComp from "./ChangePasswordComp";
+import ChooseFileComp from "./ChooseFileComp";
 
 
 /* komponenta za brisanje dugmica na klik */
@@ -20,15 +22,33 @@ const DeleteButton = ({ name, onDelete }) => {
 const ProfileComp = () => {
 
     /* Za interese */
+
     const [buttons, setButtons] = useState([
         { id: 1, name: 'Plivanje' },
         { id: 2, name: 'Vaterpolo' },
         { id: 3, name: 'Bilijar' },
     ]);
+    /* dodana varijabla redni samo privremeno*/
+    let redni = 4;
     /* Za interese */
     const handleDelete = (name) => {
         setButtons(buttons.filter((button) => button.name !== name));
     };
+    const AddElementToEnd = () => {
+        if(document.getElementById('add-interest').value !== '') {
+            setButtons(buttons => {
+                return [...buttons, {id: redni + 1, name: document.getElementById('add-interest').value}]
+            })
+        }
+    }
+
+    /* Za promenu password-a */
+    const [isShown, setIsShown] = useState(false);
+    const handlePassword = () => {
+        setIsShown(current => !current);
+    }
+
+
 
 
     const field = {
@@ -47,7 +67,9 @@ const ProfileComp = () => {
                     <tr>
                         <td></td>
                         <td>
-                            <button className="change-password" type="submit">Promijeni lozinku</button>
+                            {/*ovde proslijediti pravu lozinku da se ispita da li je ista kao i nova*/}
+                            {isShown && <ChangePasswordComp pass={field.password} bool={isShown}/>}
+                            {!isShown && <button className="change-password" type="submit" onClick={handlePassword}>Promijeni lozinku</button>}
                         </td>
                     </tr>
                 </tfoot>
@@ -94,18 +116,16 @@ const ProfileComp = () => {
                     <tr>
                         <td>Interesi:</td>
                         <td>
-                            <input type="search" placeholder=" Dodaj novi" id="add-interest"/>
+                            <input type="text" placeholder="Dodaj novi" id="add-interest" />
+                            <button className="add-interest" type="submit" onClick={AddElementToEnd}>Dodaj</button>
                         </td>
                     </tr>
                 </tbody>
             </table>
 
             <div className="choose-file">
-                <button>Odaberi fajl</button>
-                <span>Nije odabran fajl</span>
+                <ChooseFileComp/>
             </div>
-            <button className="change-profile-image" type="submit">Promijeni sliku profila</button>
-            <button className="save-changes" type="submit">Sačuvaj izmjene</button>
         </div>
     );
 }

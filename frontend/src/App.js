@@ -29,7 +29,6 @@ function App() {
         <div className={`app ${isDarkTheme ? 'dark-theme' : 'light-theme'}`}>
             <Router>
                 <Switch>
-                    <Route path="/glavna" component={UserProfile}/>
                     <Route exact path="/prijava">
                         {!id && <Login /> }
                         {id && <Redirect to="/" />}

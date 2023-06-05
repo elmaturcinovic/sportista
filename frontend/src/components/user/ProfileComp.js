@@ -2,21 +2,27 @@ import React from "react";
 import {useState} from 'react';
 import ChangePasswordComp from "./ChangePasswordComp";
 import ChooseFileComp from "./ChooseFileComp";
+import PropTypes from "prop-types";
 
 
 /* komponenta za brisanje dugmica na klik */
 /* ali izbori se vracaju nakon refresanja stranice, to se moze rijesiti samo treba baza */
 const DeleteButton = ({ name, onDelete }) => {
     const handleClick = () => {
-        onDelete(name);
+      onDelete(name);
     };
-
+  
     return (
-        <button onClick={handleClick} className="interests">
-            {name} &times;
-        </button>
+      <button onClick={handleClick} className="interests">
+        {name} &times;
+      </button>
     );
-};
+  };
+  
+  DeleteButton.propTypes = {
+    name: PropTypes.string.isRequired,
+    onDelete: PropTypes.func.isRequired
+  };
 
 
 const ProfileComp = () => {
@@ -50,13 +56,19 @@ const ProfileComp = () => {
 
 
 
+    const name = sessionStorage.getItem("name")
+    const lastname = sessionStorage.getItem("lastname")
+    const username = sessionStorage.getItem("username")
+    const email = sessionStorage.getItem("email")
+    const password = sessionStorage.getItem("password")
+    const pass_invisible = "*".repeat(password.length);
 
     const field = {
-        name: "Elma",
-        lastname: "Turcinovic",
-        username: "elma.turcinovic",
-        email: "elma.turcinovic@gmail.com",
-        password: '**********'
+        name: name,
+        lastname: lastname,
+        username: username,
+        email: email,
+        password: pass_invisible
     }
 
     return (

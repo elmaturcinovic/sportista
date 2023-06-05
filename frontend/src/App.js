@@ -24,7 +24,8 @@ function App() {
     var tip = sessionStorage.getItem('type');
     console.log(id);
     console.log(tip)
-
+    console.log(sessionStorage);
+    
     return (
         <div className={`app ${isDarkTheme ? 'dark-theme' : 'light-theme'}`}>
             <Router>

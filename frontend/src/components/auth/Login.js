@@ -50,7 +50,9 @@ function Login(){
                 sessionStorage.setItem('lastname', data.user_lastname);
                 sessionStorage.setItem('status', data.user_status);
                 sessionStorage.setItem('image', data.user_photo);
-                sessionStorage.setItem('image', data.user_sport);
+                sessionStorage.setItem('sport', data.user_sport);
+                sessionStorage.setItem('email', data.user_email);
+                sessionStorage.setItem('password', data.user_password);
                 window.location.href = "/";
             }
         }).catch((error) => {

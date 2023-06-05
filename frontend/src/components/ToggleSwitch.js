@@ -24,7 +24,7 @@ const ToggleSwitch = ({ isDarkTheme, onToggle }) => {
     <div>
       <BootstrapSwitchButton 
         onstyle="outline-secondary" 
-        offstyle="outline-success"
+        offstyle="outline-dark"
         id="theme-switch"
         checked={isDarkTheme}
         onChange={onToggle}

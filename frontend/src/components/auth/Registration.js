@@ -78,14 +78,15 @@ function Registration(){
     }
 
     return(
-        <Container fluid className="mb-5 reg-comp">
+        <Container fluid className="reg-comp">
             <div className="row mt-5">
-                <img src="./logo.png" alt="Logo" className="logo-smaller" />
+                <div className='logo-wrapper'> <img src="./logo.png" alt="Logo" className="logo-smaller" /></div>
                 <div className="col-md-8 m-auto">
-                    <div className="card card-body">
-                        <h1 className="text-center mb-3 registracija">
+                <br/>
+                    <div>
+                        <h2 className="text-center mb-3 registracija">
                             <IoIosPersonAdd/> Registracija
-                        </h1>
+                        </h2>
                         <p className="lead mt-4 registracija">Već imate profil?
                             <span> <Link to="/prijava">
                              Prijavite se!
@@ -115,7 +116,7 @@ function Registration(){
                                 />
                             </div>
                             <div className="form-group">
-                                <label htmlFor="usertype">Tip korisnika</label>
+                                <label htmlFor="usertype" className='radio-label1'>Tip korisnika</label>
                                 <div className="radio-group">
                                     <label className='radio-label'>
                                         <input

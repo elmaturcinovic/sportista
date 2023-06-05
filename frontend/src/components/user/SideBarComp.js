@@ -4,8 +4,17 @@ import {useHistory} from "react-router-dom/cjs/react-router-dom";
 
 const SideBarComp = () => {
 
+    const name = sessionStorage.getItem("name")
+    const lastname = sessionStorage.getItem("lastname")
+    const username = sessionStorage.getItem("username")
+    const email = sessionStorage.getItem("email")
+
+
     const field = {
-        username: "elma.turcinovic"
+        name: name,
+        lastname: lastname,
+        username: username,
+        email: email,
     }
 
     const history = useHistory();
@@ -35,10 +44,10 @@ const SideBarComp = () => {
                 <p className="username">{field.username}</p>
             </div>
             <div className="user-buttons">
-                <button className="user-button" onClick={handleHomepageClick}>Početna</button>
-                <button className="user-button" onClick={handleProfileClick}>Moj profil</button>
-                <button className="user-button" onClick={handleReservedClick}>Rezervirani termini</button>
-                <button className="user-button" onClick={logout}>Odjavi se</button>
+                <button className="menu-button" onClick={handleHomepageClick}>Početna</button>
+                <button className="menu-button" onClick={handleProfileClick}>Moj profil</button>
+                <button className="menu-button" onClick={handleReservedClick}>Rezervirani termini</button>
+                <button className="menu-button" onClick={logout}>Odjavi se</button>
             </div>
             <img src={'logo.png'} alt="logo" id="user-logo-image"/>
         </div>

@@ -6,12 +6,12 @@
 /* CSS za SideBarComp */
 
 .side-bar-div {
-    height: 100vh;
     text-align: center;
-    padding: 30px;
-    margin: 15px;
+    padding: 15px;
+    margin: 10px;
     background-color: rgba(255,255,255,0.3);
-    border-radius: 50px;
+    border-radius: 30px;
+    height: 90vh;
 }
 
 #profile-image {
@@ -20,9 +20,9 @@
     border-radius: 50%;
 }
 .username {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
-    margin: 10px 0 10px 0;
+    margin: 10px 0 0 0;
 }
 
 .side-bar-div, .image-username, .user-buttons {
@@ -32,7 +32,7 @@
     align-items: center;
 }
 .user-buttons {
-    margin-top: 50px;
+    margin-top: 30px;
 }
 
 .user-button, .change-password, .interests, .change-profile-image, .save-changes, .button-card {
@@ -59,9 +59,9 @@
 
 .profile-div, .schedule-main-div, .schedule-first-div, .schedule-second-div, .one-card {
     padding: 30px;
-    margin: 15px;
+    margin: 10px;
     background-color: rgba(255,255,255,0.3);
-    border-radius: 50px;
+    border-radius: 30px;
 }
 
 .headline-profile, #heading-h2 {
@@ -159,5 +159,30 @@ td:first-child {
 .button-card {
     margin: 10px;
 }
-
+.menu-button {
+    padding: 10px 40px;
+    width: 100%;
+    margin: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    height: 50px;
+    border-radius: 5px;
+    background-color: lightgray;
+    color: #303030;
+    border: none;
+    cursor: pointer;
+}
+.menu-button:hover {
+    padding: 10px 40px;
+    width: 100%;
+    margin: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    height: 50px;
+    border-radius: 5px;
+    background-color: #c0c0c0;
+    color: #303030;
+    border: none;
+    cursor: pointer;
+}
 

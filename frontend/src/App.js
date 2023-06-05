@@ -10,7 +10,7 @@ import Login from './components/auth/Login';
 import './App.css';
 import './stylesheet_auth.css'
 import UserProfile from './components/user/UserProfile';
-import UserScheduledPage from "./components/user/UserScheduledPage";
+
 
 
 function App() {

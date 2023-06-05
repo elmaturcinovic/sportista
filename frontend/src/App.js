@@ -11,6 +11,7 @@ import './App.css';
 import './stylesheet_auth.css'
 import UserProfile from './components/user/UserProfile';
 import UserScheduledPage from "./components/user/UserScheduledPage";
+import CompanyHomepage from './components/Companies/CompanyHomepage';
 
 
 function App() {
@@ -40,7 +41,7 @@ function App() {
                     </Route>
                     <Route exact path="/">
                         {id && tip==0 && <UserMainPage/> }
-                        {id && tip==1 && <CompanyProfile/> }
+                        {id && tip==1 && <CompanyHomepage/> }
                         {!id && <LandingPage/>}
                     </Route>
                     <Route exact path="/profil">

@@ -31,3 +31,6 @@
 .nav-item.active{
     background-color: lightgray;
 }
+.delete-icon{
+    font-size: 20px;
+}

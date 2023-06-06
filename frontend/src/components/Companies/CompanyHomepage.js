@@ -1,9 +1,41 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import "./styles_companies.css"
+import axios from 'axios';
+import {AiOutlineDelete} from 'react-icons/ai'
 
 const CompanyHomepage = () => {
+    const id = sessionStorage.getItem('id');
+    console.log(id);
+
+    const [sportHalls, setSportHalls] = useState([]);
+
+    useEffect(() => {
+        fetchSportHalls();
+    }, []);
+
+    function fetchSportHalls(){
+        axios.get(`http://127.0.0.1:8000//get_sport_halls_by_user/${id}/`).then((response)=>{
+                    setSportHalls(response.data);
+                    console.log(response.data);
+                }, (error) => {
+                    console.log(error);
+                }
+            );
+    }
+
+    
+
+    const deleteSportHall = async (sportHallId) => {
+        axios.delete(`http://127.0.0.1:8000//delete_sport_hall/${sportHallId}/`).then((response)=>{
+            fetchSportHalls()
+        }, (error) => {
+            console.log('Error deleting sport hall:', error);
+        }
+    );
+    }
+            
 
     return (
         <div className='homepage'>
@@ -13,7 +45,7 @@ const CompanyHomepage = () => {
                 <table className='table'>
                     <thead>
                     <tr>
-                        <th>Picture</th>
+                        <th></th>
                         <th>Naziv terena</th>
                         <th>Lokacija</th>
                         <th>Status</th>
@@ -21,13 +53,15 @@ const CompanyHomepage = () => {
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td><img src="your-picture.jpg" alt="Terrain" /></td>
-                        <td>Teren 1</td>
-                        <td>Lokacija 1</td>
-                        <td>Aktivan</td>
-                        <td><img src="bin-icon.png" alt="Delete" /></td>
+                    {sportHalls.map(sportHall => (
+                        <tr key={sportHall.id}>
+                            <td><img src={`{sportHall.photo}`} /></td>
+                            <td>{sportHall.name}</td>
+                            <td>{sportHall.location}</td>
+                            <td>{sportHall.status}</td>
+                            <td><AiOutlineDelete className='delete-icon' onClick={() => deleteSportHall(sportHall.id)}/></td>
                     </tr>
+                     ))}
                     {/* Add more rows here */}
                     </tbody>
                 </table>

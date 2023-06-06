@@ -40,7 +40,7 @@ const Navbar = () => {
         window.location.href='/';
     }
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg">
             <a className="navbar-brand" href="#">
                 <img src={'logo.png'} alt="logo" id="navbar-logo-image"/>
             </a>
@@ -50,7 +50,7 @@ const Navbar = () => {
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="navbar-nav me-auto">
                     
-                    <li className="nav-item">
+                    <li className="nav-item1">
                         <a className="nav-link username-nav">{field.username}</a>
                     </li>
                 </ul>

@@ -9,6 +9,7 @@ from django.core.mail import send_mail
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework import status
 
 
 
@@ -57,7 +58,36 @@ def register(request):
         #print(username + " " + email)
         return HttpResponse("-1")
     else:
-        u = User(user_username=username, user_name=firstName, user_lastname=lastName, user_email=email, user_password=password)
+        u = User(user_username=username, user_name=firstName, user_lastname=lastName, user_type=userType, user_email=email, user_password=password)
         #print(username + " " + email)
         u.save()
         return HttpResponse("1")
+
+
+@api_view(['GET'])
+def get_sport_halls_by_user(request, user_id):
+    try:
+        sport_halls = SportsHall.objects.filter(owner_id=user_id)
+        serializer = SportsHallSerializer(sport_halls, many=True)
+        print(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except SportsHall.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+
+@api_view(['POST'])
+def register_sport_hall(request):
+    serializer = SportsHallSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def delete_sport_hall(request, sport_hall_id):
+    try:
+        sport_hall = SportsHall.objects.get(id=sport_hall_id)
+        sport_hall.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    except SportsHall.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)

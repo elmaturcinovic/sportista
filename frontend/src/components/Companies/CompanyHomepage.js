@@ -55,7 +55,7 @@ const CompanyHomepage = () => {
                     <tbody>
                     {sportHalls.map(sportHall => (
                         <tr key={sportHall.id}>
-                            <td><img src={`{sportHall.photo}`} /></td>
+                            <td><img className='sport_hall_photo_table' src={`http://localhost:8000${sportHall.photo}`} /></td>
                             <td>{sportHall.name}</td>
                             <td>{sportHall.location}</td>
                             <td>{sportHall.status}</td>

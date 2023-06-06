@@ -8,6 +8,7 @@ const SideBarComp = () => {
     const lastname = sessionStorage.getItem("lastname")
     const username = sessionStorage.getItem("username")
     const email = sessionStorage.getItem("email")
+    const photo = sessionStorage.getItem("image")
 
 
     const field = {
@@ -15,6 +16,7 @@ const SideBarComp = () => {
         lastname: lastname,
         username: username,
         email: email,
+        photo: photo
     }
 
     const history = useHistory();
@@ -40,7 +42,7 @@ const SideBarComp = () => {
     return (
         <div className="side-bar-div">
             <div className="image-username">
-                <img src={require("./test-profile-image.jpg")} alt="Slika profila" id="profile-image"/>
+                <img src={`http://localhost:8000${field.photo}`} alt="Slika profila" id="profile-image"/>
                 <p className="username">{field.username}</p>
             </div>
             <div className="user-buttons">

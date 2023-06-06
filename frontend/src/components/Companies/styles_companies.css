@@ -5,6 +5,7 @@
 }
 .navbar{
     padding: 10px 30px 10px 30px;
+    background-color: whitesmoke;
 }
 #navbar-logo-image{
     height: 40px;
@@ -28,9 +29,15 @@
 .table{
     width: 80%;
 }
+
 .nav-item.active{
-    background-color: lightgray;
+    background-color: #c0c0c0;
 }
 .delete-icon{
     font-size: 20px;
+}
+.sport_hall_photo_table{
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
 }

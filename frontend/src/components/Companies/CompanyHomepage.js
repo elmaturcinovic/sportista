@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import "./styles_companies.css"
 import axios from 'axios';
-import {AiOutlineDelete} from 'react-icons/ai'
+import {AiOutlineDelete, AiOutlinePlus} from 'react-icons/ai'
 
 const CompanyHomepage = () => {
     const id = sessionStorage.getItem('id');
@@ -49,7 +49,7 @@ const CompanyHomepage = () => {
                         <th>Naziv terena</th>
                         <th>Lokacija</th>
                         <th>Status</th>
-                        <th></th>
+                        <th className='right-col'><button className='add-button'>Dodaj &nbsp; <AiOutlinePlus/></button></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -59,7 +59,7 @@ const CompanyHomepage = () => {
                             <td>{sportHall.name}</td>
                             <td>{sportHall.location}</td>
                             <td>{sportHall.status}</td>
-                            <td><AiOutlineDelete className='delete-icon' onClick={() => deleteSportHall(sportHall.id)}/></td>
+                            <td className='right-col'><AiOutlineDelete className='delete-icon' onClick={() => deleteSportHall(sportHall.id)}/></td>
                     </tr>
                      ))}
                     {/* Add more rows here */}

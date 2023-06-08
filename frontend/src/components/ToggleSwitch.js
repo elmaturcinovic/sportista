@@ -16,15 +16,15 @@ const ToggleSwitch = ({ isDarkTheme, onToggle }) => {
 
   const onLabel = (
     <>
-      <FontAwesomeIcon icon={faMoon} className="mr-2" />
+      <FontAwesomeIcon icon={faMoon} className="mr-2"  style={{ color: 'white' }}  />
       {'\u00A0'} Dark Theme
     </>
   );
   return (
     <div>
       <BootstrapSwitchButton 
-        onstyle="outline-secondary" 
-        offstyle="outline-success"
+        onstyle={{ outlineColor: "#303030" }} 
+    offstyle={{ outlineColor: "lightgray" }}
         id="theme-switch"
         checked={isDarkTheme}
         onChange={onToggle}

@@ -4,29 +4,52 @@ import {useHistory} from "react-router-dom/cjs/react-router-dom";
 
 const SideBarComp = () => {
 
+    const name = sessionStorage.getItem("name")
+    const lastname = sessionStorage.getItem("lastname")
+    const username = sessionStorage.getItem("username")
+    const email = sessionStorage.getItem("email")
+    const photo = sessionStorage.getItem("image")
+
+
     const field = {
-        username: "elma.turcinovic"
+        name: name,
+        lastname: lastname,
+        username: username,
+        email: email,
+        photo: photo
     }
 
-
     const history = useHistory();
-    const handleData = () => {
+    const handleProfileClick = () => {
         history.push('/profil');
     };
-    const handleScheduled = () => {
+    const handleReservedClick = () => {
         history.push('/rezervirani-termini');
     };
-
+    const handleHomepageClick = () => {
+        history.push('/');
+    };
+    
+    const logout = () => {
+        sessionStorage.setItem('id', '');
+        sessionStorage.setItem('type', '');
+        sessionStorage.setItem('username', '');
+        console.log(sessionStorage.getItem('id'))
+        console.log(sessionStorage.getItem('tip'))
+        window.location.href='/';
+    }
+    
     return (
         <div className="side-bar-div">
             <div className="image-username">
-                <img src={require("./test-profile-image.jpg")} alt="Slika profila" id="profile-image"/>
+                <img src={`http://localhost:8000${field.photo}`} alt="Slika profila" id="profile-image"/>
                 <p className="username">{field.username}</p>
             </div>
             <div className="user-buttons">
-                <button className="user-button" onClick={handleData}>Moj profil</button>
-                <button className="user-button" onClick={handleScheduled}>Rezervirani termini</button>
-                <button className="user-button third">Odjava</button>
+                <button className="menu-button" onClick={handleHomepageClick}>Početna</button>
+                <button className="menu-button" onClick={handleProfileClick}>Moj profil</button>
+                <button className="menu-button" onClick={handleReservedClick}>Rezervirani termini</button>
+                <button className="menu-button" onClick={logout}>Odjavi se</button>
             </div>
             <img src={'logo.png'} alt="logo" id="user-logo-image"/>
         </div>

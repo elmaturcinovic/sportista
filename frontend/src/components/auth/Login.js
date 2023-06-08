@@ -43,14 +43,16 @@ function Login(){
                 alert('Neispravni podaci.');
             } else {
                 const data = response.data;
-                sessionStorage.setItem('id', data.pk);
+                sessionStorage.setItem('id', data.id);
                 sessionStorage.setItem('username', data.user_username);
                 sessionStorage.setItem('type', data.user_type);
                 sessionStorage.setItem('name', data.user_name);
                 sessionStorage.setItem('lastname', data.user_lastname);
                 sessionStorage.setItem('status', data.user_status);
                 sessionStorage.setItem('image', data.user_photo);
-                sessionStorage.setItem('image', data.user_sport);
+                sessionStorage.setItem('sport', data.user_sport);
+                sessionStorage.setItem('email', data.user_email);
+                sessionStorage.setItem('password', data.user_password);
                 window.location.href = "/";
             }
         }).catch((error) => {
@@ -59,14 +61,15 @@ function Login(){
     }
     
     return(
-        <Container fluid className="mb-5 reg-comp">
+        <Container fluid className="reg-comp">
             <div className="row mt-5">
-                <img src="./logo.png" alt="Logo" className="logo-smaller" />
+            <div className='logo-wrapper'> <img src="./logo.png" alt="Logo" className="logo-smaller" /></div>
                 <div className="col-md-8 m-auto">
-                    <div className="card card-body">
-                        <h1 className="text-center mb-3 registracija">
+                <br/>
+                    <div>
+                        <h2 className="text-center mb-3 registracija">
                             <BiLogIn/> Prijava
-                        </h1>
+                        </h2>
                         <p className="lead mt-4 registracija">Nemate profil?
                             <span> <Link to="/registracija">
                             Registrujte se!

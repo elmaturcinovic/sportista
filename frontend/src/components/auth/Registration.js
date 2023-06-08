@@ -9,7 +9,8 @@ function Registration(){
 
     const nameRef = useRef();
     const lastNameRef = useRef();
-    const userTypeRef = useRef();
+    const userTypeRef0 = useRef();
+    const userTypeRef1 = useRef();
     const usernameRef = useRef();
     const emailRef = useRef();
     const passwordRef = useRef();
@@ -19,16 +20,19 @@ function Registration(){
     function registerUser(e) {
         //Spriječi defaultno ponašanje tj. refresh stranice
         e.preventDefault();
+        const selectedUserType = userTypeRef1.current.checked ? '1' : '0';
+        console.log('Selected user type:', selectedUserType);
 
         let user = {
             name: nameRef.current.value,
             lastName: lastNameRef.current.value,
-            userType: userTypeRef.current.value,
+            userType: selectedUserType,
             username: usernameRef.current.value,
             email: emailRef.current.value,
             password: passwordRef.current.value,
             passwordConfirm: passwordConfirmationRef.current.value
         }
+        console.log(user)
 
         if (user.name === '' || user.password === '' || user.lastName === '' ||
             user.email ===  '' || user.passwordConfirm === '' || user.username === '' || user.userType === '') {
@@ -44,7 +48,8 @@ function Registration(){
         nameRef.current.value = '';
         lastNameRef.current.value = '';
         usernameRef.current.value = '';
-        userTypeRef.current.value = '';
+        userTypeRef0.current.value = '';
+        userTypeRef1.current.value = '';
         emailRef.current.value = '';
         passwordRef.current.value = '';
         passwordConfirmationRef.current.value = '';
@@ -73,14 +78,15 @@ function Registration(){
     }
 
     return(
-        <Container fluid className="mb-5 reg-comp">
+        <Container fluid className="reg-comp">
             <div className="row mt-5">
-                <img src="./logo.png" alt="Logo" className="logo-smaller" />
+                <div className='logo-wrapper'> <img src="./logo.png" alt="Logo" className="logo-smaller" /></div>
                 <div className="col-md-8 m-auto">
-                    <div className="card card-body">
-                        <h1 className="text-center mb-3 registracija">
+                <br/>
+                    <div>
+                        <h2 className="text-center mb-3 registracija">
                             <IoIosPersonAdd/> Registracija
-                        </h1>
+                        </h2>
                         <p className="lead mt-4 registracija">Već imate profil?
                             <span> <Link to="/prijava">
                              Prijavite se!
@@ -110,7 +116,7 @@ function Registration(){
                                 />
                             </div>
                             <div className="form-group">
-                                <label htmlFor="usertype">Tip korisnika</label>
+                                <label htmlFor="usertype" className='radio-label1'>Tip korisnika</label>
                                 <div className="radio-group">
                                     <label className='radio-label'>
                                         <input
@@ -118,7 +124,7 @@ function Registration(){
                                         name="usertype"
                                         value="1"
                                         className="form-radio"
-                                        ref={userTypeRef}
+                                        ref={userTypeRef1}
                                         />
                                         Vlasnik sportske dvorane
                                     </label>
@@ -129,7 +135,7 @@ function Registration(){
                                         name="usertype"
                                         value="0"
                                         className="form-radio"
-                                        ref={userTypeRef}
+                                        ref={userTypeRef0}
                                         />
                                         Sportista
                                     </label>

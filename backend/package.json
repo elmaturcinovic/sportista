@@ -2,6 +2,7 @@
   "dependencies": {
     "bootstrap": "^5.2.3",
     "bootstrap-switch-button-react": "^1.2.0",
+    "prop-types": "^15.8.1",
     "react-bootstrap": "^2.7.4"
   }
 }

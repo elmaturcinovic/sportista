@@ -91,3 +91,33 @@ def delete_sport_hall(request, sport_hall_id):
         return Response(status=status.HTTP_204_NO_CONTENT)
     except SportsHall.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+def get_all_users (request):
+    try:
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except SportsHall.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+
+
+
+
+@api_view(['PUT'])
+def password_reset(request):
+    try:
+        user_id = request.data.get('id')
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    new_password = request.data.get('newpass')
+
+    user.user_password = new_password
+    user.save()
+
+    return Response({'message': 'Password updated successfully'}, status=status.HTTP_200_OK)

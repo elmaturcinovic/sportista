@@ -1,6 +1,7 @@
 .user-main-div {
     display: grid;
     grid-template-columns: 1fr 4fr;
+    height: 100vh;
 }
 
 /* CSS za SideBarComp */
@@ -11,7 +12,6 @@
     margin: 10px;
     background-color: rgba(255,255,255,0.3);
     border-radius: 30px;
-    height: 90vh;
 }
 
 #profile-image {

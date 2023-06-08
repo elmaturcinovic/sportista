@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 class Sport(models.Model):
-    sport_name = models.CharField(max_length=255)
+    sport_name = models.CharField(max_length=255, unique=True)
 
     def __str__(self):
         return self.sport_name
@@ -22,11 +22,16 @@ class User(models.Model):
     user_password = models.CharField(max_length=40)
     user_email = models.CharField(max_length=50)
     user_photo = models.ImageField(upload_to='media/images', default='/images/avatar.png')
-    user_sport = models.ForeignKey(Sport, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.user_username
+    
+class UserSportInterest(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    sport = models.ForeignKey(Sport, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f'{self.user.user_username} - {self.sport.sport_name}'
 
 class SportsHall(models.Model):
     name = models.CharField(max_length=255)
@@ -38,6 +43,12 @@ class SportsHall(models.Model):
     def __str__(self):
         return self.name
 
+class SportsHallSportInterest(models.Model):
+    sports_hall = models.ForeignKey(SportsHall, on_delete=models.CASCADE)
+    sport = models.ForeignKey(Sport, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.user.user_username} - {self.sport.sport_name}'
 
 
 class Appointment(models.Model):

@@ -44,10 +44,11 @@ class SportsHall(models.Model):
     address = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    sports = models.ManyToManyField(Sport, blank=True)
     photo = models.ImageField(upload_to='media/images', default='')
-    work_time_begin = models.TimeField()
-    work_time_end = models.TimeField()
-    working_days = models.ManyToManyField(Day)
+    work_time_begin = models.TimeField(null=True, blank=True)
+    work_time_end = models.TimeField(null=True, blank=True)
+    working_days = models.ManyToManyField(Day, blank=True)
 
 
     def __str__(self):

@@ -32,7 +32,6 @@ const EventsCalendar = () => {
   return (
     <div style={{
       display: 'flex',
-      height: '100vh',
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',

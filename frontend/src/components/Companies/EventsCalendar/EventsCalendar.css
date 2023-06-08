@@ -11,7 +11,7 @@
     line-height: 1.125em;
   }
   .react-calendar--doubleView {
-    width: 700px;
+    width: 100%;
   }
   .react-calendar--doubleView .react-calendar__viewContainer {
     display: flex;

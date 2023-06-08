@@ -8,7 +8,6 @@ class Sport(models.Model):
     def __str__(self):
         return self.sport_name
 
-
 class User(models.Model):
     USER_TYPE_CHOICES = (
         (0, 'User'),
@@ -33,12 +32,23 @@ class UserSportInterest(models.Model):
     def __str__(self):
         return f'{self.user.user_username} - {self.sport.sport_name}'
 
+class Day(models.Model):
+    name = models.CharField(max_length=20, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class SportsHall(models.Model):
     name = models.CharField(max_length=255)
-    location = models.CharField(max_length=255)
+    address = models.CharField(max_length=255)
+    city = models.CharField(max_length=255)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    sports = models.ManyToManyField(Sport)
     photo = models.ImageField(upload_to='media/images', default='')
+    work_time_begin = models.TimeField()
+    work_time_end = models.TimeField()
+    working_days = models.ManyToManyField(Day)
+
 
     def __str__(self):
         return self.name
@@ -70,3 +80,4 @@ class Rating(models.Model):
 
     def __str__(self):
         return f"Rating {self.rating} for {self.sport_hall} by {self.user}"
+    

@@ -6,12 +6,12 @@
 /* CSS za SideBarComp */
 
 .side-bar-div {
-    height: 100vh;
     text-align: center;
-    padding: 30px;
-    margin: 15px;
+    padding: 15px;
+    margin: 10px;
     background-color: rgba(255,255,255,0.3);
-    border-radius: 50px;
+    border-radius: 30px;
+    height: 90vh;
 }
 
 #profile-image {
@@ -20,9 +20,9 @@
     border-radius: 50%;
 }
 .username {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
-    margin: 10px 0 10px 0;
+    margin: 10px 0 0 0;
 }
 
 .side-bar-div, .image-username, .user-buttons {
@@ -32,10 +32,10 @@
     align-items: center;
 }
 .user-buttons {
-    margin-top: 50px;
+    margin-top: 30px;
 }
 
-.user-button, .change-password, .interests, .change-profile-image, .save-changes, .button-card {
+.user-button, .change-password, .interests, .change-profile-image, .button-card, .add-interest {
     padding: 10px 40px;
     margin: 10px;
     font-size: 16px;
@@ -46,6 +46,10 @@
     color: #303030;
     border: none;
     cursor: pointer;
+}
+
+.change-password, .interests, .change-profile-image, .add-interest {
+    background-color: #61dafb;
 }
 
 #user-logo-image {
@@ -59,9 +63,9 @@
 
 .profile-div, .schedule-main-div, .schedule-first-div, .schedule-second-div, .one-card {
     padding: 30px;
-    margin: 15px;
+    margin: 10px;
     background-color: rgba(255,255,255,0.3);
-    border-radius: 50px;
+    border-radius: 30px;
 }
 
 .headline-profile, #heading-h2 {
@@ -78,22 +82,22 @@ td:first-child {
     font-weight: 800;
 }
 
-.change-password, .interests, .change-profile-image {
-    background-color: #61dafb;
-
-}
-
-#add-interest, .choose-file button, span{
+#add-interest, span, #newPassword, #confirmPassword, #profile-image-input, .selected-file-image, #profile-image-input::file-selector-button{
     border-radius: 20px;
     border: none;
-    padding: 5px;
+    padding: 10px;
     font-size: 17px;
+    margin: 5px;
+}
+#profile-image-input::file-selector-button {
+    cursor: pointer;
 }
 
-.choose-file {
+.div-image-change {
     display: flex;
-    flex-direction: row;
-    flex-shrink: inherit;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
     margin: 60px 20px 20px;
 }
 
@@ -138,13 +142,14 @@ td:first-child {
 .cards {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 8px;
 }
 
 .one-card {
-    margin: 5px;
+    margin: auto;
     display: inline-block;
-    min-width: 80%;
-    min-height: 80%;
+    min-width: auto;
+    min-height: auto;
 }
 
 #company-image-card {
@@ -154,10 +159,38 @@ td:first-child {
 }
 
 #company-name-card, #company-address-card {
-    margin: 10px;
+    margin: auto;
+    padding: 5px;
 }
 .button-card {
-    margin: 10px;
+    margin: 5px;
+    height: auto;
+    width: auto;
 }
-
+.menu-button {
+    padding: 10px 40px;
+    width: 100%;
+    margin: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    height: 50px;
+    border-radius: 5px;
+    background-color: lightgray;
+    color: #303030;
+    border: none;
+    cursor: pointer;
+}
+.menu-button:hover {
+    padding: 10px 40px;
+    width: 100%;
+    margin: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    height: 50px;
+    border-radius: 5px;
+    background-color: #c0c0c0;
+    color: #303030;
+    border: none;
+    cursor: pointer;
+}
 

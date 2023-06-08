@@ -21,7 +21,7 @@ class User(models.Model):
     user_username = models.CharField(max_length=40)
     user_password = models.CharField(max_length=40)
     user_email = models.CharField(max_length=50)
-    user_photo = models.ImageField(upload_to='images', default='')
+    user_photo = models.ImageField(upload_to='media/images', default='/images/avatar.png')
     user_sport = models.ForeignKey(Sport, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
@@ -33,6 +33,7 @@ class SportsHall(models.Model):
     location = models.CharField(max_length=255)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     sports = models.ManyToManyField(Sport)
+    photo = models.ImageField(upload_to='media/images', default='')
 
     def __str__(self):
         return self.name

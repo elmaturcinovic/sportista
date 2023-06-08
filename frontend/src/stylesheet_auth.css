@@ -10,11 +10,18 @@
     width: auto;
     height: 200px;
   }
+
+  .logo-wrapper{
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   
   .logo-smaller{
+    margin: auto;
     width: auto;
     height: 150px;
-    margin: auto;
   }
   
   .buttons {
@@ -66,7 +73,7 @@
     position: absolute;
     bottom: 10px; /* Adjust the desired distance from the bottom */
     right: 10px; /* Adjust the desired distance from the right */
-    width: 150px;
+    width: auto;
   }
 
   .reg-comp{
@@ -74,7 +81,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height:100vh;
+    min-height:100vh;
   }
 
   .registracija{
@@ -96,9 +103,8 @@
   }
   
   label {
-    width: 150px;
+    width: 200px;
     text-align: left;
-    margin-left: 40px;
     font-weight: 500;
   }
   

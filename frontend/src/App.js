@@ -12,6 +12,7 @@ import './stylesheet_auth.css'
 import UserProfile from './components/user/UserProfile';
 import UserScheduledPage from "./components/user/UserScheduledPage";
 import CompanyHomepage from './components/Companies/CompanyHomepage';
+import FieldDetail from './components/user/FieldDetails.js/FieldDetail';
 
 
 
@@ -43,10 +44,10 @@ function App() {
                     <Route exact path="/">
                         {id && tip==0 && <UserMainPage/> }
                         {id && tip==1 && <CompanyHomepage/> }
-                        {!id && <LandingPage/>}
+                        {!id && <FieldDetail/>}
                     </Route>
                     <Route exact path="/profil">
-                        {id && tip==0 && <UserProfile/>}
+                        {id && tip==0 && <FieldDetail/>}
                         {id && tip==1 && <CompanyProfile/> }
                         {!id && <Redirect to="/"/>}
                     </Route>

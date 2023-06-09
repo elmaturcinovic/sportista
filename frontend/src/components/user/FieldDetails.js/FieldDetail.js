@@ -1,9 +1,8 @@
 import React from 'react'
 import EventsCalendar from '../../Companies/EventsCalendar/EventsCalendar'
 import AboutField from '../../shared/AboutField/AboutField'
-import ProfileComp from '../ProfileComp'
 import SideBarComp from '../SideBarComp'
-import UserMainPage from '../UserMainPage'
+import UserFieldCard from '../UserFieldCard'
 import useStyles from './styles'
 
 function FieldDetail() {
@@ -16,9 +15,19 @@ function FieldDetail() {
         <div className={classes.fieldDetails}>
             <div><AboutField/></div>
             <div className={classes.reserveFieldContainer}>
-                <div className={classes.time}>
-                </div>
                 <div className={classes.calendar}><EventsCalendar/></div>
+                <div className={classes.time}>
+                    <div className={classes.aboutFieldTitle}>Termini za Vistafon 05.06.</div>
+                    <div className={classes.scrollViewCard}>
+                        <UserFieldCard />
+                        <UserFieldCard />
+                        <UserFieldCard />
+                        <UserFieldCard />
+                        <UserFieldCard />
+                        <UserFieldCard />
+                    </div>
+                    
+                </div>
             </div>
         </div>
     </div>

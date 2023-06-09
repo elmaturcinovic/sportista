@@ -16,17 +16,33 @@ const useStyles = makeStyles(() =>
     },
     reserveFieldContainer: {
         display: 'flex',
+        marginTop: '20px'
     },
     calendar: {
-        marginRight: '10%'
+        marginRight: '30px',
+        marginLeft: '120px'
     },
     time: {
-        backgroundColor: '#3DD47A',
+        backgroundColor: 'white',
         zIndex: 2,
-        marginLeft: '10%',
-        marginRight: '10%',
         width: '100%',
-        borderRadius: 10
+        marginRight: '30px',
+        marginLeft: '80px',
+        borderRadius: 10,
+        maxHeight: '420px',
+        border: '1px solid black'
+    },
+    scrollViewCard: {
+      overflow: 'auto', 
+      maxHeight: '340px'
+    },
+    aboutFieldTitle: {
+      textAlign: 'center',
+      alignItems: 'center',
+      fontWeight: 'bolder',
+      fontSize: '28px',
+      marginTop: '10px',
+      padding: '5px'
     }
   })
 )

@@ -28,11 +28,10 @@ const useStyles = makeStyles(() =>
         margin: 20,
     },
     aboutFieldTextContainer: {
+        backgroundColor: 'white',
         display: 'flex',
         flex: 1,
         margin: 20,
-        paddingTop: 35,
-        paddingRight: 15,
         flexDirection: 'column',
         fontSize: 30,
         alignItems: 'center',

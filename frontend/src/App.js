@@ -44,10 +44,10 @@ function App() {
                     <Route exact path="/">
                         {id && tip==0 && <UserMainPage/> }
                         {id && tip==1 && <CompanyHomepage/> }
-                        {!id && <FieldDetail/>}
+                        {!id && <LandingPage/>}
                     </Route>
                     <Route exact path="/profil">
-                        {id && tip==0 && <FieldDetail/>}
+                        {id && tip==0 && <UserProfile/>}
                         {id && tip==1 && <CompanyProfile/> }
                         {!id && <Redirect to="/"/>}
                     </Route>

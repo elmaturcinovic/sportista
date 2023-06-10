@@ -37,7 +37,7 @@
     margin-top: 30px;
 }
 
-.user-button, .change-password, .interests, .change-profile-image, .button-card, .add-interest {
+.user-button, .change-password, .cancel-change-password, .interests, .change-profile-image, .button-card, .add-interest {
     padding: 10px 40px;
     margin: 10px;
     font-size: 16px;
@@ -50,7 +50,7 @@
     cursor: pointer;
 }
 
-.change-password, .interests, .change-profile-image, .add-interest {
+.change-password, .cancel-change-password, .interests, .change-profile-image, .add-interest {
     background-color: #61dafb;
 }
 
@@ -91,6 +91,11 @@ td:first-child {
     font-size: 17px;
     margin: 5px;
 }
+.message {
+    font-size: 17px;
+    margin-left: 15px;
+}
+
 #profile-image-input::file-selector-button {
     cursor: pointer;
 }
@@ -195,4 +200,26 @@ td:first-child {
     border: none;
     cursor: pointer;
 }
-
+.user-card-container {
+    border: 1px solid black;
+    border-radius: 10px;
+    margin: 10px;
+    height: '300px';
+    overflow-y: scroll;
+    background-color: aliceblue;
+}
+.user-card-title{
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+}
+.user-card-time{
+    font-size: 18px;
+    font-weight: 300;
+    text-align: center;
+}
+.user-card-price{
+    font-size: 18px;
+    font-weight: 300;
+    text-align: center;
+}

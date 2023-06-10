@@ -47,7 +47,7 @@ function App() {
                         {!id && <FieldDetail/>}
                     </Route>
                     <Route exact path="/profil">
-                        {id && tip==0 && <FieldDetail/>}
+                        {id && tip==0 && <UserProfile/>}
                         {id && tip==1 && <CompanyProfile/> }
                         {!id && <Redirect to="/"/>}
                     </Route>

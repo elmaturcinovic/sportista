@@ -37,7 +37,7 @@
     margin-top: 30px;
 }
 
-.user-button, .change-password, .interests, .change-profile-image, .button-card, .add-interest {
+.user-button, .change-password, .cancel-change-password, .interests, .change-profile-image, .button-card, .add-interest {
     padding: 10px 40px;
     margin: 10px;
     font-size: 16px;
@@ -50,7 +50,7 @@
     cursor: pointer;
 }
 
-.change-password, .interests, .change-profile-image, .add-interest {
+.change-password, .cancel-change-password, .interests, .change-profile-image, .add-interest {
     background-color: #61dafb;
 }
 
@@ -91,6 +91,11 @@ td:first-child {
     font-size: 17px;
     margin: 5px;
 }
+.message {
+    font-size: 17px;
+    margin-left: 15px;
+}
+
 #profile-image-input::file-selector-button {
     cursor: pointer;
 }

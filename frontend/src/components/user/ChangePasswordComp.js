@@ -1,50 +1,90 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 
-const ChangePasswordComp = (props) => {
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+const ChangePasswordComp = () => {
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (password === confirmPassword && password !== '' || confirmPassword !== '') {
-            alert('Lozinka je izmijenjena:', password);
-            setPassword('');
-            setConfirmPassword('');
-        }
-        else if (password === '' && confirmPassword === ''){
-            alert('Lozinka ne smije biti prazno polje.');
-            setPassword('');
-            setConfirmPassword('');
-        }
-            else {
-            alert("Lozinke se ne podudaraju.");
-        }
-    };
+  const [showForm, setShowForm] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [message, setMessage] = useState('');
 
 
-    return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <input
-                    type="password"
-                    id="newPassword"
-                    placeholder="Unesite novu lozinku"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-            </div>
-            <div>
-                <input
-                    type="password"
-                    id="confirmPassword"
-                    placeholder="Ponovite novu lozinku"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-            </div>
-            <button type="submit" className="change-password">Sačuvaj</button>
-        </form>
-    );
+  const stari_password = sessionStorage.getItem("password")
+  const id_user = sessionStorage.getItem("id")
+
+  const handleButtonClick = () => {
+    setShowForm(true);
+  };
+
+  const handleSaveClick = () => {
+
+    if (newPassword === '') {
+      setMessage('Lozinka ne smije biti prazno polje.');
+    } 
+    else if (newPassword === stari_password) {
+      setMessage('Nova lozinka je ista kao i stara lozinka.');
+    } 
+    else if (newPassword === confirmPassword) {
+
+      axios.put('http://127.0.0.1:8000/password_reset/', {
+      
+        newpass: newPassword,
+        id: id_user,
+
+      }).then((response) => {
+          if (response.data) {
+            setMessage('Lozinka uspješno promijenjena!');
+          } else {
+            setMessage('Promjena lozinke nije uspjelo.');
+          }
+        })
+        .catch((error) => {
+          console.error('Greška:', error);
+          setMessage('Greška prilikom promjene lozinke.');
+        });
+    } 
+    else {
+      setMessage('Lozinke se ne popudaraju.');
+    }
+    setNewPassword('')
+    setConfirmPassword('')
+  };
+
+  const handleCancelButtonClick = () => {
+    setShowForm(false);
+    setMessage('');
+    setNewPassword('')
+    setConfirmPassword('')
+  };
+
+
+  return (
+    <div>
+      {!showForm ? (
+        <button onClick={handleButtonClick} className='change-password'>Promijeni lozinku</button>
+      ) : (
+        <div>
+          <input
+            type="password"
+            placeholder="Unesite novu lozinku"
+            id='newPassword'
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Potvrdite novu lozinku"
+            id='confirmPassword'
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+          <button onClick={handleSaveClick} className='change-password'>Sačuvaj izmjene</button>
+          <button onClick={handleCancelButtonClick} className='cancel-change-password'>Poništi</button>
+          {message && <p className='message'>{message}</p>}
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default ChangePasswordComp;

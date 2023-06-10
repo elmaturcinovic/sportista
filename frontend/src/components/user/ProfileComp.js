@@ -1,8 +1,8 @@
 import React from "react";
 import {useState} from 'react';
-import ChangePasswordComp from "./ChangePasswordComp";
 import ChooseFileComp from "./ChooseFileComp";
 import PropTypes from "prop-types";
+import ChangePasswordComp from "./ChangePasswordComp";
 
 
 /* komponenta za brisanje dugmica na klik */
@@ -48,14 +48,6 @@ const ProfileComp = () => {
         }
     }
 
-    /* Za promenu password-a */
-    const [isShown, setIsShown] = useState(false);
-    const handlePassword = () => {
-        setIsShown(current => !current);
-    }
-
-
-
     const name = sessionStorage.getItem("name")
     const lastname = sessionStorage.getItem("lastname")
     const username = sessionStorage.getItem("username")
@@ -79,9 +71,7 @@ const ProfileComp = () => {
                     <tr>
                         <td></td>
                         <td>
-                            {/*ovde proslijediti pravu lozinku da se ispita da li je ista kao i nova*/}
-                            {isShown && <ChangePasswordComp pass={field.password} bool={isShown}/>}
-                            {!isShown && <button className="change-password" type="submit" onClick={handlePassword}>Promijeni lozinku</button>}
+                            <ChangePasswordComp/>
                         </td>
                     </tr>
                 </tfoot>

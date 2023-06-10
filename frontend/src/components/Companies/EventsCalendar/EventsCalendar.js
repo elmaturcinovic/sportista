@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Calendar from 'react-calendar';
 import {add, format} from 'date-fns'
+import axios from 'axios';
 import './EventsCalendar.css'
 import { CLOSING_TIME, OPENING_TIME, SPORT_GAME_DURATION } from '../../../constants/config';
 const EventsCalendar = () => {
@@ -9,6 +10,8 @@ const EventsCalendar = () => {
     justDate: null,
     dateTime: null,
   });
+
+  const id = sessionStorage.getItem('id');
 
   const [tereni, setTereni] = useState(["Vistafon", "La Bombonjera", "Grbavica"])
 
@@ -31,6 +34,20 @@ const EventsCalendar = () => {
   }
 
   const times = getTimes()
+
+  function fetchSportHalls() {
+    axios.get(`http://127.0.0.1:8000//get_sport_halls_by_user/${id}/`).then((response) => {
+      setTereni(response.data);
+      console.log(response.data);
+    }, (error) => {
+      console.log(error);
+    }
+    );
+  }
+
+  useEffect(() => {
+    fetchSportHalls()
+  }, []);
 
   return (
     <>

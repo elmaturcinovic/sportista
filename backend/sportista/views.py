@@ -126,3 +126,36 @@ def add_sport_hall(request):
     sport_hall.sports.set(sports)
 
     return Response({'message': 'Sport hall created'}, status=status.HTTP_201_CREATED)
+
+
+@api_view(['PUT'])
+def password_reset(request):
+    try:
+        user_id = request.data.get('id')
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    new_password = request.data.get('newpass')
+
+    user.user_password = new_password
+    user.save()
+
+    return Response({'message': 'Password updated successfully'}, status=status.HTTP_200_OK)
+
+
+@api_view(['PUT'])
+def update_profile(request):
+    try:
+        file_obj = request.FILES.get('profileImage')
+        user_id = request.data.get('id')
+
+        user = request.user
+    except User.DoesNotExist:
+        return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    user.user_photo = file_obj
+    user.save()
+
+    return Response({'message': 'Profile image successfully changed'}, status=status.HTTP_200_OK)
+

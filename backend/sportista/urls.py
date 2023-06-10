@@ -9,4 +9,6 @@ urlpatterns = [
     path('delete_sport_hall/<int:sport_hall_id>/', views.delete_sport_hall, name='delete_sport_hall'),
     path('get_all_users/', views.get_all_users, name='get_all_users'),
     path('password_reset/', views.password_reset, name='password_reset'),
+    path('get_all_sport_interests/', views.get_all_sport_interests, name='get_all_sport_interests'),
+    path('update_profile_image/', views.update_profile_image, name='update_profile_image'),
 ]

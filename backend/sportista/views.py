@@ -103,10 +103,6 @@ def get_all_users (request):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
 
-
-
-
-
 @api_view(['PUT'])
 def password_reset(request):
     try:
@@ -116,8 +112,31 @@ def password_reset(request):
         return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
     new_password = request.data.get('newpass')
-
     user.user_password = new_password
     user.save()
-
     return Response({'message': 'Password updated successfully'}, status=status.HTTP_200_OK)
+
+# Za uzimanje interesa i smestanje u dropdown
+# ali ovo je probno, treba da se uzme od usera sportovi.
+@api_view(['GET'])
+def get_all_sport_interests (request):
+    sports = Sport.objects.all()
+    serializer = SportSerializer(sports, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+#za sliku
+@api_view(['PUT'])
+def update_profile_image(request):
+    if request.method == 'PUT':
+        user = request.user
+        profile_image = request.FILES.get('profileImage')
+
+        if profile_image:
+            user.user_photo = profile_image
+            user.save()
+
+            return JsonResponse({'message': 'Profilna slika uspješno promijenjena!'})
+        else:
+            return JsonResponse({'error': 'Slika nije selektovana'}, status=400)
+
+    return JsonResponse({'error': 'Invalid request method'}, status=405)

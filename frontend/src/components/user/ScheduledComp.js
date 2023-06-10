@@ -1,6 +1,5 @@
 import React from "react";
 import DropDownComp from "./DropDownComp";
-import DateSmallComp from "./DateSmallComp";
 import CardComp from "./CardComp";
 
 const ScheduledComp = () => {

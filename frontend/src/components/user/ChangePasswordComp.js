@@ -1,8 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 
-// jos fetch data
-
 const ChangePasswordComp = () => {
 
   const [showForm, setShowForm] = useState(false);

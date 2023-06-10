@@ -9,7 +9,10 @@ const EventsCalendar = () => {
     justDate: null,
     dateTime: null,
   });
-  console.log(date.dateTime)
+
+  const [tereni, setTereni] = useState(["Vistafon", "La Bombonjera", "Grbavica"])
+
+
   const getTimes = ()=> {
     if(!date.justDate) return
 
@@ -30,6 +33,19 @@ const EventsCalendar = () => {
   const times = getTimes()
 
   return (
+    <>
+    <div>
+      <div className="form-group">
+        Odaberite teren: 
+        <select name="numberOfPlayers">
+          {tereni.map((teren, index) => (
+            <option key={index} value={teren}>
+              {teren}
+            </option>
+          ))}
+        </select>
+      </div>
+    </div>
     <div style={{
       display: 'flex',
       flexDirection: 'column',
@@ -43,6 +59,8 @@ const EventsCalendar = () => {
          onClickDay={(date)=>setDate((prev) => ({...prev, justDate: date}))}
          />
     </div>
+    </>
+    
   );
 };
 

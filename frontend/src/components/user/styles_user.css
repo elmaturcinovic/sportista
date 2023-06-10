@@ -1,6 +1,8 @@
 .user-main-div {
     display: grid;
     grid-template-columns: 1fr 4fr;
+    height:max-content;
+    padding-bottom: 60px;
 }
 
 /* CSS za SideBarComp */
@@ -9,9 +11,9 @@
     text-align: center;
     padding: 15px;
     margin: 10px;
-    background-color: rgba(255,255,255,0.3);
+    background-color: rgba(255,255,255,0.2);
     border-radius: 30px;
-    height: 90vh;
+    height: 95vh;
 }
 
 #profile-image {
@@ -64,7 +66,7 @@
 .profile-div, .schedule-main-div, .schedule-first-div, .schedule-second-div, .one-card {
     padding: 30px;
     margin: 10px;
-    background-color: rgba(255,255,255,0.3);
+    background-color: rgba(255,255,255,0.2);
     border-radius: 30px;
 }
 

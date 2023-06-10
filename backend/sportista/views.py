@@ -91,3 +91,38 @@ def delete_sport_hall(request, sport_hall_id):
         return Response(status=status.HTTP_204_NO_CONTENT)
     except SportsHall.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+    
+@api_view(['GET'])
+def get_sport_names(request):
+    sports = Sport.objects.values_list('sport_name', flat=True)
+    sport_names = list(sports)
+    return JsonResponse({'sport_names': sport_names})
+
+@api_view(['POST'])
+def add_sport_hall(request):
+    name = request.data.get('name')
+    address = request.data.get('address')
+    city = request.data.get('city')
+    sport_names = request.data.getlist('sports')
+    photo = request.data.get('photo')
+    owner_id = request.data.get('owner')
+    try:
+        owner = User.objects.get(id=owner_id)
+    except User.DoesNotExist:
+        return Response({'message': 'Invalid owner ID'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    sports = Sport.objects.filter(sport_name__in=sport_names)
+
+
+    sport_hall = SportsHall(
+        name=name,
+        address=address,
+        city=city,
+        owner= owner, 
+        photo=photo,      
+    )
+    print(sport_hall)
+    sport_hall.save()
+    sport_hall.sports.set(sports)
+
+    return Response({'message': 'Sport hall created'}, status=status.HTTP_201_CREATED)

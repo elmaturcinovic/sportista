@@ -1,135 +1,69 @@
-import React from "react";
-import {useState} from 'react';
+import { useState, useEffect } from "react";
 import ChooseFileComp from "./ChooseFileComp";
-import PropTypes from "prop-types";
 import ChangePasswordComp from "./ChangePasswordComp";
-
-
-/* komponenta za brisanje dugmica na klik */
-/* ali izbori se vracaju nakon refresanja stranice, to se moze rijesiti samo treba baza */
-const DeleteButton = ({ name, onDelete }) => {
-    const handleClick = () => {
-      onDelete(name);
-    };
-  
-    return (
-      <button onClick={handleClick} className="interests">
-        {name} &times;
-      </button>
-    );
-  };
-  
-  DeleteButton.propTypes = {
-    name: PropTypes.string.isRequired,
-    onDelete: PropTypes.func.isRequired
-  };
-
+import InterestsComp from "./InterestsComp"
 
 const ProfileComp = () => {
+  const [password, setPassword] = useState('');
 
-    /* Za interese */
+  useEffect(() => {
+    const storedPassword = sessionStorage.getItem("password");
+    setPassword(storedPassword);
+  }, []);
 
-    const [buttons, setButtons] = useState([
-        { id: 1, name: 'Plivanje' },
-        { id: 2, name: 'Vaterpolo' },
-        { id: 3, name: 'Bilijar' },
-    ]);
-    /* dodana varijabla redni samo privremeno*/
-    let redni = 4;
-    /* Za interese */
-    const handleDelete = (name) => {
-        setButtons(buttons.filter((button) => button.name !== name));
-    };
-    const AddElementToEnd = () => {
-        if(document.getElementById('add-interest').value !== '') {
-            setButtons(buttons => {
-                return [...buttons, {id: redni + 1, name: document.getElementById('add-interest').value}]
-            })
-        }
-    }
+  const handlePasswordChange = (newPassword) => {
+    setPassword(newPassword);
+  };
 
-    const name = sessionStorage.getItem("name")
-    const lastname = sessionStorage.getItem("lastname")
-    const username = sessionStorage.getItem("username")
-    const email = sessionStorage.getItem("email")
-    const password = sessionStorage.getItem("password")
-    const pass_invisible = "*".repeat(password.length);
+  const name = sessionStorage.getItem("name");
+  const lastname = sessionStorage.getItem("lastname");
+  const username = sessionStorage.getItem("username");
+  const email = sessionStorage.getItem("email");
+  const pass_invisible = "*".repeat(password.length);
 
-    const field = {
-        name: name,
-        lastname: lastname,
-        username: username,
-        email: email,
-        password: pass_invisible
-    }
+  return (
+    <div className="profile-div">
+      <h2 className="headline-profile">Moj profil</h2>
+      <table className="table-one">
+        <tfoot>
+          <tr>
+            <td></td>
+            <td>
+              <ChangePasswordComp
+                password={password}
+                onPasswordChange={handlePasswordChange}
+              />
+            </td>
+          </tr>
+        </tfoot>
+        <tbody>
+          <tr>
+            <td>Ime:</td>
+            <td>{name}</td>
+          </tr>
+          <tr>
+            <td>Prezime:</td>
+            <td>{lastname}</td>
+          </tr>
+          <tr>
+            <td>Korisnicko ime:</td>
+            <td>{username}</td>
+          </tr>
+          <tr>
+            <td>E-mail adresa:</td>
+            <td>{email}</td>
+          </tr>
+          <tr>
+            <td>Lozinka:</td>
+            <td>{pass_invisible}</td>
+          </tr>
+        </tbody>
+      </table>
 
-    return (
-        <div className="profile-div">
-            <h2 className="headline-profile">Moj profil</h2>
-            <table className="table-one">
-                <tfoot>
-                    <tr>
-                        <td></td>
-                        <td>
-                            <ChangePasswordComp/>
-                        </td>
-                    </tr>
-                </tfoot>
-                <tbody>
-                    <tr>
-                        <td>Ime:</td>
-                        <td>{field.name}</td>
-                    </tr>
-                    <tr>
-                        <td>Prezime:</td>
-                        <td>{field.lastname}</td>
-                    </tr>
-                    <tr>
-                        <td>Korisnicko ime:</td>
-                        <td>{field.username}</td>
-                    </tr>
-                    <tr>
-                        <td>E-mail adresa:</td>
-                        <td>{field.email}</td>
-                    </tr>
-                    <tr>
-                        <td>Lozinka:</td>
-                        <td>{field.password}</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <table className="table-two">
-                <tfoot>
-                    <tr>
-                        <td></td>
-                        <td>
-                            {buttons.map((button) => (
-                                <DeleteButton
-                                    key={button.id}
-                                    name={button.name}
-                                    onDelete={handleDelete}
-                                />
-                            ))}
-                        </td>
-                    </tr>
-                </tfoot>
-                <tbody>
-                    <tr>
-                        <td>Interesi:</td>
-                        <td>
-                            <input type="text" placeholder="Dodaj novi" id="add-interest" />
-                            <button className="add-interest" type="submit" onClick={AddElementToEnd}>Dodaj</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div className="choose-file">
-                <ChooseFileComp/>
-            </div>
-        </div>
-    );
-}
+      <InterestsComp />
+      <ChooseFileComp />
+    </div>
+  );
+};
 
 export default ProfileComp;

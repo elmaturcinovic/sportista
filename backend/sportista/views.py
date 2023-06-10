@@ -116,13 +116,14 @@ def password_reset(request):
     user.save()
     return Response({'message': 'Password updated successfully'}, status=status.HTTP_200_OK)
 
+
 # Za uzimanje interesa i smestanje u dropdown
 # ali ovo je probno, treba da se uzme od usera sportovi.
 @api_view(['GET'])
 def get_all_sport_interests (request):
     sports = Sport.objects.all()
-    serializer = SportSerializer(sports, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    #serializer = SportSerializer(sports, many=True)
+    #return Response(serializer.data, status=status.HTTP_200_OK)
 
 #za sliku
 @api_view(['PUT'])

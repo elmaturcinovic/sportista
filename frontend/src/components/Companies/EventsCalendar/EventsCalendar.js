@@ -32,31 +32,16 @@ const EventsCalendar = () => {
   return (
     <div style={{
       display: 'flex',
-      height: '100vh',
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
     }}>
-      {date.justDate ? (
-        <div>
-          {times?.map((time,index)=>(
-            <div key={`time-${index}`}  className='rounded-sm bg-gray-100 p-2'>
-              <button type='button' onClick={()=>setDate((prev)=> ({...prev, dateTime: time}))}>
-                {format(time,'kk:mm')}
-              </button>
-            </div>
-            
-          ))}
-        </div>
-      ) :(
          <Calendar 
          minDate={new Date()}
          className="REACT-CALENDAR p-2"
          view='month'
          onClickDay={(date)=>setDate((prev) => ({...prev, justDate: date}))}
          />
-      )}
-     
     </div>
   );
 };

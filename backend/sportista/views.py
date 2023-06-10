@@ -91,53 +91,38 @@ def delete_sport_hall(request, sport_hall_id):
         return Response(status=status.HTTP_204_NO_CONTENT)
     except SportsHall.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-
-
+    
 @api_view(['GET'])
-def get_all_users (request):
-    try:
-        users = User.objects.all()
-        serializer = UserSerializer(users, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    except SportsHall.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+def get_sport_names(request):
+    sports = Sport.objects.values_list('sport_name', flat=True)
+    sport_names = list(sports)
+    return JsonResponse({'sport_names': sport_names})
 
-
-@api_view(['PUT'])
-def password_reset(request):
+@api_view(['POST'])
+def add_sport_hall(request):
+    name = request.data.get('name')
+    address = request.data.get('address')
+    city = request.data.get('city')
+    sport_names = request.data.getlist('sports')
+    photo = request.data.get('photo')
+    owner_id = request.data.get('owner')
     try:
-        user_id = request.data.get('id')
-        user = User.objects.get(id=user_id)
+        owner = User.objects.get(id=owner_id)
     except User.DoesNotExist:
-        return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
-
-    new_password = request.data.get('newpass')
-    user.user_password = new_password
-    user.save()
-    return Response({'message': 'Password updated successfully'}, status=status.HTTP_200_OK)
+        return Response({'message': 'Invalid owner ID'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    sports = Sport.objects.filter(sport_name__in=sport_names)
 
 
-# Za uzimanje interesa i smestanje u dropdown
-# ali ovo je probno, treba da se uzme od usera sportovi.
-@api_view(['GET'])
-def get_all_sport_interests (request):
-    sports = Sport.objects.all()
-    #serializer = SportSerializer(sports, many=True)
-    #return Response(serializer.data, status=status.HTTP_200_OK)
+    sport_hall = SportsHall(
+        name=name,
+        address=address,
+        city=city,
+        owner= owner, 
+        photo=photo,      
+    )
+    print(sport_hall)
+    sport_hall.save()
+    sport_hall.sports.set(sports)
 
-#za sliku
-@api_view(['PUT'])
-def update_profile_image(request):
-    if request.method == 'PUT':
-        user = request.user
-        profile_image = request.FILES.get('profileImage')
-
-        if profile_image:
-            user.user_photo = profile_image
-            user.save()
-
-            return JsonResponse({'message': 'Profilna slika uspješno promijenjena!'})
-        else:
-            return JsonResponse({'error': 'Slika nije selektovana'}, status=400)
-
-    return JsonResponse({'error': 'Invalid request method'}, status=405)
+    return Response({'message': 'Sport hall created'}, status=status.HTTP_201_CREATED)

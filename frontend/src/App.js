@@ -44,7 +44,7 @@ function App() {
                     <Route exact path="/">
                         {id && tip==0 && <UserMainPage/> }
                         {id && tip==1 && <CompanyHomepage/> }
-                        {!id && <LandingPage/>}
+                        {!id && <FieldDetail/>}
                     </Route>
                     <Route exact path="/profil">
                         {id && tip==0 && <UserProfile/>}

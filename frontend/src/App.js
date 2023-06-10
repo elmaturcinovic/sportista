@@ -44,11 +44,7 @@ function App() {
                     <Route exact path="/">
                         {id && tip==0 && <UserMainPage/> }
                         {id && tip==1 && <CompanyHomepage/> }
-<<<<<<< HEAD
-                        {!id && <LandingPages/>}
-=======
                         {!id && <LandingPage/>}
->>>>>>> c1c46ae6ab5c662184565f7c15db426b96ae281e
                     </Route>
                     <Route exact path="/profil">
                         {id && tip==0 && <UserProfile/>}

@@ -126,3 +126,14 @@ def add_sport_hall(request):
     sport_hall.sports.set(sports)
 
     return Response({'message': 'Sport hall created'}, status=status.HTTP_201_CREATED)
+
+
+@api_view(['GET'])
+def sport_halls_by_owner(request, owner_id):
+    try:
+        owner = User.objects.get(id=owner_id)
+        sport_halls = SportsHall.objects.filter(owner=owner)
+        serializer = SportsHallSerializer(sport_halls, many=True)
+        return Response(serializer.data)
+    except User.DoesNotExist:
+        return Response({'message': 'Owner not found'}, status=404)

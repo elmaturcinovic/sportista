@@ -159,3 +159,37 @@ def update_profile(request):
 
     return Response({'message': 'Profile image successfully changed'}, status=status.HTTP_200_OK)
 
+
+
+
+@api_view(['GET'])
+def sport_halls_by_owner(request, owner_id):
+    try:
+        user_id = request.data.get('id')
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    new_password = request.data.get('newpass')
+
+    user.user_password = new_password
+    user.save()
+
+    return Response({'message': 'Password updated successfully'}, status=status.HTTP_200_OK)
+
+
+@api_view(['PUT'])
+def update_profile(request):
+    try:
+        file_obj = request.FILES.get('profileImage')
+        user_id = request.data.get('id')
+
+        user = request.user
+    except User.DoesNotExist:
+        return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    user.user_photo = file_obj
+    user.save()
+
+    return Response({'message': 'Profile image successfully changed'}, status=status.HTTP_200_OK)
+

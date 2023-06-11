@@ -8,6 +8,12 @@ class Sport(models.Model):
     def __str__(self):
         return self.sport_name
 
+def get_default_user_photo():
+    return '/images/avatar.png'
+
+def get_default_sport_hall_photo():
+    return '/images/sport_hall.png'
+
 class User(models.Model):
     USER_TYPE_CHOICES = (
         (0, 'User'),
@@ -20,10 +26,20 @@ class User(models.Model):
     user_username = models.CharField(max_length=40)
     user_password = models.CharField(max_length=40)
     user_email = models.CharField(max_length=50)
-    user_photo = models.ImageField(upload_to='media/images', default='/images/avatar.png')
+    user_photo = models.ImageField(upload_to='media/images')
 
     def __str__(self):
         return self.user_username
+    
+    def __init__(self, *args, **kwargs):
+        super(User, self).__init__(*args, **kwargs)
+        if not self.user_photo:
+            if self.user_type == 0:
+                self.user_photo = get_default_user_photo()
+            elif self.user_type == 1:
+                self.user_photo = get_default_sport_hall_photo()
+
+
 
 class Day(models.Model):
     name = models.CharField(max_length=20, unique=True)

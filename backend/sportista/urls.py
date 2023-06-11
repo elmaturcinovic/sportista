@@ -12,5 +12,6 @@ urlpatterns = [
     path('sporthalls/<int:owner_id>/', views.sport_halls_by_owner, name='sporthalls-by-owner'),
     path('password_reset/', views.password_reset, name="password_reset"),
     path('get_sport_names/', views.get_sport_names, name="get_sport_names"),
+    path('get_sport_cities/', views.get_sport_cities, name="get_sport_cities"),
     path('update_profile/', views.update_profile, name="update_profile"),
 ]

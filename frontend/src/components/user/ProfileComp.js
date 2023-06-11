@@ -1,26 +1,25 @@
-import React from "react";
-import {useState} from 'react';
+import { useState, useEffect } from "react";
 import ChooseFileComp from "./ChooseFileComp";
 import ChangePasswordComp from "./ChangePasswordComp";
 import InterestsComp from "./InterestsComp"
 
-
 const ProfileComp = () => {
+  const [password, setPassword] = useState('');
 
-    const name = sessionStorage.getItem("name")
-    const lastname = sessionStorage.getItem("lastname")
-    const username = sessionStorage.getItem("username")
-    const email = sessionStorage.getItem("email")
-    const password = sessionStorage.getItem("password")
+  useEffect(() => {
+    const storedPassword = sessionStorage.getItem("password");
+    setPassword(storedPassword);
+  }, []);
+
+  const handlePasswordChange = (newPassword) => {
+    setPassword(newPassword);
+  };
+
+    const name = sessionStorage.getItem("name");
+    const lastname = sessionStorage.getItem("lastname");
+    const username = sessionStorage.getItem("username");
+    const email = sessionStorage.getItem("email");
     const pass_invisible = "*".repeat(password.length);
-
-    const field = {
-        name: name,
-        lastname: lastname,
-        username: username,
-        email: email,
-        password: pass_invisible
-    }
 
     return (
         <div className="profile-div">
@@ -33,30 +32,33 @@ const ProfileComp = () => {
                         <tr>
                             <td></td>
                             <td>
-                                <ChangePasswordComp/>
+                                <ChangePasswordComp
+                                    password={password}
+                                    onPasswordChange={handlePasswordChange}
+                                />
                             </td>
                         </tr>
                     </tfoot>
                     <tbody>
                         <tr>
                             <td>Ime:</td>
-                            <td>{field.name}</td>
+                            <td>{name}</td>
                         </tr>
                         <tr>
                             <td>Prezime:</td>
-                            <td>{field.lastname}</td>
+                            <td>{lastname}</td>
                         </tr>
                         <tr>
                             <td>Korisnicko ime:</td>
-                            <td>{field.username}</td>
+                            <td>{username}</td>
                         </tr>
                         <tr>
                             <td>E-mail adresa:</td>
-                            <td>{field.email}</td>
+                            <td>{email}</td>
                         </tr>
                         <tr>
                             <td>Lozinka:</td>
-                            <td>{field.password}</td>
+                            <td>{pass_invisible}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -65,9 +67,8 @@ const ProfileComp = () => {
                 <ChooseFileComp/>
 
             </div>
-
         </div>
     );
-}
+};
 
 export default ProfileComp;

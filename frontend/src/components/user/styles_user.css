@@ -221,6 +221,27 @@ td:first-child {
     font-weight: 300;
     text-align: center;
 }
+.modal1 {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: whitesmoke;
+}  
+  
+.close-button{
+    font-size: 16px;
+    height: 35px;
+    font-weight: bold;
+    border-radius: 20px;
+    background-color: white;
+    color: #303030;
+    border: none;
+    cursor: pointer;
+}
+.form-group-checkbox label input[type="checkbox"] {
+    margin-right: 5px;
+  }
 
 /* CSS za Reserved component */
 

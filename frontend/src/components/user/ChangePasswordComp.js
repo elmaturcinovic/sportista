@@ -8,7 +8,6 @@ const ChangePasswordComp = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
 
-
   const stari_password = sessionStorage.getItem("password")
   const id_user = sessionStorage.getItem("id")
 

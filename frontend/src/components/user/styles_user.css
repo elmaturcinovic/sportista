@@ -37,7 +37,7 @@
     margin-top: 30px;
 }
 
-.user-button, .change-password, .cancel-change-password, .interests, .change-profile-image, .button-card, .add-interest {
+.user-button, .change-password, .cancel-change-password, .interests, .change-profile-image, .button-card, .add-interest, .filter-button {
     padding: 10px 40px;
     margin: 10px;
     font-size: 16px;
@@ -50,7 +50,7 @@
     cursor: pointer;
 }
 
-.change-password, .cancel-change-password, .interests, .change-profile-image, .add-interest {
+.change-password, .cancel-change-password, .interests, .change-profile-image, .add-interest, .filter-button, .button-card {
     background-color: #61dafb;
 }
 
@@ -70,7 +70,7 @@
     border-radius: 30px;
 }
 
-.headline-profile, #heading-h2 {
+.headline-profile, #heading-h2, #heading-reserved {
     font-weight: 700;
 }
 
@@ -121,10 +121,8 @@ td:first-child {
     bottom: 100px;
 }
 
-/* CSS za ScheduledComp  */
-
-#heading-h2 {
-    margin-bottom: 40px;
+#heading-filter {
+    padding: 30px;
 }
 
 /* CSS za DropDownComp i DateSmallComp  */
@@ -222,4 +220,11 @@ td:first-child {
     font-size: 18px;
     font-weight: 300;
     text-align: center;
+}
+
+/* CSS za Reserved component */
+
+#heading-reserved {
+    padding: 0;
+    margin: 0;
 }

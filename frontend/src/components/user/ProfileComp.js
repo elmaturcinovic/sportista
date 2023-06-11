@@ -24,43 +24,48 @@ const ProfileComp = () => {
 
     return (
         <div className="profile-div">
-            <h2 className="headline-profile">Moj profil</h2>
-            <table className="table-one">
-                <tfoot>
-                    <tr>
-                        <td></td>
-                        <td>
-                            <ChangePasswordComp/>
-                        </td>
-                    </tr>
-                </tfoot>
-                <tbody>
-                    <tr>
-                        <td>Ime:</td>
-                        <td>{field.name}</td>
-                    </tr>
-                    <tr>
-                        <td>Prezime:</td>
-                        <td>{field.lastname}</td>
-                    </tr>
-                    <tr>
-                        <td>Korisnicko ime:</td>
-                        <td>{field.username}</td>
-                    </tr>
-                    <tr>
-                        <td>E-mail adresa:</td>
-                        <td>{field.email}</td>
-                    </tr>
-                    <tr>
-                        <td>Lozinka:</td>
-                        <td>{field.password}</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div className="schedule-first-div">
+                <h2 className="headline-profile">Moj profil</h2>
+            </div>
+            <div className="schedule-first-div">
+                <table className="table-one">
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <ChangePasswordComp/>
+                            </td>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        <tr>
+                            <td>Ime:</td>
+                            <td>{field.name}</td>
+                        </tr>
+                        <tr>
+                            <td>Prezime:</td>
+                            <td>{field.lastname}</td>
+                        </tr>
+                        <tr>
+                            <td>Korisnicko ime:</td>
+                            <td>{field.username}</td>
+                        </tr>
+                        <tr>
+                            <td>E-mail adresa:</td>
+                            <td>{field.email}</td>
+                        </tr>
+                        <tr>
+                            <td>Lozinka:</td>
+                            <td>{field.password}</td>
+                        </tr>
+                    </tbody>
+                </table>
 
-            <InterestsComp/>
-            <ChooseFileComp/>
-            
+                <InterestsComp/>
+                <ChooseFileComp/>
+
+            </div>
+
         </div>
     );
 }

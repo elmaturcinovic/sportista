@@ -13,8 +13,7 @@ import UserProfile from './components/user/UserProfile';
 import UserScheduledPage from "./components/user/UserScheduledPage";
 import CompanyHomepage from './components/Companies/CompanyHomepage';
 import FieldDetail from './components/user/FieldDetails.js/FieldDetail';
-
-
+import UserReservedPage from './components/user/UserReservedPage';
 
 function App() {
     const [isDarkTheme, setIsDarkTheme] = useState(false);
@@ -51,6 +50,7 @@ function App() {
                         {id && tip==1 && <CompanyProfile/> }
                         {!id && <Redirect to="/"/>}
                     </Route>
+                    <Route path="/rezervirani-termini" component={UserReservedPage}/>
                 </Switch>
             </Router>
 

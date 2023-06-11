@@ -7,9 +7,10 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 import axios from 'axios';
 import { AiOutlineDelete, AiOutlinePlus, AiOutlineClose } from 'react-icons/ai'
+import { useHistory } from 'react-router-dom/cjs/react-router-dom';
 
 
-const ModalComp = ({ showModal, setShowModal, handleAddSportHall, setName, setAddress, setCity, setSports, setPhoto }) => {
+const ModalComp = ({ showModal, setShowModal, handleAddSportHall, navigateToSportHallDetails}) => {
 
   const [sportNames, setSportNames] = useState([]);
 
@@ -77,12 +78,16 @@ const ModalComp = ({ showModal, setShowModal, handleAddSportHall, setName, setAd
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    handleAddSportHall(formState);
-    // Additional logic or API calls can be performed here
-    // after form submission if needed
-    setShowModal(false);
+  const handleSubmit = async (e) => {
+      e.preventDefault();
+      try {
+        const sportHallId = await handleAddSportHall(formState);
+        console.log(sportHallId)
+        setShowModal(false);
+        navigateToSportHallDetails(sportHallId);
+      } catch (error) {
+        console.error('Error submitting form:', error);
+      }
   };
 
   return (
@@ -145,7 +150,10 @@ const ModalComp = ({ showModal, setShowModal, handleAddSportHall, setName, setAd
 
 
 const CompanyHomepage = () => {
+  const history = useHistory(); 
+
   const id = sessionStorage.getItem('id');
+  const cover_photo = sessionStorage.getItem('image')
   console.log(id);
 
   const [name, setName] = useState('');
@@ -180,28 +188,36 @@ const CompanyHomepage = () => {
     );
   };
 
-  const handleAddSportHall = async (formState) => {
-    // Make an API request to submit the form data
-    const formData = new FormData();
-    formData.append('name', formState.name);
-    formData.append('address', formState.address);
-    formData.append('city', formState.city)
-    formData.append('owner', id)
-    formData.append('sports', formState.sports);
-    formData.append('photo', formState.photo);
+  
+const handleAddSportHall = async (formState) => {
+  // Make an API request to submit the form data
+  const formData = new FormData();
+  formData.append('name', formState.name);
+  formData.append('address', formState.address);
+  formData.append('city', formState.city)
+  formData.append('owner', id)
+  formData.append('sports', formState.sports);
+  formData.append('photo', formState.photo);
 
-    try {
-      const response = await axios.post('http://127.0.0.1:8000//add_sport_hall/', formData);
-      console.log('Sport hall created:', response.data);
-      // Optionally, you can fetch the updated sport halls list here
-      fetchSportHalls();
-      // Close the modal
-      setShowModal(false);
-    } catch (error) {
-      console.error('Error creating sport hall:', error);
-    }
+  try {
+    const response = await axios.post('http://127.0.0.1:8000/add_sport_hall/', formData);
+    console.log('Sport hall created:', response.data);
+    fetchSportHalls();
+    setShowModal(false);
+    const sportHallId = response.data.id; // Extract the new sportHallId from the response
+    //console.log(response)
+    return sportHallId;
+  } catch (error) {
+    console.error('Error creating sport hall:', error);
+    return null;
+  }
+};
+  const navigateToSportHallDetails = (sportHallId) => {
+    history.push(`/teren-detalji/${sportHallId}`); 
   };
-
+  const handleSportHallClick = (sportHallId) => {
+    history.push(`/teren-detalji/${sportHallId}`); 
+  };
   const getCurrentDayOfWeek = () => {
     const today = new Date();
     return today.getDay() + 1;
@@ -229,7 +245,7 @@ const CompanyHomepage = () => {
 
   return (
     <div className='homepage'>
-      <div className='cover-photo' style={{ width: '100%', height: '200px', background: 'url(./teren2.jpg) no-repeat center/cover' }}></div>
+      <div className='cover-photo' style={{ width: '100%', height: '200px', background: `url(http://localhost:8000${cover_photo}) no-repeat center/cover` }}></div>
       <Navbar></Navbar>
       <div className='content'>
         <table className='table'>
@@ -248,9 +264,9 @@ const CompanyHomepage = () => {
           </thead>
           <tbody>
             {sportHalls.map(sportHall => (
-              <tr key={sportHall.id}>
+              <tr key={sportHall.id} >
                 <td><img className='sport_hall_photo_table' src={`http://localhost:8000${sportHall.photo}`} /></td>
-                <td>{sportHall.name}</td>
+                <td onClick={() => handleSportHallClick(sportHall.id)}>{sportHall.name}</td>
                 <td>{sportHall.address}, {sportHall.city}</td>
                 <td>{determineStatus(sportHall.working_days, sportHall.work_time_begin, sportHall.work_time_end)}</td>
                 <td className='right-col'><AiOutlineDelete className='delete-icon' onClick={() => deleteSportHall(sportHall.id)} /></td>
@@ -264,6 +280,7 @@ const CompanyHomepage = () => {
             showModal={showModal}
             setShowModal={setShowModal}
             handleAddSportHall={handleAddSportHall}
+            navigateToSportHallDetails={navigateToSportHallDetails}
             formState={{
               name: name,
               address: address,

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import ChooseFileComp from "./ChooseFileComp";
 import ChangePasswordComp from "./ChangePasswordComp";
-import InterestsComp from "./InterestsComp"
 
 const ProfileComp = () => {
   const [password, setPassword] = useState('');
@@ -60,7 +59,6 @@ const ProfileComp = () => {
         </tbody>
       </table>
 
-      <InterestsComp />
       <ChooseFileComp />
     </div>
   );

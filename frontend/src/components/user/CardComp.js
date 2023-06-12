@@ -3,6 +3,31 @@ import {useHistory} from "react-router-dom/cjs/react-router-dom";
 
 const CardComp = () => {
 
+    /* Kad se upload-ju podaci
+import React from "react";
+const CardComp = ({ data }) => {
+  return (
+    <div className="cards">
+      {data.map((item) => (
+        <div key={item.id} className="one-card">
+          <img
+            id="company-image-card"
+            src={require("./test-card-image.jpg")}
+            alt="Slika dvorane"
+          />
+          <h2 id="company-name-card">{item.name}</h2>
+          <h5 id="company-address-card">{item.address}</h5>
+          <button className="button-card" onClick={handleCard}>
+            Klik za više detalja
+          </button>
+        </div>
+      ))}
+    </div>
+  );
+};
+export default CardComp;
+*/
+
     const divData = [
         { id: 1, name: 'Dvorana 101', address: "Main street NU1231"},
         { id: 2, name: 'Dvorana 102', address: "Main street NU1232"},

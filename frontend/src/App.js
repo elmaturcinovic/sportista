@@ -53,8 +53,11 @@ function App() {
                         {!id && <Redirect to="/"/>}
                     </Route>
                     <Route exact path="/teren-detalji/:sportHallId" component={CompanyFieldDetails} />
-
-                
+                    <Route exact path="/field-detail">
+                        {id && tip==0 && <FieldDetail/>}
+                        {id && tip==1 &&  <UserProfile/>}
+                        {!id && <Redirect to="/"/>}
+                    </Route>
 
                     <Route path="/rezervirani-termini" component={UserReservedPage}/>
                 </Switch>

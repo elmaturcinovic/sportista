@@ -99,6 +99,16 @@ def get_sport_names(request):
     return JsonResponse({'sport_names': sport_names})
 
 @api_view(['GET'])
+def get_sports(request):
+    try:
+        sports = Sport.objects.all()
+        serializer = SportSerializer(sports, many=True)
+        print(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Sport.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
 def get_sport_cities(request):
     cities = SportsHall.objects.values_list('city', flat=True)
     sport_cities = list(cities)
@@ -149,7 +159,6 @@ def password_reset(request):
 
     return Response({'message': 'Password updated successfully'}, status=status.HTTP_200_OK)
 
-
 @api_view(['PUT'])
 def update_profile(request):
     try:
@@ -164,38 +173,51 @@ def update_profile(request):
     user.save()
 
     return Response({'message': 'Profile image successfully changed'}, status=status.HTTP_200_OK)
-
-
 
 
 @api_view(['GET'])
-def sport_halls_by_owner(request, owner_id):
+def get_sport_hall_by_id(request, sport_hall_id):
     try:
-        user_id = request.data.get('id')
-        user = User.objects.get(id=user_id)
-    except User.DoesNotExist:
-        return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        sport_hall = SportsHall.objects.get(id=sport_hall_id)
+        serializer = SportsHallSerializer(sport_hall)
+        return Response(serializer.data)
+    except SportsHall.DoesNotExist:
+        return Response(status=404)
+    
+@api_view(['GET'])
+def get_day_names_selected(request):
+    day_ids = request.GET.getlist('dayIds[]')  
+    day_names = Day.objects.filter(id__in=day_ids).values_list('name', flat=True)
+    print(day_names)
+    return Response(day_names)
 
-    new_password = request.data.get('newpass')
-
-    user.user_password = new_password
-    user.save()
-
-    return Response({'message': 'Password updated successfully'}, status=status.HTTP_200_OK)
-
+@api_view(['GET'])
+def get_sport_names_selected(request):
+    sport_ids = request.GET.getlist('sportIds[]')
+    sport_names = Sport.objects.filter(id__in=sport_ids).values_list('sport_name', flat=True)
+    print(sport_names)
+    return Response(sport_names)
 
 @api_view(['PUT'])
-def update_profile(request):
+def update_sport_hall(request, sport_hall_id):
     try:
-        file_obj = request.FILES.get('profileImage')
-        user_id = request.data.get('id')
+        sport_hall = SportsHall.objects.get(id=sport_hall_id)
+        sport_hall.sports.set(request.data.get('sports', []))
+        sport_hall.work_time_begin = request.data.get('work_time_begin')
+        sport_hall.work_time_end =request.data.get('work_time_end')
+        sport_hall.working_days.set(request.data.get('working_days', []))
+        sport_hall.save()
+        return Response({'message': 'Sport hall updated successfully'})
+    except SportsHall.DoesNotExist:
+        return Response({'error': 'Sport hall not found'}, status=404)
+    
 
-        user = request.user
-    except User.DoesNotExist:
-        return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
-
-    user.user_photo = file_obj
-    user.save()
-
-    return Response({'message': 'Profile image successfully changed'}, status=status.HTTP_200_OK)
-
+@api_view(['GET'])
+def get_days(request):
+    try:
+        days = Day.objects.all().order_by("id")
+        serializer = DaySerializer(days, many=True)
+        print(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Sport.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)

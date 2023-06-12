@@ -100,7 +100,7 @@ def get_sport_names(request):
 
 @api_view(['GET'])
 def get_sport_cities(request):
-    cities = SportsHall.objects.values_list('city', flat=True)
+    cities = SportsHall.objects.values_list('city', flat=True).distinct()
     sport_cities = list(cities)
     return JsonResponse({'sport_cities': sport_cities})
 

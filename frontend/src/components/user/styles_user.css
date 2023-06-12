@@ -125,20 +125,21 @@ td:first-child {
     padding: 30px;
 }
 
-/* CSS za DropDownComp i DateSmallComp  */
+/* CSS za DropDownComp  */
 
 #label-drop, #label-date {
     font-size: 20px;
     font-weight: 800;
 }
 
-#dropdown, #dateInput {
+#dropdown {
     font-size: 20px;
     border: none;
     border-radius: 20px;
     background-color: lightgray;
     padding: 7px;
     margin: 3px;
+    width: 20%;
 }
 
 
@@ -248,4 +249,85 @@ td:first-child {
 #heading-reserved {
     padding: 0;
     margin: 0;
+}
+
+/* za media CSS */
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+    .cards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 8px;
+    }
+
+    .menu-button {
+        height: auto;
+    }
+
+    #dropdown {
+        width: 40%;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .user-main-div {
+        display: flex;
+        flex-direction: column;
+        height:max-content;
+        padding-bottom: 60px;
+    }
+    
+    .cards {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-gap: 8px;
+    }
+
+    .table-one {
+        width: 100%;
+        overflow-x: auto;
+        table-layout: fixed;
+        display: block;
+        border: none;
+      }
+    
+      .table-one th,
+      .table-one td {
+        display: block;
+        
+        text-align: center;
+        border: none;
+      }
+    
+      .table-one thead {
+        display: none;
+      }
+    
+      .table-one tbody tr {
+        display: block;
+        margin-bottom: 10px;
+        border-color: none;
+        border-radius: 4px;
+      }
+    
+      .table-one tbody td:before {
+        content: attr(data-label);
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+      }
+    
+      .change-password, .change-profile-image {
+        display: block;
+        height: auto;
+        margin-top: 10px;
+      }
+    
+      .profile-div {
+        overflow: hidden;
+      }
+    
+    #dropdown {
+        width: 40%;
+    }
 }

@@ -27,7 +27,7 @@ const ScheduledComp = () => {
         axios.get("http://127.0.0.1:8000/get_sport_cities/")
             .then(response => {
                 const sportCities = response.data.sport_cities;
-                setSportNames(sportCities);
+                setSportCities(sportCities);
                 console.log("Povuceni gradovi: ", sportCities)
             })
             .catch(error => {

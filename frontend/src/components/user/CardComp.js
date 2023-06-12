@@ -46,8 +46,8 @@ export default CardComp;
 
 
     const history = useHistory();
-    const handleCard = () => {
-        history.push('/profile');
+    const handleCard = (id) => {
+        history.push(`/field-detail`);
     };
 
     return (
@@ -57,7 +57,7 @@ export default CardComp;
                     <img id="company-image-card" src={require("./test-card-image.jpg")} alt="Slika dvorane"/>
                     <h2 id="company-name-card">{item.name}</h2>
                     <h5 id="company-address-card">{item.address}</h5>
-                    <button className="button-card" onClick={handleCard}>Klik za više detalja</button>
+                    <button className="button-card" onClick={handleCard(item.id)}>Klik za više detalja</button>
                 </div>
             ))}
         </div>

@@ -52,9 +52,9 @@ function App() {
                         {id && tip==1 && <CompanyProfile/> }
                         {!id && <Redirect to="/"/>}
                     </Route>
-                    <Route exact path="/teren-detalji/:id">
-                        {id && tip==0 && <UserProfile/>}
-                        {id && tip==1 && <CompanyFieldDetails/> }
+                    <Route exact path="/field-detail">
+                        {id && tip==0 && <FieldDetail/>}
+                        {id && tip==1 &&  <UserProfile/>}
                         {!id && <Redirect to="/"/>}
                     </Route> 
 

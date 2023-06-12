@@ -52,11 +52,9 @@ function App() {
                         {id && tip==1 && <CompanyProfile/> }
                         {!id && <Redirect to="/"/>}
                     </Route>
-                    <Route exact path="/teren-detalji/:id">
-                        {id && tip==0 && <UserProfile/>}
-                        {id && tip==1 && <CompanyFieldDetails/> }
-                        {!id && <Redirect to="/"/>}
-                    </Route> 
+                    <Route exact path="/teren-detalji/:sportHallId" component={CompanyFieldDetails} />
+
+                
 
                     <Route path="/rezervirani-termini" component={UserReservedPage}/>
                 </Switch>

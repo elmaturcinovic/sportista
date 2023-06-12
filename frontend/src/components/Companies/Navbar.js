@@ -4,6 +4,7 @@ import './styles_companies.css'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { BiLogOut } from 'react-icons/bi';
 import { FiSettings } from 'react-icons/fi';
+import logo from '../,,/../../logo.png'; 
 
 
 const Navbar = () => {
@@ -23,7 +24,7 @@ const Navbar = () => {
 
     const history = useHistory();
     const handleMojiTereniClick = () => {
-        history.push('/moji-tereni');
+        history.push('/');
     };
     const handleTerminiClick = () => {
         history.push('/termini');
@@ -42,7 +43,7 @@ const Navbar = () => {
     return (
         <nav className="navbar navbar-expand-lg">
             <a className="navbar-brand" href="#">
-                <img src={'logo.png'} alt="logo" id="navbar-logo-image"/>
+                <img src={logo} alt="logo" id="navbar-logo-image"/>
             </a>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>

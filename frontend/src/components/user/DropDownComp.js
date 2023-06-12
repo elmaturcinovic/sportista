@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 
-const DropdownInput = (props) => {
+// samo jos da se update-a kad se oznaci neki sport
+
+const DropDownComp = ({label, selected, options}) => {
+
     const [selectedOption, setSelectedOption] = useState('');
 
     const handleOptionChange = (event) => {
@@ -9,16 +12,19 @@ const DropdownInput = (props) => {
 
     return (
         <div>
-            <label htmlFor="dropdown" id="label-drop">{props.label}</label>
-            <select id="dropdown" value={selectedOption} onChange={handleOptionChange}>
-                <option value={props.option1}>{props.option1}</option>
-                <option value={props.option2}>{props.option2}</option>
-                <option value={props.option3}>{props.option3}</option>
-                <option value={props.option4}>{props.option4}</option>
+            <label htmlFor="dropdown" id="label-drop">{label}</label>
+            
+            <select id="dropdown" value={selected} onChange={handleOptionChange}>
+                {options && options.map((option, index) => (
+                    <option key={index} value={option}>
+                        {option}
+                    </option>
+                ))}
             </select>
-            <p id="selected">Selektovan {props.selected}: {selectedOption}</p>
+
+            <p id="selected">Selektovan {label.toLowerCase()} {selectedOption}</p>
         </div>
     );
 };
 
-export default DropdownInput;
+export default DropDownComp;

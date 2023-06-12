@@ -98,6 +98,12 @@ def get_sport_names(request):
     sport_names = list(sports)
     return JsonResponse({'sport_names': sport_names})
 
+@api_view(['GET'])
+def get_sport_cities(request):
+    cities = SportsHall.objects.values_list('city', flat=True)
+    sport_cities = list(cities)
+    return JsonResponse({'sport_cities': sport_cities})
+
 @api_view(['POST'])
 def add_sport_hall(request):
     name = request.data.get('name')
@@ -125,7 +131,7 @@ def add_sport_hall(request):
     sport_hall.save()
     sport_hall.sports.set(sports)
 
-    return Response({'message': 'Sport hall created'}, status=status.HTTP_201_CREATED)
+    return Response({'message': 'Sport hall created', 'id' : sport_hall.id}, status=status.HTTP_201_CREATED)
 
 
 @api_view(['PUT'])

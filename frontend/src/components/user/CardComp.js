@@ -1,37 +1,7 @@
 import React from 'react';
 import {useHistory} from "react-router-dom/cjs/react-router-dom";
 
-const CardComp = (data) => {
-
-/* Kad se upload-ju podaci
-
-import React from "react";
-
-const CardComp = ({ data }) => {
-  return (
-    <div className="cards">
-      {data.map((item) => (
-        <div key={item.id} className="one-card">
-          <img
-            id="company-image-card"
-            src={require("./test-card-image.jpg")}
-            alt="Slika dvorane"
-          />
-          <h2 id="company-name-card">{item.name}</h2>
-          <h5 id="company-address-card">{item.address}</h5>
-          <button className="button-card" onClick={handleCard}>
-            Klik za više detalja
-          </button>
-        </div>
-      ))}
-    </div>
-  );
-};
-
-export default CardComp;
-*/
-
-
+const CardComp = () => {
 
     const divData = [
         { id: 1, name: 'Dvorana 101', address: "Main street NU1231"},
@@ -46,8 +16,8 @@ export default CardComp;
 
 
     const history = useHistory();
-    const handleCard = (id) => {
-        history.push(`/field-detail`);
+    const handleCard = () => {
+        history.push('/field-detail');
     };
 
     return (
@@ -57,7 +27,7 @@ export default CardComp;
                     <img id="company-image-card" src={require("./test-card-image.jpg")} alt="Slika dvorane"/>
                     <h2 id="company-name-card">{item.name}</h2>
                     <h5 id="company-address-card">{item.address}</h5>
-                    <button className="button-card" onClick={handleCard(item.id)}>Klik za više detalja</button>
+                    <button className="button-card" onClick={handleCard}>Klik za više detalja</button>
                 </div>
             ))}
         </div>

@@ -51,6 +51,10 @@ function App() {
                         {id && tip==1 && <CompanyProfile/> }
                         {!id && <Redirect to="/"/>}
                     </Route>
+                    <Route exact path="/field-detail">
+                        {id && tip==0 && <FieldDetail/>}
+                        {!id && <Redirect to="/"/>}
+                    </Route>
                 </Switch>
             </Router>
 

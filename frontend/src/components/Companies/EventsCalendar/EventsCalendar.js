@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import Calendar from 'react-calendar';
 import {add, format} from 'date-fns'
 import './EventsCalendar.css'
+import axios from 'axios';
 import { CLOSING_TIME, OPENING_TIME, SPORT_GAME_DURATION } from '../../../constants/config';
 const EventsCalendar = () => {
   // eslint-disable-next-line no-undef
@@ -9,8 +10,8 @@ const EventsCalendar = () => {
     justDate: null,
     dateTime: null,
   });
-
-  const [tereni, setTereni] = useState(["Vistafon", "La Bombonjera", "Grbavica"])
+  var id = sessionStorage.getItem('id');
+  const [tereni, setTereni] = useState()
 
 
   const getTimes = ()=> {
@@ -32,17 +33,27 @@ const EventsCalendar = () => {
 
   const times = getTimes()
 
+  function fetchSportHalls() {
+    axios.get(`http://127.0.0.1:8000//get_sport_halls_by_user/${id}/`).then((response) => {
+      setTereni(response.data);
+      console.log(response.data);
+    }, (error) => {
+      console.log(error);
+    }
+    );
+  }
+
+  useEffect(() => {
+    fetchSportHalls()
+  }, []);
+
   return (
     <>
     <div>
       <div className="form-group">
         Odaberite teren: 
         <select name="numberOfPlayers">
-          {tereni.map((teren, index) => (
-            <option key={index} value={teren}>
-              {teren}
-            </option>
-          ))}
+          
         </select>
       </div>
     </div>

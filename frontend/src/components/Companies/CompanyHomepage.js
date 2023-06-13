@@ -10,9 +10,10 @@ import { AiOutlineDelete, AiOutlinePlus, AiOutlineClose } from 'react-icons/ai'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom';
 
 
-const ModalComp = ({ showModal, setShowModal, handleAddSportHall, navigateToSportHallDetails}) => {
+const ModalComp = ({ showModal, setShowModal, selectedSports, setSelectedSports, handleAddSportHall, navigateToSportHallDetails}) => {
 
-  const [sportNames, setSportNames] = useState([]);
+  const [sportsAll, setSportsAll] = useState([]);
+
 
   const [formState, setFormState] = useState({
     name: "",
@@ -23,7 +24,7 @@ const ModalComp = ({ showModal, setShowModal, handleAddSportHall, navigateToSpor
   });
 
   useEffect(() => {
-    fetchSportNames();
+    fetchSports();
   }, []);
 
   useEffect(() => {
@@ -43,15 +44,15 @@ const ModalComp = ({ showModal, setShowModal, handleAddSportHall, navigateToSpor
   };
 
   // Function to fetch sport names from the backend
-  const fetchSportNames = async () => {
-    try {
-      const response = await axios.get('http://127.0.0.1:8000/get_sport_names/');
-      const { sport_names } = response.data;
-      setSportNames(sport_names);
-    } catch (error) {
-      console.error('Error fetching sport names:', error);
+  function fetchSports() {
+    axios.get('http://127.0.0.1:8000/get_sports/').then((response) => {
+        setSportsAll(response.data);
+        console.log(response.data);
+    }, (error) => {
+        console.log(error);
     }
-  };
+    );
+}
 
   const { name, address, city, sports, photo } = formState;
 
@@ -64,11 +65,28 @@ const ModalComp = ({ showModal, setShowModal, handleAddSportHall, navigateToSpor
   };
 
   const handleSportsChange = (e) => {
-    const selectedOptions = Array.from(e.target.selectedOptions, (option) => option.value);
-    setFormState((prevState) => ({
-      ...prevState,
-      sports: new Set([...prevState.sports, ...selectedOptions]),
-    }));
+    const selectedSportId = parseInt(e.target.value);
+    if (selectedSports.includes(selectedSportId)) {
+      setSelectedSports((prevSelectedSports) =>
+        prevSelectedSports.filter((sportId) => sportId !== selectedSportId)
+      );
+      setFormState((prevFormState) => ({
+        ...prevFormState,
+        sports: new Set([...prevFormState.sports].filter((sportId) => sportId !== selectedSportId)),
+      }));
+      console.log(formState.sports)
+    } else {
+      setSelectedSports((prevSelectedSports) => [
+        ...prevSelectedSports,
+        selectedSportId,
+      ]);
+      setFormState((prevFormState) => ({
+        ...prevFormState,
+        sports: new Set([...prevFormState.sports, selectedSportId]),
+      }));
+      console.log(formState.sports)
+
+    }
   };
 
   const handlePhotoChange = (e) => {
@@ -79,17 +97,20 @@ const ModalComp = ({ showModal, setShowModal, handleAddSportHall, navigateToSpor
   };
 
   const handleSubmit = async (e) => {
-      e.preventDefault();
-      try {
-        const sportHallId = await handleAddSportHall(formState);
-        console.log(sportHallId)
-        setShowModal(false);
+    e.preventDefault();
+    try {
+      
+      const sportHallId = await handleAddSportHall(formState);
+      setShowModal(false);
+      if (sportHallId) {
         navigateToSportHallDetails(sportHallId);
-      } catch (error) {
-        console.error('Error submitting form:', error);
+      } else {
+        console.log('Failed to create sport hall.');
       }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
   };
-
   return (
     <Modal show={showModal}>
       <Modal.Header>
@@ -122,12 +143,12 @@ const ModalComp = ({ showModal, setShowModal, handleAddSportHall, navigateToSpor
               <select
                 id="sports"
                 multiple={true}
-                value={Array.from(sports)}
+                value={selectedSports}
                 onChange={handleSportsChange}
               >
-                {sportNames.map((sportName) => (
-                  <option key={sportName} value={sportName}>
-                    {sportName}
+                {sportsAll.map((sport) => (
+                  <option key={sport.id} value={sport.id} defaultValue={selectedSports.includes(sport.id)}>
+                    {sport.sport_name}
                   </option>
                 ))}
               </select>
@@ -148,7 +169,6 @@ const ModalComp = ({ showModal, setShowModal, handleAddSportHall, navigateToSpor
   );
 };
 
-
 const CompanyHomepage = () => {
   const history = useHistory(); 
 
@@ -159,9 +179,10 @@ const CompanyHomepage = () => {
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
-  const [sports, setSports] = useState(new Set());
+  const [sports, setSports] = useState([]);
   const [photo, setPhoto] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [selectedSports, setSelectedSports] = useState(new Set());
 
   const [sportHalls, setSportHalls] = useState([]);
 
@@ -187,18 +208,23 @@ const CompanyHomepage = () => {
     }
     );
   };
+ 
+  const handleAddSportHall = async (formState) => {
+    // Make an API request to submit the form data
+    const formData = new FormData();
+    formData.append('name', formState.name);
+    formData.append('address', formState.address);
+    formData.append('city', formState.city)
+    formData.append('owner', id)
 
-  
-const handleAddSportHall = async (formState) => {
-  // Make an API request to submit the form data
-  const formData = new FormData();
-  formData.append('name', formState.name);
-  formData.append('address', formState.address);
-  formData.append('city', formState.city)
-  formData.append('owner', id)
-  formData.append('sports', formState.sports);
+    formState.sports.forEach((sport) => {
+      formData.append('sports', sport);
+      console.log(sport)
+    });
+
   formData.append('photo', formState.photo);
 
+  
   try {
     const response = await axios.post('http://127.0.0.1:8000/add_sport_hall/', formData);
     console.log('Sport hall created:', response.data);
@@ -212,12 +238,9 @@ const handleAddSportHall = async (formState) => {
     return null;
   }
 };
-  const navigateToSportHallDetails = (sportHallId) => {
-    history.push(`/teren-detalji/${sportHallId}`); 
-  };
-  const handleSportHallClick = (sportHallId) => {
-    history.push(`/teren-detalji/${sportHallId}`); 
-  };
+const navigateToSportHallDetails = (sportHallId) => {
+  history.push(`/teren-detalji/${sportHallId}`);
+};
   const getCurrentDayOfWeek = () => {
     const today = new Date();
     return today.getDay() + 1;
@@ -248,6 +271,9 @@ const handleAddSportHall = async (formState) => {
       <div className='cover-photo' style={{ width: '100%', height: '200px', background: `url(http://localhost:8000${cover_photo}) no-repeat center/cover` }}></div>
       <Navbar></Navbar>
       <div className='content'>
+        <div className='title'>
+          <h3>Moji tereni</h3>
+        </div>
         <table className='table'>
           <thead>
             <tr>
@@ -266,7 +292,7 @@ const handleAddSportHall = async (formState) => {
             {sportHalls.map(sportHall => (
               <tr key={sportHall.id} >
                 <td><img className='sport_hall_photo_table' src={`http://localhost:8000${sportHall.photo}`} /></td>
-                <td onClick={() => handleSportHallClick(sportHall.id)}>{sportHall.name}</td>
+                <td onClick={() => navigateToSportHallDetails(sportHall.id)}>{sportHall.name}</td>
                 <td>{sportHall.address}, {sportHall.city}</td>
                 <td>{determineStatus(sportHall.working_days, sportHall.work_time_begin, sportHall.work_time_end)}</td>
                 <td className='right-col'><AiOutlineDelete className='delete-icon' onClick={() => deleteSportHall(sportHall.id)} /></td>
@@ -277,17 +303,19 @@ const handleAddSportHall = async (formState) => {
         {console.log(showModal)}
         {showModal && (
           <ModalComp
-            showModal={showModal}
-            setShowModal={setShowModal}
-            handleAddSportHall={handleAddSportHall}
-            navigateToSportHallDetails={navigateToSportHallDetails}
-            formState={{
-              name: name,
-              address: address,
-              city: city,
-              sports: sports,
-              photo: photo
-            }}
+              showModal={showModal}
+              setShowModal={setShowModal}
+              handleAddSportHall={handleAddSportHall}
+              navigateToSportHallDetails={navigateToSportHallDetails}
+              formState={{
+                name: name,
+                address: address,
+                city: city,
+                sports: sports,
+                photo: photo
+              }}
+              selectedSports={selectedSports} 
+              setSelectedSports={setSelectedSports} 
           />
         )}
       </div>

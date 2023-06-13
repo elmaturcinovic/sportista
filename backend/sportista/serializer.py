@@ -12,6 +12,16 @@ class SportsHallSerializer(ModelSerializer):
         model = SportsHall
         fields = '__all__' 
 
+class SportSerializer(ModelSerializer):
+    class Meta:
+        model = Sport
+        fields = '__all__' 
+
+class DaySerializer(ModelSerializer):
+    class Meta:
+        model = Day
+        fields = '__all__' 
+
 class UserAppointmentSerializer(ModelSerializer):
     class Meta:
         model = UserAppointment

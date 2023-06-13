@@ -28,6 +28,8 @@
 }
 .table{
     width: 80%;
+    border-radius: 6px;
+    border: solid 1px rgba(0, 0, 0, 0.176);
 }
 
 .nav-item.active{
@@ -85,4 +87,80 @@ th, td{
     color: #303030;
     border: none;
     cursor: pointer;
+}
+.o-terenu{
+    background-color: whitesmoke;
+    margin: 20px 0px;
+    padding: 10px;
+}
+.o-terenu-table{
+    width: 100%;
+    background-color: whitesmoke;
+}
+.selection-form{
+    margin: 20px 0px;
+    padding: 25px;
+    background-color: whitesmoke;
+    color: #303030;
+    border-radius: 6px;
+    border: solid 1px rgba(0, 0, 0, 0.176);
+}
+.title{
+    background-color: whitesmoke;
+    color: #303030;
+    width: 80%;
+    padding: 15px;
+    border-radius: 6px;
+    border: solid 1px rgba(0, 0, 0, 0.176);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.filter-icon-button{
+    background-color: whitesmoke;
+    border: none;
+}
+
+.title h3 {
+    margin-right: auto; /* Pushes the button to the end */
+}
+
+.filter-icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: 20px; /* Add some spacing between the h3 and button */
+}
+.form-wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.filter-form{
+    width: 80%;
+    background-color: whitesmoke;
+    padding: 15px;
+    border-radius: 6px;
+    border: solid 1px rgba(0, 0, 0, 0.176);
+    margin-bottom: 10px;
+    color: #303030;
+}
+.filter-form-table{
+    width: fit-content;
+}
+.table-wrapper{
+    width: 100%;
+}
+.filter-form-label{
+    font-weight: 600;
+}
+.filter-form-table th, .filter-form-table td{
+    padding: 5px;
+    vertical-align: top;
+    text-align: left;
+    width: min-content;
+}
+.add-button.filter-button {
+    align-self: flex-end;
 }

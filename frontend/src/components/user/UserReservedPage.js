@@ -2,6 +2,7 @@ import React from "react";
 import SideBarComp from "./SideBarComp";
 import './styles_user.css'
 import ReservedAppointmentsComp from "./ReservedAppointmentsComp";
+import CompanyHomepage from "./ReservedAppointmentsComp"
 
 
 const UserReservedPage = () => {

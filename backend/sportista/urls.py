@@ -13,5 +13,7 @@ urlpatterns = [
     path('get_sport_cities/', views.get_sport_cities, name="get_sport_cities"),
     path('update_profile/', views.update_profile, name="update_profile"),
     path('add_sport_hall/', views.add_sport_hall, name="add_sport_hall"),
-
+    path('invite_friend/', views.invite_friend, name="invite_friend"),
+    path('get_sport_appointments_by_user/<int:user_id>/', views.get_sport_appointments_by_user, name="get_sport_appointments_by_user"),
+    path('delete_sport_appointment/<int:user_id>/', views.delete_sport_appointment, name="delete_sport_appointment"),
 ]

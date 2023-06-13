@@ -199,3 +199,41 @@ def update_profile(request):
 
     return Response({'message': 'Profile image successfully changed'}, status=status.HTTP_200_OK)
 
+
+
+@api_view(['POST'])
+def invite_friend(request):
+    email = request.data.get('email')
+    exists = User.objects.filter(user_email=email).exists()
+
+    print(exists)
+
+    if (exists):
+        subject = 'Pozivnica'
+        message = 'Pozvan si na sportski termin!'
+        recipient_list = [email]
+        send_mail(subject, message, None, recipient_list)
+        return JsonResponse({'message': 'Pozivnica uspesno poslana!'})
+    else:
+        return JsonResponse({'error': 'Nema korisnika sa ovom e-mail adresom.'}, status=405)
+    
+
+@api_view(['GET'])
+def get_sport_appointments_by_user(request, user_id):
+    try:
+        sport_appointments = UserAppointment.objects.filter(id=user_id)
+        serializer = UserAppointmentSerializer(sport_appointments, many=True)
+        print(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except SportsHall.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['DELETE'])
+def delete_sport_appointment(request, sport_appointment_id):
+    try:
+        sport_appointment = UserAppointment.objects.get(id=sport_appointment_id)
+        sport_appointment.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    except SportsHall.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)

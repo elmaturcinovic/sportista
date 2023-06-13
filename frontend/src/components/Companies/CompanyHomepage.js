@@ -179,10 +179,10 @@ const CompanyHomepage = () => {
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
-  const [sports, setSports] = useState(new Set());
+  const [sports, setSports] = useState([]);
   const [photo, setPhoto] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const [selectedSports, setSelectedSports] = useState([]);
+  const [selectedSports, setSelectedSports] = useState(new Set());
 
   const [sportHalls, setSportHalls] = useState([]);
 
@@ -209,18 +209,18 @@ const CompanyHomepage = () => {
     );
   };
  
-const handleAddSportHall = async (formState) => {
-  // Make an API request to submit the form data
-  const formData = new FormData();
-  formData.append('name', formState.name);
-  formData.append('address', formState.address);
-  formData.append('city', formState.city)
-  formData.append('owner', id)
+  const handleAddSportHall = async (formState) => {
+    // Make an API request to submit the form data
+    const formData = new FormData();
+    formData.append('name', formState.name);
+    formData.append('address', formState.address);
+    formData.append('city', formState.city)
+    formData.append('owner', id)
 
-  formState.sports.forEach((sport) => {
-    formData.append('sports', sport);
-    console.log(sport)
-  });
+    formState.sports.forEach((sport) => {
+      formData.append('sports', sport);
+      console.log(sport)
+    });
 
   formData.append('photo', formState.photo);
 
@@ -271,6 +271,9 @@ const navigateToSportHallDetails = (sportHallId) => {
       <div className='cover-photo' style={{ width: '100%', height: '200px', background: `url(http://localhost:8000${cover_photo}) no-repeat center/cover` }}></div>
       <Navbar></Navbar>
       <div className='content'>
+        <div className='title'>
+          <h3>Moji tereni</h3>
+        </div>
         <table className='table'>
           <thead>
             <tr>

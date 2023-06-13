@@ -15,6 +15,7 @@ import CompanyHomepage from './components/Companies/CompanyHomepage';
 import FieldDetail from './components/user/FieldDetails.js/FieldDetail';
 import UserReservedPage from './components/user/UserReservedPage';
 import CompanyFieldDetails from './components/Companies/CompanyFieldDetails';
+import Appointments from './components/Companies/Appointments';
 
 
 function App() {
@@ -52,12 +53,23 @@ function App() {
                         {id && tip==1 && <CompanyProfile/> }
                         {!id && <Redirect to="/"/>}
                     </Route>
-                    <Route exact path="/teren-detalji/:sportHallId" component={CompanyFieldDetails} />
+
+                    <Route exact path="/teren-detalji/:sportHallId">
+                        {id && tip==0 && <FieldDetail/>}
+                        {id && tip==1 && <CompanyFieldDetails/> }
+                        {!id && <Redirect to="/"/>}
+                    </Route>
+                    
                     <Route exact path="/field-detail">
                         {id && tip==0 && <FieldDetail/>}
                         {id && tip==1 &&  <UserProfile/>}
                         {!id && <Redirect to="/"/>}
                     </Route> 
+                    <Route exact path="/termini">
+                        {id && tip==1 && <Appointments/> }
+                        {!id && <Redirect to="/"/>}
+                    </Route>
+
                     <Route path="/rezervirani-termini" component={UserReservedPage}/>
                 </Switch>
             </Router>

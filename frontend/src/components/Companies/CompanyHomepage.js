@@ -66,29 +66,24 @@ const ModalComp = ({ showModal, setShowModal, selectedSports, setSelectedSports,
 
   const handleSportsChange = (e) => {
     const selectedSportId = parseInt(e.target.value);
-    if (selectedSports.includes(selectedSportId)) {
-      setSelectedSports((prevSelectedSports) =>
-        prevSelectedSports.filter((sportId) => sportId !== selectedSportId)
-      );
+    if (selectedSports.has(selectedSportId)) {
+      setSelectedSports((prevSelectedSports) => {
+        const updatedSports = new Set([...prevSelectedSports]);
+        updatedSports.delete(selectedSportId);
+        return updatedSports;
+      });
       setFormState((prevFormState) => ({
         ...prevFormState,
         sports: new Set([...prevFormState.sports].filter((sportId) => sportId !== selectedSportId)),
       }));
-      console.log(formState.sports)
     } else {
-      setSelectedSports((prevSelectedSports) => [
-        ...prevSelectedSports,
-        selectedSportId,
-      ]);
+      setSelectedSports((prevSelectedSports) => new Set([...prevSelectedSports, selectedSportId]));
       setFormState((prevFormState) => ({
         ...prevFormState,
         sports: new Set([...prevFormState.sports, selectedSportId]),
       }));
-      console.log(formState.sports)
-
     }
   };
-
   const handlePhotoChange = (e) => {
     setFormState((prevState) => ({
       ...prevState,
@@ -143,11 +138,11 @@ const ModalComp = ({ showModal, setShowModal, selectedSports, setSelectedSports,
               <select
                 id="sports"
                 multiple={true}
-                value={selectedSports}
+                value={Array.from(selectedSports)}
                 onChange={handleSportsChange}
               >
                 {sportsAll.map((sport) => (
-                  <option key={sport.id} value={sport.id} defaultValue={selectedSports.includes(sport.id)}>
+                  <option key={sport.id} value={sport.id} defaultValue={selectedSports.has(sport.id)}>
                     {sport.sport_name}
                   </option>
                 ))}

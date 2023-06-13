@@ -35,15 +35,19 @@
 .nav-item.active{
     background-color: #c0c0c0;
 }
-.delete-icon{
+.delete-icon, .icon-invite {
     font-size: 20px;
 }
+.icon-invite {
+    margin: 3px;
+}
+
 .sport_hall_photo_table{
     height: 40px;
     width: 40px;
     border-radius: 50%;
 }
-.add-button{
+.add-button, .invite-friend{
     padding:  5px 20px;
     font-size: 16px;
     height: 35px;

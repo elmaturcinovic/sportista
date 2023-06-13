@@ -14,7 +14,8 @@ const DropDownComp = ({label, selected, options}) => {
         <div>
             <label htmlFor="dropdown" id="label-drop">{label}</label>
             
-            <select id="dropdown" value={selected} onChange={handleOptionChange}>
+            <select id="dropdown" value={selectedOption} onChange={handleOptionChange}>
+            <option value="">Odaberite {label.toLowerCase()} </option>
                 {options && options.map((option, index) => (
                     <option key={index} value={option}>
                         {option}

@@ -73,9 +73,10 @@ class SportsHallSportInterest(models.Model):
 
 class Appointment(models.Model):
     sport_hall = models.ForeignKey(SportsHall, on_delete=models.CASCADE)
-    sport = models.ForeignKey(Sport, on_delete=models.CASCADE)
+    sports = models.ManyToManyField(Sport, blank=True)
     date = models.DateField()
-    time = models.TimeField()
+    time_start = models.TimeField()
+    time_end = models.TimeField()
     capacity = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
@@ -83,7 +84,7 @@ class Appointment(models.Model):
 
 class UserAppointment(models.Model):
     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    users = models.ManyToManyField(User)
     available_spots = models.IntegerField()
     used_spots = models.IntegerField(default=0)
     available = models.BooleanField(default=True)
@@ -104,3 +105,16 @@ class Rating(models.Model):
     def __str__(self):
         return f"Rating {self.rating} for {self.sport_hall} by {self.user}"
     
+class Invites(models.Model):
+    STATUS_CHOICES = (
+        (0, 'Sent'),
+        (1, 'Accepted'),
+        (2, 'Rejected')
+    )
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_invites')
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_invites')
+    appointment = models.ForeignKey(UserAppointment, on_delete=models.CASCADE)
+    status = models.IntegerField(choices=STATUS_CHOICES, default=0)
+    
+    def __str__(self):
+        return f"Invite from {self.sender.user_username} to {self.receiver.user_name} for appointment at {self.appointment.appointment.sport_hall.name}: {self.status}"

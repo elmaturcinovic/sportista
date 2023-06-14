@@ -11,6 +11,7 @@ import './App.css';
 import './stylesheet_auth.css'
 import UserProfile from './components/user/UserProfile';
 import UserScheduledPage from "./components/user/UserScheduledPage";
+import UserNotificationsPage from './components/user/UserNotificationsPage';
 import CompanyHomepage from './components/Companies/CompanyHomepage';
 import FieldDetail from './components/user/FieldDetails.js/FieldDetail';
 import UserReservedPage from './components/user/UserReservedPage';
@@ -71,6 +72,7 @@ function App() {
                     </Route>
 
                     <Route path="/rezervirani-termini" component={UserReservedPage}/>
+                    <Route path="/moje-obavijesti" component={UserNotificationsPage}/>
                 </Switch>
             </Router>
 

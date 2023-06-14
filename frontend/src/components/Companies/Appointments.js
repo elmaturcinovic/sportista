@@ -64,7 +64,6 @@ const Appointments = () => {
         );
     }
 
-
     const handleFilterToggle = () => {
         setShowFilter(!showFilter);
     };
@@ -131,11 +130,31 @@ const Appointments = () => {
         return `${hours}:${minutes}`;
       };
     
-    const handleFilterSubmit = (e) => {
+      const handleFilterSubmit = (e) => {
         e.preventDefault();
-        // Logic to filter table data based on filterData
-        // Update the table data based on the filter criteria
-    };
+            const filteredAppointments = appointments.filter((appointment) => {
+                console.log(filterData)
+                console.log(appointment)
+                if (filterData.sportHall !== '' && appointment.sport_hall !== filterData.sportHall) {
+                    return false;
+                }
+                if (filterData.sports.size > 0) {
+                    const appointmentSports = new Set(appointment.sports.map((sport) => sport));
+                    const intersection = [...filterData.sports].filter((sportId) => appointmentSports.has(sportId));
+                    if (intersection.length === 0) {
+                    return false;
+                    }
+                }
+                if (filterData.date !== '' && appointment.date !== filterData.date) {
+                    return false;
+                }
+                return true;
+            });
+        
+        setAppointments(filteredAppointments);
+        setShowFilter(false)
+      };
+      
 
     return (
         <div className='homepage'>
@@ -166,7 +185,7 @@ const Appointments = () => {
                                             >
                                                 <option value=''></option>
                                                 {sportHalls.map((hall) => (
-                                                <option key={hall.id} value={hall.id}>
+                                                <option key={hall.id} value={hall.name}>
                                                     {hall.name}
                                                 </option>
                                                 ))}
@@ -183,8 +202,8 @@ const Appointments = () => {
                                             <input
                                             type="checkbox"
                                             id={`sport-${sport.id}`}
-                                            value={sport.id}
-                                            checked={filterData.sports.has(sport.id)}
+                                            value={sport.sport_name}
+                                            checked={filterData.sports.has(sport.sport_name)}
                                             onChange={handleSportCheckboxChange}
                                             className="form-check-input"
                                             />

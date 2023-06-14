@@ -1,8 +1,11 @@
-import React from "react";
-import {useHistory} from "react-router-dom/cjs/react-router-dom";
+import React, { useState } from "react";
+import {useHistory } from "react-router-dom/cjs/react-router-dom";
 
 
 const SideBarComp = () => {
+
+    //usestate staviti na 0, radi prikaza stavljeno na 3
+    const [notificationCount, setNotificationCount] = useState(3); 
 
     const name = sessionStorage.getItem("name")
     const lastname = sessionStorage.getItem("lastname")
@@ -26,6 +29,10 @@ const SideBarComp = () => {
     const handleReservedClick = () => {
         history.push('/rezervirani-termini');
     };
+    const handleNotificationsClick = () => {
+        history.push('/moje-obavijesti');
+    };
+    
     const handleHomepageClick = () => {
         history.push('/');
     };
@@ -49,6 +56,9 @@ const SideBarComp = () => {
                 <button className="menu-button" onClick={handleHomepageClick}>Početna</button>
                 <button className="menu-button" onClick={handleProfileClick}>Moj profil</button>
                 <button className="menu-button" onClick={handleReservedClick}>Rezervirani termini</button>
+                <button className="menu-button" id="notif" onClick={handleNotificationsClick}>Obavijesti
+                    {notificationCount > 0 && <span className="notification-badge">{notificationCount}</span>}
+                </button>
                 <button className="menu-button" onClick={logout}>Odjavi se</button>
             </div>
             <img src={'logo.png'} alt="logo" id="user-logo-image"/>

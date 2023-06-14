@@ -30,7 +30,7 @@ const ChangePasswordComp = ({ password, onPasswordChange }) => {
         .then((response) => {
           if (response.data) {
             setMessage('Lozinka uspješno promijenjena!');
-            onPasswordChange(newPassword); // Trigger password state update
+            onPasswordChange(newPassword);
             setShowForm(false)
             setShowMessage(true)
             sessionStorage.setItem("password", newPassword);

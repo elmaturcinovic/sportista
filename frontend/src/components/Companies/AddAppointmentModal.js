@@ -5,8 +5,10 @@ import axios from 'axios';
 import { AiOutlineClose } from 'react-icons/ai'
 
 
-const AddAppointmentModal = ({showModal, setShowModal, handleAddAppointment, allSports, sportHalls}) => {
+const AddAppointmentModal = ({showModal, setShowModal, handleAddAppointment, allSports, setAllSports, fetchSports, sportHalls}) => {
     const [selectedSports, setSelectedSports] = useState(new Set());
+    const [sportHall, setSportHall] = useState(null);
+    const [sportOptions, setSportOptions] = useState([]);
     const [formState, setFormState] = useState({
         sport_hall: "",
         sports: new Set(),
@@ -15,7 +17,21 @@ const AddAppointmentModal = ({showModal, setShowModal, handleAddAppointment, all
         time_end: '',
         capacity: ''
     });
+    const [workTimeStart, setWorkTimeStart] = useState('');
+    const [workTimeEnd, setWorkTimeEnd] = useState('');
 
+
+
+    useEffect(() => {
+        if (showModal) {
+          if (sportOptions.length === 0) {
+            setSportOptions(allSports);
+          }
+        } else {
+          resetFormState();
+        }
+    }, [showModal, allSports]);
+      
     useEffect(() => {
         if (!showModal) {
           resetFormState();
@@ -65,8 +81,35 @@ const AddAppointmentModal = ({showModal, setShowModal, handleAddAppointment, all
         }
     };
 
+    async function fetchSportHall(sportHallId) {
+        try {
+            const response = await axios
+                .get(`http://127.0.0.1:8000/get_sport_hall_by_id/${sportHallId}`);
+            setSportHall(response.data);
+            console.log(response.data);
+            setSportOptions(allSports.filter((sport) => response.data.sports.includes(sport.id)));
+            setFormState((prevFormState) => ({
+                ...prevFormState,
+                time_start: response.data.work_time_begin,
+                time_end: response.data.work_time_end,
+              }));
+        } catch (error) {
+            console.log(error);
+        }
+    }
+      
     const handleSportHallSelect = (event) => {
-        setFormState({ ...formState, sport_hall: event.target.value });
+        const sportHallId = event.target.value;
+        console.log(sportHallId);
+        setFormState({ ...formState, sport_hall: sportHallId });
+        if (sportHallId) {
+          fetchSportHall(sportHallId);
+          console.log(formState);
+        } else {
+          setSportHall(null);
+          setSportOptions(allSports);
+          console.log(sportOptions);
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -127,7 +170,7 @@ const AddAppointmentModal = ({showModal, setShowModal, handleAddAppointment, all
                                 <label className='filter-form-label'>Vrijeme početka termina:</label>
                             </th>
                             <td>
-                                <input type="time" name="time_start" defaultValue={'00:00'} onChange={handleInputChange} />
+                                <input type="time" name="time_start" step="900" min={workTimeStart} max={workTimeEnd} value={time_start} onChange={handleInputChange} />
                             </td>
                         </tr>
                         <tr>
@@ -135,7 +178,7 @@ const AddAppointmentModal = ({showModal, setShowModal, handleAddAppointment, all
                                 <label className='filter-form-label'> Vrijeme završetka termina:</label>
                             </th>
                             <td>
-                                <input type="time" name="time_end" defaultValue={'00:00'} onChange={handleInputChange} />
+                                <input type="time" name="time_end" step="900" min={workTimeStart} max={workTimeEnd} value={time_end} onChange={handleInputChange} />
                             </td>
                         </tr>
                         <tr>
@@ -149,7 +192,7 @@ const AddAppointmentModal = ({showModal, setShowModal, handleAddAppointment, all
                                     value={Array.from(selectedSports)}
                                     onChange={handleSportsChange}
                                     >
-                                    {allSports.map((sport) => (
+                                    {sportOptions.map((sport) => (
                                         <option key={sport.id} value={sport.id} defaultValue={selectedSports.has(sport.id)}>
                                             {sport.sport_name}
                                         </option>

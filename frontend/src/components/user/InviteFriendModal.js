@@ -41,14 +41,38 @@ const InviteFriendModal = ({ isOpen, closeModal }) => {
         <input
           type="text"
           value={friendEmail}
+          placeholder='Unesite e-mail adresu korisnika'
           onChange={(e) => setFriendEmail(e.target.value)}
+          style={{width:"100%", borderRadius: "25px", padding: "5px"
+        }}
         />
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={closeModal} className='invite-friend'>
+        <Button variant="secondary" onClick={closeModal} style={{
+          padding: "10px 40px",
+          margin: "10px",
+          fontSize: "16px",
+          fontWeight: "bold",
+          height: "50px",
+          borderRadius: "25px",
+          backgroundColor: "#FA8072",
+          color: "#303030",
+          border: "none",
+          cursor: "pointer"}}
+          >
           Zatvori
         </Button>
-        <Button variant="primary" onClick={handleInvite} className='invite-friend'>
+        <Button variant="primary" onClick={handleInvite} style={{
+          padding: "10px 40px",
+          margin: "10px",
+          fontSize: "16px",
+          fontWeight: "bold",
+          height: "50px",
+          borderRadius: "25px",
+          backgroundColor: "#61dafb",
+          color: "#303030",
+          border: "none",
+          cursor: "pointer"}} >
           Pošalji pozivnicu
         </Button>
       </Modal.Footer>

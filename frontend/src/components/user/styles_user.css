@@ -37,7 +37,7 @@
     margin-top: 30px;
 }
 
-.user-button, .change-password, .cancel-change-password, .interests, .change-profile-image, .button-card, .add-interest, .filter-button {
+.user-button, .change-password, .cancel-change-password, .interests, .change-profile-image, .button-card, .add-interest, .filter-button, .accept-invite-friend, .decline-invite-friend{
     padding: 10px 40px;
     margin: 10px;
     font-size: 16px;
@@ -50,7 +50,7 @@
     cursor: pointer;
 }
 
-.change-password, .cancel-change-password, .interests, .change-profile-image, .add-interest, .filter-button, .button-card {
+.change-password, .cancel-change-password, .interests, .change-profile-image, .add-interest, .filter-button, .button-card, .invite-friend {
     background-color: #61dafb;
 }
 
@@ -343,4 +343,66 @@ td:first-child {
 .image-size {
     width: 100px;
     height: 100px;
+}
+
+.delete-icon, .icon-invite {
+    font-size: 22px;
+    border-color: none;
+}
+.icon-invite {
+    background-color: #61dafb;
+}
+
+.accept-invite-friend, .invite-friend {
+    background-color: #61dafb;
+}
+.decline-invite-friend, .delete-appointment {
+    background-color: #FA8072;
+}
+
+.delete-appointment, .invite-friend {
+    border: none;
+    border-radius: 50px;
+    padding: 5px 10px 5px 10px;
+}
+.delete-appointment {
+    border-color: #FA8072;
+}
+.invite-friend {
+    border-color: #61dafb;
+}
+
+#notif {
+    position: relative;
+}
+
+.notification-badge {
+    position: absolute;
+    right: 0;
+    left: 200px;
+    bottom: 30px;
+    background-color: #61dafb;
+    padding: 3px;
+    margin: 0;
+}
+
+
+#table_id {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 20px;
+    font-size: 22px;
+}
+#table_id thead th{
+    border-radius: 20px;
+    background-color: none;
+}
+#table_id tr {
+    background-color: none;
+    margin-bottom: 20px;
+  
+}
+#table_id thead {
+    margin-bottom: 20px;
+    background-color: none;
 }

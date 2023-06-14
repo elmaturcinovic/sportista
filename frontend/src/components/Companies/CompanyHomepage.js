@@ -13,8 +13,6 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom';
 const ModalComp = ({ showModal, setShowModal, selectedSports, setSelectedSports, handleAddSportHall, navigateToSportHallDetails}) => {
 
   const [sportsAll, setSportsAll] = useState([]);
-
-
   const [formState, setFormState] = useState({
     name: "",
     address: "",
@@ -66,29 +64,24 @@ const ModalComp = ({ showModal, setShowModal, selectedSports, setSelectedSports,
 
   const handleSportsChange = (e) => {
     const selectedSportId = parseInt(e.target.value);
-    if (selectedSports.includes(selectedSportId)) {
-      setSelectedSports((prevSelectedSports) =>
-        prevSelectedSports.filter((sportId) => sportId !== selectedSportId)
-      );
+    if (selectedSports.has(selectedSportId)) {
+      setSelectedSports((prevSelectedSports) => {
+        const updatedSports = new Set([...prevSelectedSports]);
+        updatedSports.delete(selectedSportId);
+        return updatedSports;
+      });
       setFormState((prevFormState) => ({
         ...prevFormState,
         sports: new Set([...prevFormState.sports].filter((sportId) => sportId !== selectedSportId)),
       }));
-      console.log(formState.sports)
     } else {
-      setSelectedSports((prevSelectedSports) => [
-        ...prevSelectedSports,
-        selectedSportId,
-      ]);
+      setSelectedSports((prevSelectedSports) => new Set([...prevSelectedSports, selectedSportId]));
       setFormState((prevFormState) => ({
         ...prevFormState,
         sports: new Set([...prevFormState.sports, selectedSportId]),
       }));
-      console.log(formState.sports)
-
     }
   };
-
   const handlePhotoChange = (e) => {
     setFormState((prevState) => ({
       ...prevState,
@@ -99,7 +92,6 @@ const ModalComp = ({ showModal, setShowModal, selectedSports, setSelectedSports,
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      
       const sportHallId = await handleAddSportHall(formState);
       setShowModal(false);
       if (sportHallId) {
@@ -111,6 +103,7 @@ const ModalComp = ({ showModal, setShowModal, selectedSports, setSelectedSports,
       console.error('Error submitting form:', error);
     }
   };
+  
   return (
     <Modal show={showModal}>
       <Modal.Header>
@@ -143,11 +136,11 @@ const ModalComp = ({ showModal, setShowModal, selectedSports, setSelectedSports,
               <select
                 id="sports"
                 multiple={true}
-                value={selectedSports}
+                value={Array.from(selectedSports)}
                 onChange={handleSportsChange}
               >
                 {sportsAll.map((sport) => (
-                  <option key={sport.id} value={sport.id} defaultValue={selectedSports.includes(sport.id)}>
+                  <option key={sport.id} value={sport.id} defaultValue={selectedSports.has(sport.id)}>
                     {sport.sport_name}
                   </option>
                 ))}
@@ -223,8 +216,6 @@ const CompanyHomepage = () => {
     });
 
   formData.append('photo', formState.photo);
-
-  
   try {
     const response = await axios.post('http://127.0.0.1:8000/add_sport_hall/', formData);
     console.log('Sport hall created:', response.data);

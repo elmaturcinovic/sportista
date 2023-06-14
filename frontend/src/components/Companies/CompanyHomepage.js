@@ -13,8 +13,6 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom';
 const ModalComp = ({ showModal, setShowModal, selectedSports, setSelectedSports, handleAddSportHall, navigateToSportHallDetails}) => {
 
   const [sportsAll, setSportsAll] = useState([]);
-
-
   const [formState, setFormState] = useState({
     name: "",
     address: "",
@@ -94,7 +92,6 @@ const ModalComp = ({ showModal, setShowModal, selectedSports, setSelectedSports,
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      
       const sportHallId = await handleAddSportHall(formState);
       setShowModal(false);
       if (sportHallId) {
@@ -106,6 +103,7 @@ const ModalComp = ({ showModal, setShowModal, selectedSports, setSelectedSports,
       console.error('Error submitting form:', error);
     }
   };
+  
   return (
     <Modal show={showModal}>
       <Modal.Header>
@@ -218,8 +216,6 @@ const CompanyHomepage = () => {
     });
 
   formData.append('photo', formState.photo);
-
-  
   try {
     const response = await axios.post('http://127.0.0.1:8000/add_sport_hall/', formData);
     console.log('Sport hall created:', response.data);

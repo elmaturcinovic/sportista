@@ -22,6 +22,11 @@ class DaySerializer(ModelSerializer):
         model = Day
         fields = '__all__' 
 
+class AppointmentSerializer(ModelSerializer):
+    class Meta:
+        model = Appointment
+        fields = '__all__'
+
 class UserAppointmentSerializer(ModelSerializer):
     class Meta:
         model = UserAppointment

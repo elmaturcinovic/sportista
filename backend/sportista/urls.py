@@ -18,9 +18,12 @@ urlpatterns = [
     path('get_day_names_selected/', views.get_day_names_selected, name="get_day_names"),
     path('update_sport_hall/<int:sport_hall_id>', views.update_sport_hall, name="update_sport_hall"),
     path('get_days/', views.get_days, name="get_days"),
+    path('get_all_appointments_by_owner/<int:owner_id>/', views.get_all_appointments_by_owner, name='get_all_appointments_by_owner'),    
+    path('add_new_appointment/', views.add_new_appointment, name="add_new_appointment"),
+    path('delete_appointment/<int:appointment_id>/', views.delete_appointment, name='delete_appointment'),
 
 
     path('invite_friend/', views.invite_friend, name="invite_friend"),
-    path('get_sport_appointments_by_user/<int:user_id>/', views.get_sport_appointments_by_user, name="get_sport_appointments_by_user"),
-    path('delete_sport_appointment/<int:user_id>/', views.delete_sport_appointment, name="delete_sport_appointment"),
+    path('get_user_appointments_by_user/<int:user_id>/', views.get_user_appointments_by_user, name="get_user_appointments_by_user"),
+    path('delete_user_appointment/<int:user_id>/', views.delete_user_appointment, name="delete_user_appointment"),
 ]

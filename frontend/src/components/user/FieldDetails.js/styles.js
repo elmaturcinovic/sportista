@@ -20,17 +20,18 @@ const useStyles = makeStyles(() =>
     },
     calendar: {
         marginRight: '30px',
-        marginLeft: '120px'
+        marginLeft: '100px'
     },
     time: {
         backgroundColor: 'white',
         zIndex: 2,
         width: '100%',
         marginRight: '30px',
-        marginLeft: '80px',
+        marginLeft: '30px',
         borderRadius: 10,
         maxHeight: '420px',
-        border: '1px solid black'
+        border: '1px solid black',
+        maxWidth: '620px'
     },
     scrollViewCard: {
       overflow: 'auto', 

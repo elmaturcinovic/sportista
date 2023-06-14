@@ -1,13 +1,13 @@
 import React, {useState,useEffect} from 'react';
 import Calendar from 'react-calendar';
-import {add, format} from 'date-fns'
+import {add, startOfDay, format} from 'date-fns'
 import './EventsCalendar.css'
 import axios from 'axios';
 import { CLOSING_TIME, OPENING_TIME, SPORT_GAME_DURATION } from '../../../constants/config';
 const EventsCalendar = () => {
   // eslint-disable-next-line no-undef
   const [date, setDate] = useState({
-    justDate: null,
+    justDate: new Date(),
     dateTime: null,
   });
   var id = sessionStorage.getItem('id');
@@ -31,6 +31,19 @@ const EventsCalendar = () => {
     return times
   }
 
+  useEffect(() => {
+    const logClickedDate = () => {
+      if (date.justDate) {
+        const formattedDate = format(date.justDate, 'yyyy MMM dd');
+        console.log(formattedDate);
+      }
+    };
+
+    logClickedDate(); 
+    return () => {
+      logClickedDate();
+    };
+  }, [date.justDate]); 
   const times = getTimes()
 
   function fetchSportHalls() {
@@ -49,14 +62,6 @@ const EventsCalendar = () => {
 
   return (
     <>
-    <div>
-      <div className="form-group">
-        Odaberite teren: 
-        <select name="numberOfPlayers">
-          
-        </select>
-      </div>
-    </div>
     <div style={{
       display: 'flex',
       flexDirection: 'column',
@@ -67,7 +72,7 @@ const EventsCalendar = () => {
          minDate={new Date()}
          className="REACT-CALENDAR p-2"
          view='month'
-         onClickDay={(date)=>setDate((prev) => ({...prev, justDate: date}))}
+         onClickDay={(date)=>setDate((prev) => ({...prev, justDate: startOfDay(date)}))}
          />
     </div>
     </>

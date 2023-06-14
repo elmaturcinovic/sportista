@@ -153,9 +153,10 @@ td:first-child {
 
 .one-card {
     margin: auto;
-    display: inline-block;
-    min-width: auto;
-    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    min-width: 100%;
+    min-height: 100%;
 }
 
 #company-image-card {
@@ -330,4 +331,16 @@ td:first-child {
     #dropdown {
         width: 40%;
     }
+}
+.image-container {
+    flex: 19;
+
+}
+.content-container {
+    flex: 1;
+
+}
+.image-size {
+    width: 100px;
+    height: 100px;
 }

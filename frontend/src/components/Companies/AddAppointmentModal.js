@@ -17,6 +17,10 @@ const AddAppointmentModal = ({showModal, setShowModal, handleAddAppointment, all
         time_end: '',
         capacity: ''
     });
+    const [workTimeStart, setWorkTimeStart] = useState('');
+    const [workTimeEnd, setWorkTimeEnd] = useState('');
+
+
 
     useEffect(() => {
         if (showModal) {
@@ -27,7 +31,6 @@ const AddAppointmentModal = ({showModal, setShowModal, handleAddAppointment, all
           resetFormState();
         }
     }, [showModal, allSports]);
-
       
     useEffect(() => {
         if (!showModal) {
@@ -85,7 +88,11 @@ const AddAppointmentModal = ({showModal, setShowModal, handleAddAppointment, all
             setSportHall(response.data);
             console.log(response.data);
             setSportOptions(allSports.filter((sport) => response.data.sports.includes(sport.id)));
-            console.log(sportOptions);
+            setFormState((prevFormState) => ({
+                ...prevFormState,
+                time_start: response.data.work_time_begin,
+                time_end: response.data.work_time_end,
+              }));
         } catch (error) {
             console.log(error);
         }
@@ -97,6 +104,7 @@ const AddAppointmentModal = ({showModal, setShowModal, handleAddAppointment, all
         setFormState({ ...formState, sport_hall: sportHallId });
         if (sportHallId) {
           fetchSportHall(sportHallId);
+          console.log(formState);
         } else {
           setSportHall(null);
           setSportOptions(allSports);
@@ -162,7 +170,7 @@ const AddAppointmentModal = ({showModal, setShowModal, handleAddAppointment, all
                                 <label className='filter-form-label'>Vrijeme početka termina:</label>
                             </th>
                             <td>
-                                <input type="time" name="time_start" defaultValue={'00:00'} onChange={handleInputChange} />
+                                <input type="time" name="time_start" step="900" min={workTimeStart} max={workTimeEnd} value={time_start} onChange={handleInputChange} />
                             </td>
                         </tr>
                         <tr>
@@ -170,7 +178,7 @@ const AddAppointmentModal = ({showModal, setShowModal, handleAddAppointment, all
                                 <label className='filter-form-label'> Vrijeme završetka termina:</label>
                             </th>
                             <td>
-                                <input type="time" name="time_end" defaultValue={'00:00'} onChange={handleInputChange} />
+                                <input type="time" name="time_end" step="900" min={workTimeStart} max={workTimeEnd} value={time_end} onChange={handleInputChange} />
                             </td>
                         </tr>
                         <tr>

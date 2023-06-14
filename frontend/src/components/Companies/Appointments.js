@@ -270,6 +270,8 @@ const Appointments = () => {
                     showModal={showModal}
                     setShowModal={setShowModal}
                     handleAddAppointment={handleAddAppointment}
+                    fetchSports={fetchSports}
+                    setAllSports={setSports}
                     allSports={sports}
                     sportHalls={sportHalls}
                 />

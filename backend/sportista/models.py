@@ -80,7 +80,7 @@ class Appointment(models.Model):
     capacity = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
-        return f"Appointment at {self.sport_hall} for {self.sports} on {self.date} at {self.time}"
+        return f"Appointment at {self.sport_hall} for {self.sports} on {self.date} at {self.time_start}"
 
 class UserAppointment(models.Model):
     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE)

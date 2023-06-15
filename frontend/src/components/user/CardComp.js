@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { useHistory, BrowserRouter as Router } from 'react-router-dom';
 import axios from 'axios';
 
-const CardComp = () => {
+const CardComp = ({ sport, city }) => {
 
     const [sportHalls, setSportHalls] = useState([]);
 

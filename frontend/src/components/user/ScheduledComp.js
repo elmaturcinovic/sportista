@@ -36,7 +36,10 @@ const ScheduledComp = () => {
     }, []);
 
     const handleFilterClick = () => {
+        setSelectedSport(selectedSport);
+        setSelectedCity(selectedCity);
         setIsFiltered(true);
+
     };
 
     return (
@@ -63,7 +66,7 @@ const ScheduledComp = () => {
             </div>
             {isFiltered ? ( 
                 <div className="schedule-second-div">
-                    <CardComp sport={selectedSport} city={selectedCity} />
+                    <CardComp sport={selectedSport} city={selectedCity}/>
                 </div>
             ) : (
                 <div className="schedule-second-div">

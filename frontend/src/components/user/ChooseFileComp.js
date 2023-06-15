@@ -1,74 +1,67 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const id = sessionStorage.getItem("id")
 
-const ChooseFileComp = () => {
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [userData, setUserData] = useState(null);
+const ChooseFileComp = ({user, fetchUser, setSelectedPhoto}) => {
+  
+  const id = sessionStorage.getItem('id');
+  const [photo, setPhoto] = useState(user.user_photo);
 
-  useEffect(() => {
-    fetchUserData();
-  }, []);
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('photo', file);
+  
 
-  const fetchUserData = () => {
-    axios
-      .get('/api/user')
-      .then((response) => {
-        setUserData(response.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching user data:', error);
-      });
-  };
+    axios.post('http://127.0.0.1:8000/upload_photo/', formData)
+        .then(response => {
 
-  const handleFileSelect = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
-
-  const handleImageChange = () => {
-    if (selectedFile) {
-      const formData = new FormData();
-      formData.append('profileImage', selectedFile);
-      console.log(formData)
-
-      axios
-        .put('http://127.0.0.1:8000/update_profile/', {
-      
-        formData,
-        id_usera: id,
-
-      })
-        .then((response) => {
-          console.log('Profilna slika uspješno promijenjena!');
-          fetchUserData(); 
+            const photoPath = response.data.path;
+            console.log(photoPath)
+            setPhoto(photoPath);
         })
-        .catch((error) => {
-          console.error('Greska izmjene profilne slike:', error);
+        .catch(error => {
+            console.error('Error uploading photo:', error);
         });
+};
+
+const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    const updatedUser = {
+      ...user,
+      user_photo: photo,
+    };
+    console.log(updatedUser)
+  
+    try {
+      await axios.put(`http://127.0.0.1:8000/update_user/${id}`, updatedUser);
+      fetchUser(id);
+      //setSelectedPhoto(photo)
+      sessionStorage.setItem('image', user.user_photo);
+    } catch (error) {
+      console.error('Error updating user:', error);
     }
-  };
+};
 
   return (
     <div className="div-image-change">
-      {userData && <p>User Name: {userData.name}</p>}
       <input
         type="file"
-        accept=".jpeg, .png"
-        onChange={handleFileSelect}
+        onChange={handlePhotoChange}
         id="profile-image-input"
         style={{visibility:"hidden"}}
       />
-      {selectedFile && (
-        <p className="selected-file-image">Odabrana slika: {selectedFile.name}</p>
+      {photo && (
+        <p className="selected-file-image">Odabrana slika: {photo}</p>
       )}
-      <label for="profile-image-input" style={{textAlign:"center", cursor: "pointer", 
-      border: "1px solid #61dafb", padding: "6px 12px", borderRadius: "25px", marginLeft: "10px"}}>Odaberite sliku</label>
+      <label htmlFor="profile-image-input" style={{textAlign:"center", cursor: "pointer", 
+        border: "1px solid #61dafb", padding: "6px 12px", borderRadius: "25px", marginLeft: "10px"}}>Odaberite sliku</label>
       <button
         className="change-profile-image"
         id='change-password-company'
-        type="button"
-        onClick={handleImageChange}
+        type="submit"
+        onClick={handleSubmit}
       >
         Promijeni sliku profila
       </button>

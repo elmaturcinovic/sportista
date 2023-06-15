@@ -149,6 +149,7 @@ const CompanyFieldDetails = () => {
         }
     };
     const handleWorkTimeFormSubmit = async (updatedSportHall) => {
+        console.log(updatedSportHall)
         try {
           await axios.put(`http://127.0.0.1:8000/update_sport_hall/${sportHallId}`, updatedSportHall);
           fetchSportHall(sportHallId);
@@ -157,6 +158,7 @@ const CompanyFieldDetails = () => {
           console.error('Error updating sport hall:', error);
         }
     };
+
 
     const handlePhotoFormSubmit = async (updatedSportHall) => {
         try {
@@ -290,7 +292,7 @@ const CompanyFieldDetails = () => {
                     <div className="col-lg-4 col-md-12 forms">
                         {showSportSelectionForm && (
                         <SportSelectionForm
-                            sports={sports}sp
+                            sports={sports}
                             selectedSports={selectedSports}
                             setSelectedSports={setSelectedSports}
                             handleFormSubmit={handleSportFormSubmit}

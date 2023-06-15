@@ -82,11 +82,28 @@ const ModalComp = ({ showModal, setShowModal, selectedSports, setSelectedSports,
       }));
     }
   };
+
   const handlePhotoChange = (e) => {
-    setFormState((prevState) => ({
-      ...prevState,
-      photo: e.target.files[0],
-    }));
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('photo', file);
+  
+    // Upload the photo to the backend
+    axios.post('http://127.0.0.1:8000/upload_photo/', formData)
+        .then(response => {
+            // Get the path to the uploaded photo from the response
+            const photoPath = response.data.path;
+            console.log(photoPath)
+    
+            // Update the photo variable with the path
+            setFormState((prevState) => ({
+              ...prevState,
+              photo: photoPath,
+            }));
+        })
+        .catch(error => {
+            console.error('Error uploading photo:', error);
+        });
   };
 
   const handleSubmit = async (e) => {

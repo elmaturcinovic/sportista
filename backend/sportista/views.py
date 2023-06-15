@@ -174,12 +174,26 @@ def update_profile(request):
 
     return Response({'message': 'Profile image successfully changed'}, status=status.HTTP_200_OK)
 
+@api_view(['GET'])
+def get_all_sports_halls(request):
+    sport_halls = SportsHall.objects.all()
+    serializer = SportsHallSerializer(sport_halls, many=True)
+    return Response(serializer.data)
 
 @api_view(['GET'])
 def get_sport_hall_by_id(request, sport_hall_id):
     try:
         sport_hall = SportsHall.objects.get(id=sport_hall_id)
         serializer = SportsHallSerializer(sport_hall)
+        return Response(serializer.data)
+    except SportsHall.DoesNotExist:
+        return Response(status=404)
+
+@api_view(['GET'])
+def get_appointments_by_sport_hall(request, sport_hall_id):
+    try:
+        appointments = Appointment.objects.filter(sport_hall_id=sport_hall_id)
+        serializer = AppointmentSerializer(appointments, many=True)  
         return Response(serializer.data)
     except SportsHall.DoesNotExist:
         return Response(status=404)

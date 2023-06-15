@@ -114,6 +114,9 @@ const Appointments = () => {
         formData.append('time_start', formState.time_start)
         formData.append('time_end', formState.time_end)
         formData.append('capacity', formState.capacity)
+        formData.append('price', formState.price)
+
+        console.log(formData)
 
         try {
             const response = await axios.post('http://127.0.0.1:8000/add_new_appointment/', formData);
@@ -257,8 +260,9 @@ const Appointments = () => {
                             <th>ID</th>
                             <th>Naziv terena</th>
                             <th>Datum</th>
-                            <th>Početak</th>
-                            <th>Kraj</th>
+                            <th>Vrijeme</th>
+                            <th>Sport</th>
+                            <th>Cijena</th>
                             <th>Status</th>
                             <th className='right-col'>
                                 <button className="add-button" onClick={() => setShowModal(true)}>
@@ -273,8 +277,11 @@ const Appointments = () => {
                             <td>#{appointment.id}</td>
                             <td>{appointment.sport_hall}</td>
                             <td>{appointment.date}</td>
-                            <td>{formatTime(appointment.time_start)}</td>
-                            <td>{formatTime(appointment.time_end)}</td>
+                            <td>{formatTime(appointment.time_start)}-{formatTime(appointment.time_end)}</td>
+                            <td>
+                                {appointment.sports.map((sport) => sport).join(', ')}
+                            </td>
+                            <td>{appointment.price} KM</td>
                             <td></td>
                             <td className='right-col'><AiOutlineDelete className='delete-icon' onClick={() => deleteAppointment(appointment.id)} /></td>
                         </tr>   

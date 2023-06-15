@@ -308,7 +308,8 @@ def get_all_appointments_by_owner(request, owner_id):
                 'date': appointment.date,
                 'time_start': appointment.time_start,
                 'time_end': appointment.time_end,
-                'capacity': appointment.capacity
+                'capacity': appointment.capacity,
+                'price': appointment.price
             })
 
         return Response(appointment_data)

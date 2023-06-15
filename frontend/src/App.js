@@ -16,6 +16,7 @@ import FieldDetail from './components/user/FieldDetails.js/FieldDetail';
 import UserReservedPage from './components/user/UserReservedPage';
 import CompanyFieldDetails from './components/Companies/CompanyFieldDetails';
 import Appointments from './components/Companies/Appointments';
+import CompanySettings from './components/Companies/CompanySettings';
 
 
 function App() {
@@ -71,6 +72,7 @@ function App() {
 
                     <Route path="/rezervirani-termini" component={UserReservedPage}/>
                     <Route path="/moje-obavijesti" component={UserNotificationsPage}/>
+                    <Route path="/postavke" component={CompanySettings}/>
                 </Switch>
             </Router>
 

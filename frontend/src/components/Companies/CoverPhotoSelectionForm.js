@@ -40,7 +40,7 @@ const CoverPhotoSelectionForm = ({showPhotoSelectionForm, setShowPhotoSelectionF
           await axios.put(`http://127.0.0.1:8000/update_user/${id}`, updatedUser);
           fetchUser(id);
           setShowPhotoSelectionForm(false)
-          setSelectedPhoto(user.user_photo)
+          //setSelectedPhoto(user.user_photo)
           sessionStorage.setItem('image', user.user_photo);
         } catch (error) {
           console.error('Error updating user:', error);

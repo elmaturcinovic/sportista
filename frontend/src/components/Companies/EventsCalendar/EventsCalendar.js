@@ -4,14 +4,17 @@ import {add, startOfDay, format} from 'date-fns'
 import './EventsCalendar.css'
 import axios from 'axios';
 import { CLOSING_TIME, OPENING_TIME, SPORT_GAME_DURATION } from '../../../constants/config';
-const EventsCalendar = () => {
+const EventsCalendar = ({ onDateChange }) => {
   // eslint-disable-next-line no-undef
   const [date, setDate] = useState({
     justDate: new Date(),
     dateTime: null,
   });
-  var id = sessionStorage.getItem('id');
-  const [tereni, setTereni] = useState()
+
+  const handleDateClick = (date) => {
+    const formattedDate = startOfDay(date);
+    onDateChange(formattedDate);
+  };
 
 
   const getTimes = ()=> {
@@ -34,7 +37,7 @@ const EventsCalendar = () => {
   useEffect(() => {
     const logClickedDate = () => {
       if (date.justDate) {
-        const formattedDate = format(date.justDate, 'yyyy MMM dd');
+        const formattedDate = format(date.justDate, 'yyyy-MM-dd');
         console.log(formattedDate);
       }
     };
@@ -45,20 +48,6 @@ const EventsCalendar = () => {
     };
   }, [date.justDate]); 
   const times = getTimes()
-
-  function fetchSportHalls() {
-    axios.get(`http://127.0.0.1:8000//get_sport_halls_by_user/${id}/`).then((response) => {
-      setTereni(response.data);
-      console.log(response.data);
-    }, (error) => {
-      console.log(error);
-    }
-    );
-  }
-
-  useEffect(() => {
-    fetchSportHalls()
-  }, []);
 
   return (
     <>
@@ -72,7 +61,7 @@ const EventsCalendar = () => {
          minDate={new Date()}
          className="REACT-CALENDAR p-2"
          view='month'
-         onClickDay={(date)=>setDate((prev) => ({...prev, justDate: startOfDay(date)}))}
+         onClickDay={handleDateClick}
          />
     </div>
     </>

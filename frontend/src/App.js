@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from  'react-router-dom';
 import Registration from './components/auth/Registration';
 import LandingPage from './components/auth/LandingPage';
-import CompanyProfile from './components/Companies/CompanyProfile';
 import ToggleSwitch from './components/ToggleSwitch';
 import UserMainPage from "./components/user/UserMainPage";
 import Login from './components/auth/Login';
@@ -17,6 +16,7 @@ import FieldDetail from './components/user/FieldDetails.js/FieldDetail';
 import UserReservedPage from './components/user/UserReservedPage';
 import CompanyFieldDetails from './components/Companies/CompanyFieldDetails';
 import Appointments from './components/Companies/Appointments';
+import CompanySettings from './components/Companies/CompanySettings';
 
 
 function App() {
@@ -51,7 +51,7 @@ function App() {
                     </Route>
                     <Route exact path="/profil">
                         {id && tip==0 && <UserProfile/>}
-                        {id && tip==1 && <CompanyProfile/> }
+                        {id && tip==1 && <CompanySettings/>}
                         {!id && <Redirect to="/"/>}
                     </Route>
 

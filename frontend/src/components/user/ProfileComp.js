@@ -63,7 +63,7 @@ const ProfileComp = () => {
                 </table>
             </div>
             <div className="schedule-second-div">
-                <ChooseFileComp />
+                <ChooseFileComp/>
             </div>
     </div>
   );

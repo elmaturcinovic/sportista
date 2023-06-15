@@ -8,6 +8,8 @@ import Navbar from './Navbar';
 import SportSelectionForm from './SportSelectionForm';
 import WorkingTimeSelection from './WorkingTimeSelection';
 import WorkDaysSelection from './WorkDaysSelection';
+import { faLeaf } from '@fortawesome/free-solid-svg-icons';
+import PhotoSelectionForm from './PhotoSelectionForm';
 
 const CompanyFieldDetails = () => {
     const id = sessionStorage.getItem('id');
@@ -19,11 +21,13 @@ const CompanyFieldDetails = () => {
     const [showSportSelectionForm, setShowSportSelectionForm] = useState(false);
     const [showWorkingTimeSelectionForm, setShowWorkingTimeSelectionForm] = useState(false);
     const [showWorkDaysSelectionForm, setShowWorkDaysSelectionForm] = useState(false);
+    const [showPhotoSelectionForm, setShowPhotoSelectionForm] = useState(false);
     const [selectedSports, setSelectedSports] = useState([]);
     const [sports, setSports] = useState([]); 
     const [workTimeBegin, setWorkTimeBegin] = useState("");
     const [workTimeEnd, setWorkTimeEnd] = useState("");
     const [selectedWorkDays, setSelectedWorkDays] = useState([]);
+    const [selectedPhoto, setSelectedPhoto] = useState("");
     const [allDays, setAllDays] = useState([]);
 
 
@@ -113,20 +117,25 @@ const CompanyFieldDetails = () => {
         setShowWorkingTimeSelectionForm(!showWorkingTimeSelectionForm);
         setShowSportSelectionForm(false);
         setShowWorkDaysSelectionForm(false);
-
+        setShowPhotoSelectionForm(false);
     };
     const handleEditRadniDani = () => {
         setShowWorkDaysSelectionForm(!showWorkDaysSelectionForm);
         setShowWorkingTimeSelectionForm(false);
         setShowSportSelectionForm(false);
-
-
+        setShowPhotoSelectionForm(false);
     };
     const handleEditSportovi = () => {
         setShowWorkDaysSelectionForm(false);
         setShowSportSelectionForm(!showSportSelectionForm);
         setShowWorkingTimeSelectionForm(false);
-
+        setShowPhotoSelectionForm(false);
+    };
+    const handleEditPhoto = () => {
+        setShowWorkDaysSelectionForm(false);
+        setShowSportSelectionForm(false);
+        setShowWorkingTimeSelectionForm(false);
+        setShowPhotoSelectionForm(!showPhotoSelectionForm);
     };
 
     const handleSportFormSubmit = async () => {
@@ -140,6 +149,7 @@ const CompanyFieldDetails = () => {
         }
     };
     const handleWorkTimeFormSubmit = async (updatedSportHall) => {
+        console.log(updatedSportHall)
         try {
           await axios.put(`http://127.0.0.1:8000/update_sport_hall/${sportHallId}`, updatedSportHall);
           fetchSportHall(sportHallId);
@@ -147,15 +157,25 @@ const CompanyFieldDetails = () => {
         } catch (error) {
           console.error('Error updating sport hall:', error);
         }
-      };
+    };
 
-      const formatWorkTime = (time) => {
+
+    const handlePhotoFormSubmit = async (updatedSportHall) => {
+        try {
+          await axios.put(`http://127.0.0.1:8000/update_sport_hall/${sportHallId}`, updatedSportHall);
+          fetchSportHall(sportHallId);
+        } catch (error) {
+          console.error('Error updating sport hall:', error);
+        }
+    };
+
+    const formatWorkTime = (time) => {
         if (!time) {
           return '';
         }
         const [hours, minutes, _] = time.split(':');
         return `${hours}:${minutes}`;
-      };
+    };
 
     const handleWorkDaysFormSubmit = async () => {
         try {
@@ -198,17 +218,24 @@ const CompanyFieldDetails = () => {
             <Navbar></Navbar>
             <div className="container">
                 <div className="row">
-                    <div className="col-md-8 col-sm-12">
+                    <div className="col-lg-8 col-md-12">
                         <div className="card o-terenu">
                             <div className="row">
-                                <div className="col-md-4">
-                                <img
-                                    src={`http://localhost:8000${photo}`}
-                                    className="card-img"
-                                    alt="Sport Hall"
-                                />
+                                <div className="col-lg-4 col-md-12">
+                                    <div className='image-wrapper'>
+                                        <div className="square-image-container">
+                                            <img
+                                                src={`http://localhost:8000${photo}`}
+                                                className="card-img"
+                                                alt="Sport Hall"
+                                            />
+                                        </div>
+                                        <div className="edit-icon" onClick={handleEditPhoto}>
+                                        <AiOutlineEdit />
+                                        </div>
+                                    </div> 
                                 </div>
-                                <div className="col-md-8">
+                                <div className="col-lg-8 col-md-12">
                                     <div className="card-body">
                                         <h2 className="card-title">{name}</h2>
                                         <table className="table o-terenu-table">
@@ -262,10 +289,10 @@ const CompanyFieldDetails = () => {
                             </div>
                         </div> 
                     </div>
-                    <div className="col-md-4 col-sm-12 forms">
+                    <div className="col-lg-4 col-md-12 forms">
                         {showSportSelectionForm && (
                         <SportSelectionForm
-                            sports={sports}sp
+                            sports={sports}
                             selectedSports={selectedSports}
                             setSelectedSports={setSelectedSports}
                             handleFormSubmit={handleSportFormSubmit}
@@ -290,7 +317,16 @@ const CompanyFieldDetails = () => {
                             setSelectedWorkDays={setSelectedWorkDays}
                         />
                         )}
-
+                        {showPhotoSelectionForm && (
+                        <PhotoSelectionForm
+                            sportHall={sportHall}
+                            allDays={allDays}
+                            handleFormSubmit={handlePhotoFormSubmit}
+                            selectedPhoto={selectedPhoto}
+                            setSelectedPhoto={setSelectedPhoto}
+                            fetchSportHall={fetchSportHall}
+                        />
+                        )}
                     </div>
                 </div>
             </div>

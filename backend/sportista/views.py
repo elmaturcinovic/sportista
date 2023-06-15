@@ -220,11 +220,26 @@ def update_sport_hall(request, sport_hall_id):
         sport_hall.work_time_begin = request.data.get('work_time_begin')
         sport_hall.work_time_end =request.data.get('work_time_end')
         sport_hall.working_days.set(request.data.get('working_days', []))
+        if (sport_hall.photo != request.data.get('photo')):
+            sport_hall.photo = request.data.get('photo')
+        print(request.data.get('photo'))
+        
         sport_hall.save()
         return Response({'message': 'Sport hall updated successfully'})
     except SportsHall.DoesNotExist:
         return Response({'error': 'Sport hall not found'}, status=404)
     
+@api_view(['PUT'])
+def update_user(request, user_id):
+    try:
+        user = User.objects.get(id=user_id)
+        user.user_photo = request.data.get('user_photo')
+        
+        user.save()
+        return Response({'message': 'User updated successfully'})
+    except User.DoesNotExist:
+        return Response({'error': 'User not found'}, status=404)
+
 
 @api_view(['GET'])
 def get_days(request):
@@ -321,3 +336,32 @@ def delete_appointment(request, appointment_id):
     except SportsHall.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     
+@api_view(['GET'])
+def get_user(request, user_id):
+    try:
+        user = User.objects.get(id=user_id)
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
+    except User.DoesNotExist:
+        return Response(status=404)
+    
+
+@api_view(['POST'])
+def upload_photo(request):
+    file = request.FILES.get('photo')
+
+    if file is None:
+        return Response({'error': 'No photo found in the request'}, status=400)
+
+    # Handle file upload and save it in the default storage location
+    # Assuming your ImageField is defined as `photo = models.ImageField(upload_to='media/images')`
+    # You can use the same upload_to value to save the uploaded photo
+
+    # Save the uploaded photo and get its path
+    photo_path = 'images/' + file.name
+    with open('media/' + photo_path, 'wb') as destination:
+        for chunk in file.chunks():
+            destination.write(chunk)
+
+    # Return the path to the uploaded photo
+    return Response({'path': photo_path}, status=200)

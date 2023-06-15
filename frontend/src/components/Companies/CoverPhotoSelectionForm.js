@@ -3,7 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import axios from 'axios';
 import { AiOutlineClose } from 'react-icons/ai'
 
-const CoverPhotoSelectionForm = ({showPhotoSelectionForm, setShowPhotoSelectionForm, user, fetchUser}) => {
+const CoverPhotoSelectionForm = ({showPhotoSelectionForm, setShowPhotoSelectionForm, user, fetchUser, setSelectedPhoto}) => {
     const id = sessionStorage.getItem('id');
     const [photo, setPhoto] = useState(user.user_photo);
 
@@ -40,6 +40,7 @@ const CoverPhotoSelectionForm = ({showPhotoSelectionForm, setShowPhotoSelectionF
           await axios.put(`http://127.0.0.1:8000/update_user/${id}`, updatedUser);
           fetchUser(id);
           setShowPhotoSelectionForm(false)
+          setSelectedPhoto(user.user_photo)
           sessionStorage.setItem('image', user.user_photo);
         } catch (error) {
           console.error('Error updating user:', error);

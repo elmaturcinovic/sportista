@@ -78,10 +78,10 @@ class Appointment(models.Model):
     time_start = models.TimeField()
     time_end = models.TimeField()
     capacity = models.IntegerField(null=True, blank=True)
-    price = models.CharField(max_length=100, default="100 KM") 
+    price = models.FloatField(default=0) 
 
     def __str__(self):
-        return f"Appointment at {self.sport_hall} for {self.sports} on {self.date} at {self.time_start}"
+        return f"Appointment at {self.sport_hall} for {self.sports} on {self.date} at {self.time_start}. Price: {self.price}"
 
 class UserAppointment(models.Model):
     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE)

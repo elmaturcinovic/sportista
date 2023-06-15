@@ -16,6 +16,7 @@ const Appointments = () => {
     const cover_photo = sessionStorage.getItem('image');
     const history = useHistory(); 
     const [sports, setSports] = useState([]);
+    const [user, setUser] = useState([]);
     const [selectedSports, setSelectedSports] = useState([]);
     const [sportHalls, setSportHalls] = useState([]);
     const [showFilter, setShowFilter] = useState(false);
@@ -28,10 +29,11 @@ const Appointments = () => {
     });
 
     useEffect(() => {
+        fetchUser(id);
         fetchSports();
         fetchSportHalls();
         fetchAppointments();
-      }, []);
+      }, [id]);
 
     // Function to fetch sport names from the backend
     function fetchSports() {
@@ -43,6 +45,19 @@ const Appointments = () => {
         }
         );
     }
+
+    function fetchUser(id) {
+        axios
+          .get(`http://127.0.0.1:8000/get_user/${id}`)
+          .then((response) => {
+            setUser(response.data);
+            sessionStorage.setItem('image', user.user_photo)
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     
     function fetchSportHalls() {
         axios.get(`http://127.0.0.1:8000/get_sport_halls_by_user/${id}/`).then((response) => {
@@ -158,7 +173,7 @@ const Appointments = () => {
 
     return (
         <div className='homepage'>
-            <div className='cover-photo' style={{ width: '100%', height: '200px', background: `url(http://localhost:8000${cover_photo}) no-repeat center/cover` }}></div>
+            <div className='cover-photo' style={{ width: '100%', height: '200px', background: `url(http://localhost:8000${user.user_photo}) no-repeat center/cover` }}></div>
             <Navbar></Navbar>
             <div className='content'>
                 <div className='title title-filters'>

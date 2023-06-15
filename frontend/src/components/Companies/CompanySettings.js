@@ -8,13 +8,24 @@ import ChangePasswordForm from "./ChangePasswordForm";
 
 
 const CompanySettings = () => {
+  
+  const [password, setPassword] = useState('');
+  const [showPhotoSelectionForm, setShowPhotoSelectionForm] = useState(false);
+  const [user, setUser] = useState([]);
+  const [showPasswordChangeForm, setShowPasswordChangeForm] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState(sessionStorage.getItem('image'));
 
-    const [password, setPassword] = useState('');
-    const [showPhotoSelectionForm, setShowPhotoSelectionForm] = useState(false);
-    const [user, setUser] = useState(null);
-    const [showPasswordChangeForm, setShowPasswordChangeForm] = useState(false);
+  const id = sessionStorage.getItem('id');
+  const email = sessionStorage.getItem('email');
+  const cover_photo = sessionStorage.getItem('image')
+  const name = sessionStorage.getItem('name');
+  const lastname = sessionStorage.getItem('lastname');
+  const username = sessionStorage.getItem('username');
+  const pass_invisible = "*".repeat(password.length);
 
-
+    useEffect(() => {
+      fetchUser(id);
+    }, [id]);
 
     useEffect(() => {
       const storedPassword = sessionStorage.getItem("password");
@@ -24,14 +35,6 @@ const CompanySettings = () => {
     const handlePasswordChange = (newPassword) => {
       setPassword(newPassword);
     };
-      
-    const id = sessionStorage.getItem('id');
-    const email = sessionStorage.getItem('email');
-    const cover_photo = sessionStorage.getItem('image')
-    const name = sessionStorage.getItem('name');
-    const lastname = sessionStorage.getItem('lastname');
-    const username = sessionStorage.getItem('username');
-    const pass_invisible = "*".repeat(password.length);
 
     const handleEditPhoto = () => {
       setShowPhotoSelectionForm(!showPhotoSelectionForm);
@@ -45,6 +48,8 @@ const CompanySettings = () => {
         .get(`http://127.0.0.1:8000/get_user/${id}`)
         .then((response) => {
           setUser(response.data);
+          setSelectedPhoto(user.user_photo)
+          sessionStorage.setItem('image', user.user_photo)
           console.log(response.data);
         })
         .catch((error) => {
@@ -59,7 +64,7 @@ const CompanySettings = () => {
     return (
       <div className='homepage'>
         <div className="cover-wrapper">
-        <div className='cover-photo' style={{ width: '100%', height: '200px', background: `url(http://localhost:8000${cover_photo}) no-repeat center/cover` }}></div>
+        <div className='cover-photo' style={{ width: '100%', height: '200px', background: `url(http://localhost:8000${user.user_photo}) no-repeat center/cover` }}></div>
           <div className="edit-cover-photo-icon" onClick={handleEditPhoto}>
             <AiOutlineEdit />
           </div>

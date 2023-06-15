@@ -193,8 +193,14 @@ const CompanyHomepage = () => {
   const [photo, setPhoto] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [selectedSports, setSelectedSports] = useState(new Set());
+  const [user, setUser] = useState([]);
+
 
   const [sportHalls, setSportHalls] = useState([]);
+
+  useEffect(() => {
+    fetchUser(id);
+  }, [id]);
 
   useEffect(() => {
     fetchSportHalls();
@@ -208,6 +214,19 @@ const CompanyHomepage = () => {
       console.log(error);
     }
     );
+  }
+
+  function fetchUser(id) {
+    axios
+      .get(`http://127.0.0.1:8000/get_user/${id}`)
+      .then((response) => {
+        setUser(response.data);
+        sessionStorage.setItem('image', user.user_photo)
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   const deleteSportHall = async (sportHallId) => {
@@ -276,7 +295,7 @@ const navigateToSportHallDetails = (sportHallId) => {
 
   return (
     <div className='homepage'>
-      <div className='cover-photo' style={{ width: '100%', height: '200px', background: `url(http://localhost:8000${cover_photo}) no-repeat center/cover` }}></div>
+      <div className='cover-photo' style={{ width: '100%', height: '200px', background: `url(http://localhost:8000${user.user_photo}) no-repeat center/cover` }}></div>
       <Navbar></Navbar>
       <div className='content'>
         <div className='title'>

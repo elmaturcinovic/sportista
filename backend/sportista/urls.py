@@ -23,8 +23,7 @@ urlpatterns = [
     path('delete_appointment/<int:appointment_id>/', views.delete_appointment, name='delete_appointment'),
     path('get_user/<int:user_id>/', views.get_user, name="get_user"),
     path('upload_photo/', views.upload_photo, name='upload_photo'),
-
-
+    path('update_user/<int:user_id>', views.update_user, name="update_user"),
 
 
     path('invite_friend/', views.invite_friend, name="invite_friend"),

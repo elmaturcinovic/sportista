@@ -30,7 +30,7 @@ const Navbar = () => {
     };
 
     const handlePostavkeClick = () => {
-        history.push('/postavke');
+        history.push('/profil');
     };
 
     const logout = () => {
@@ -88,7 +88,7 @@ const Navbar = () => {
                 </li>
                 <li className="nav-item">
                     <NavLink
-                    to="/postavke"
+                    to="/profil"
                     className="nav-link"
                     onClick={handlePostavkeClick}
                     >

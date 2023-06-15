@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from  'react-router-dom';
 import Registration from './components/auth/Registration';
 import LandingPage from './components/auth/LandingPage';
-import CompanyProfile from './components/Companies/CompanyProfile';
 import ToggleSwitch from './components/ToggleSwitch';
 import UserMainPage from "./components/user/UserMainPage";
 import Login from './components/auth/Login';
@@ -51,7 +50,6 @@ function App() {
                     </Route>
                     <Route exact path="/profil">
                         {id && tip==0 && <UserProfile/>}
-                        {id && tip==1 && <CompanyProfile/> }
                         {!id && <Redirect to="/"/>}
                     </Route>
 

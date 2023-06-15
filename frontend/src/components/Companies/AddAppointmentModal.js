@@ -19,9 +19,7 @@ const AddAppointmentModal = ({showModal, setShowModal, handleAddAppointment, all
     });
     const [workTimeStart, setWorkTimeStart] = useState('');
     const [workTimeEnd, setWorkTimeEnd] = useState('');
-
-
-
+    
     useEffect(() => {
         if (showModal) {
           if (sportOptions.length === 0) {

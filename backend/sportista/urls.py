@@ -21,6 +21,10 @@ urlpatterns = [
     path('get_all_appointments_by_owner/<int:owner_id>/', views.get_all_appointments_by_owner, name='get_all_appointments_by_owner'),    
     path('add_new_appointment/', views.add_new_appointment, name="add_new_appointment"),
     path('delete_appointment/<int:appointment_id>/', views.delete_appointment, name='delete_appointment'),
+    path('get_user/<int:user_id>/', views.get_user, name="get_user"),
+    path('upload_photo/', views.upload_photo, name='upload_photo'),
+
+
 
 
     path('invite_friend/', views.invite_friend, name="invite_friend"),

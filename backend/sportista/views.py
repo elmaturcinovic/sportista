@@ -1,3 +1,4 @@
+from datetime import datetime 
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
@@ -349,17 +350,19 @@ def get_user(request, user_id):
 @api_view(['POST'])
 def upload_photo(request):
     file = request.FILES.get('photo')
-
     if file is None:
         return Response({'error': 'No photo found in the request'}, status=400)
+    
+    timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+    filename = f'{timestamp}_{file.name}'
 
     # Handle file upload and save it in the default storage location
     # Assuming your ImageField is defined as `photo = models.ImageField(upload_to='media/images')`
     # You can use the same upload_to value to save the uploaded photo
 
     # Save the uploaded photo and get its path
-    photo_path = 'images/' + file.name
-    with open('media/' + photo_path, 'wb') as destination:
+    photo_path = f'media/images/{filename}'
+    with open(photo_path, 'wb') as destination:
         for chunk in file.chunks():
             destination.write(chunk)
 

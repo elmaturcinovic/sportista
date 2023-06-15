@@ -29,7 +29,12 @@ const CompanyFieldDetails = () => {
     const [selectedWorkDays, setSelectedWorkDays] = useState([]);
     const [selectedPhoto, setSelectedPhoto] = useState("");
     const [allDays, setAllDays] = useState([]);
+    const [user, setUser] = useState([]);
 
+    useEffect(() => {
+        fetchUser(id);
+      }, [id]);
+  
 
     useEffect(() => {
         if (sportHall !== null) {
@@ -48,6 +53,20 @@ const CompanyFieldDetails = () => {
     useEffect(() => {
         fetchDays();
     }, []);
+
+    function fetchUser(id) {
+        axios
+          .get(`http://127.0.0.1:8000/get_user/${id}`)
+          .then((response) => {
+            setUser(response.data);
+            setSelectedPhoto(user.user_photo)
+            sessionStorage.setItem('image', user.user_photo)
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+    }
 
     function fetchSports() {
         axios.get('http://127.0.0.1:8000/get_sports/').then((response) => {
@@ -211,7 +230,7 @@ const CompanyFieldDetails = () => {
                 style={{
                 width: '100%',
                 height: '200px',
-                background: `url(http://localhost:8000${cover_photo}) no-repeat center/cover`,
+                background: `url(http://localhost:8000${user.user_photo}) no-repeat center/cover`,
                 }}
             ></div>
 

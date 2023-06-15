@@ -102,17 +102,13 @@ td:first-child {
 
 .div-image-change {
     display: flex;
-    flex-direction: column;
+    flex-direction: row-reverse;
     justify-content: center;
-    align-items: flex-start;
-    margin: 60px 20px 20px;
+    align-items: center;
 }
 
 .choose-file button, span {
     padding: 10px;
-}
-.change-profile-image {
-    margin-left: 20px;
 }
 
 .save-changes {
@@ -393,3 +389,4 @@ td:first-child {
     margin-bottom: 20px;
     background-color: none;
 }
+

@@ -59,7 +59,7 @@ const ChangePasswordComp = ({ password, onPasswordChange }) => {
   return (
     <div>
       {!showForm ? (
-        <button onClick={handleButtonClick} className='change-password'>
+        <button onClick={handleButtonClick} className='change-password' id='change-password-company'>
           Promijeni lozinku
         </button>
       ) : (
@@ -78,10 +78,10 @@ const ChangePasswordComp = ({ password, onPasswordChange }) => {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
-          <button onClick={handleSaveClick} className='change-password'>
+          <button onClick={handleSaveClick} className='change-password' id='change-password-company'>
             Sačuvaj izmjene
           </button>
-          <button onClick={handleCancelButtonClick} className='cancel-change-password'>
+          <button onClick={handleCancelButtonClick} className='cancel-change-password' id='change-password-company'>
             Poništi
           </button>
         </div>

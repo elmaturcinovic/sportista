@@ -57,12 +57,16 @@ const ChooseFileComp = () => {
         accept=".jpeg, .png"
         onChange={handleFileSelect}
         id="profile-image-input"
+        style={{visibility:"hidden"}}
       />
       {selectedFile && (
         <p className="selected-file-image">Odabrana slika: {selectedFile.name}</p>
       )}
+      <label for="profile-image-input" style={{textAlign:"center", cursor: "pointer", 
+      border: "1px solid #61dafb", padding: "6px 12px", borderRadius: "25px", marginLeft: "10px"}}>Odaberite sliku</label>
       <button
         className="change-profile-image"
+        id='change-password-company'
         type="button"
         onClick={handleImageChange}
       >

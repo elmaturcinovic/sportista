@@ -106,8 +106,9 @@ const CompanyFieldDetails = () => {
     }
 
     function fetchSportNames(sportIds) {
+        console.log(sportIds)
         axios
-        .get(`http://127.0.0.1:8000/get_sport_names_selected`, {
+        .get(`http://127.0.0.1:8000/get_sport_names_selected/`, {
             params: { sportIds: sportIds },
         })
         .then((response) => {

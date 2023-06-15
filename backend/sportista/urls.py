@@ -28,5 +28,7 @@ urlpatterns = [
 
     path('invite_friend/', views.invite_friend, name="invite_friend"),
     path('get_user_appointments_by_user/<int:user_id>/', views.get_user_appointments_by_user, name="get_user_appointments_by_user"),
-    path('delete_user_appointment/<int:user_id>/', views.delete_user_appointment, name="delete_user_appointment"),
+    path('delete_user_appointment/<int:user_id>/', views.delete_user_appointment, name="delete_user_appointment"), 
+    path('get_all_sport_halls/', views.get_all_sport_halls, name="get_all_sport_halls"),
+
 ]

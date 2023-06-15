@@ -1,9 +1,25 @@
 import { useState, useEffect } from "react";
 import ChooseFileComp from "./ChooseFileComp";
 import ChangePasswordComp from "./ChangePasswordComp";
+import axios from 'axios';
 
 const ProfileComp = () => {
+
   const [password, setPassword] = useState('');
+  const [user, setUser] = useState([]);
+  const [selectedPhoto, setSelectedPhoto] = useState(sessionStorage.getItem('image'));
+
+  const id = sessionStorage.getItem('id');
+  const email = sessionStorage.getItem('email');
+  const cover_photo = sessionStorage.getItem('image')
+  const name = sessionStorage.getItem('name');
+  const lastname = sessionStorage.getItem('lastname');
+  const username = sessionStorage.getItem('username');
+  const pass_invisible = "*".repeat(password.length);
+
+  useEffect(() => {
+    fetchUser(id);
+  }, [id]);
 
   useEffect(() => {
     const storedPassword = sessionStorage.getItem("password");
@@ -14,11 +30,25 @@ const ProfileComp = () => {
     setPassword(newPassword);
   };
 
-    const name = sessionStorage.getItem("name");
-    const lastname = sessionStorage.getItem("lastname");
-    const username = sessionStorage.getItem("username");
-    const email = sessionStorage.getItem("email");
-    const pass_invisible = "*".repeat(password.length);
+
+  function fetchUser(id) {
+    axios
+      .get(`http://127.0.0.1:8000/get_user/${id}`)
+      .then((response) => {
+        setUser(response.data);
+        setSelectedPhoto(user.user_photo)
+        sessionStorage.setItem('image', user.user_photo)
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  useEffect(() => {
+    fetchUser(id);
+  }, [id]);
+
 
     return (
         <div className="profile-div">
@@ -63,7 +93,10 @@ const ProfileComp = () => {
                 </table>
             </div>
             <div className="schedule-second-div">
-                <ChooseFileComp/>
+                <ChooseFileComp 
+                    user={user}
+                    fetchUser={fetchUser}
+                />
             </div>
     </div>
   );

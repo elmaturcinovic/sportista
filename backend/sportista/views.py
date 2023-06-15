@@ -10,6 +10,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from django.core import serializers
 
 
 
@@ -351,3 +352,10 @@ def upload_photo(request):
 
     # Return the path to the uploaded photo
     return Response({'path': photo_path}, status=200)
+
+
+@api_view(['GET'])
+def get_all_sport_halls(request):
+    sportshalls = SportsHall.objects.all()
+    data = serializers.serialize('json', sportshalls)
+    return HttpResponse(data, content_type='application/json')

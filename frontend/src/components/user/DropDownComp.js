@@ -22,8 +22,6 @@ const DropDownComp = ({label, selected, options}) => {
                     </option>
                 ))}
             </select>
-
-            <p id="selected">Selektovan {label.toLowerCase()} {selectedOption}</p>
         </div>
     );
 };

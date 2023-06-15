@@ -206,7 +206,8 @@ def update_sport_hall(request, sport_hall_id):
         sport_hall.work_time_begin = request.data.get('work_time_begin')
         sport_hall.work_time_end =request.data.get('work_time_end')
         sport_hall.working_days.set(request.data.get('working_days', []))
-        sport_hall.photo = request.data.get('photo')
+        if (sport_hall.photo != request.data.get('photo')):
+            sport_hall.photo = request.data.get('photo')
         print(request.data.get('photo'))
         
         sport_hall.save()

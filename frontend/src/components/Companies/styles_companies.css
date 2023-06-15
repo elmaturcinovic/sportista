@@ -167,7 +167,7 @@ th, td{
     text-align: left;
     width: min-content;
 }
-.edit-icon {
+.edit-icon{
     position: absolute;
     bottom: 5px;
     right: 5px;
@@ -185,9 +185,7 @@ th, td{
     width: fit-content;
     position: relative;
     margin: 20px;
-
 }
-
 .square-image-container {
     min-width: 100px;
     min-height: 100px;
@@ -200,5 +198,33 @@ th, td{
     width: 100%; /* Make the image fill the container width */
     height: 100%; /* Make the image fill the container height */
     object-fit: cover; /* Scale and crop the image to fill the container */
+}
+
+.cover-wrapper {
+    position: relative;
+  }
+  
+.edit-cover-photo-icon {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    cursor: pointer;
+    color:#303030;
+    font-size: 20px;
+    background-color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.change-pass-form{
+    background-color: whitesmoke;
+    padding: 15px;
+    border-radius: 6px;
+    border: solid 1px rgba(0, 0, 0, 0.176);
+    margin-bottom: 10px;
+    color: #303030;
 }
   

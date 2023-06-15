@@ -51,6 +51,7 @@ function App() {
                     </Route>
                     <Route exact path="/profil">
                         {id && tip==0 && <UserProfile/>}
+                        {id && tip==1 && <CompanySettings/>}
                         {!id && <Redirect to="/"/>}
                     </Route>
 
@@ -72,7 +73,6 @@ function App() {
 
                     <Route path="/rezervirani-termini" component={UserReservedPage}/>
                     <Route path="/moje-obavijesti" component={UserNotificationsPage}/>
-                    <Route path="/postavke" component={CompanySettings}/>
                 </Switch>
             </Router>
 

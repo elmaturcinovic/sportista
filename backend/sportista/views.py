@@ -207,12 +207,24 @@ def update_sport_hall(request, sport_hall_id):
         sport_hall.work_time_end =request.data.get('work_time_end')
         sport_hall.working_days.set(request.data.get('working_days', []))
         sport_hall.photo = request.data.get('photo')
+        print(request.data.get('photo'))
         
         sport_hall.save()
         return Response({'message': 'Sport hall updated successfully'})
     except SportsHall.DoesNotExist:
         return Response({'error': 'Sport hall not found'}, status=404)
     
+@api_view(['PUT'])
+def update_user(request, user_id):
+    try:
+        user = User.objects.get(id=user_id)
+        user.user_photo = request.data.get('user_photo')
+        
+        user.save()
+        return Response({'message': 'User updated successfully'})
+    except User.DoesNotExist:
+        return Response({'error': 'User not found'}, status=404)
+
 
 @api_view(['GET'])
 def get_days(request):

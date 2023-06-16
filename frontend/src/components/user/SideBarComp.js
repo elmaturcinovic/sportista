@@ -56,7 +56,7 @@ const SideBarComp = ({user, fetchUser}) => {
     return (
         <div className="side-bar-div">
             <div className="image-username">
-                <img src={`http://localhost:8000${photo}`} alt="Slika profila" id="profile-image"/>
+                <img src={`http://localhost:8000${user.user_photo}`} alt="Slika profila" id="profile-image"/>
                 <p className="username">{field.username}</p>
             </div>
             <div className="user-buttons">

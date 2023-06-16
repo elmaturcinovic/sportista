@@ -26,11 +26,14 @@ urlpatterns = [
     path('get_user/<int:user_id>/', views.get_user, name="get_user"),
     path('upload_photo/', views.upload_photo, name='upload_photo'),
     path('update_user/<int:user_id>', views.update_user, name="update_user"),
-
-
     path('invite_friend/', views.invite_friend, name="invite_friend"),
     path('get_user_appointments_by_user/<int:user_id>/', views.get_user_appointments_by_user, name="get_user_appointments_by_user"),
     path('delete_user_appointment/<int:user_id>/', views.delete_user_appointment, name="delete_user_appointment"), 
     path('get_all_sport_halls/', views.get_all_sport_halls, name="get_all_sport_halls"),
-
+    
+    path('invites_sent_by_me/', views.invites_sent_by_me, name="invites_sent_by_me"),
+    path('invites_received_by_me/', views.invites_received_by_me, name="invites_received_by_me"),
+    path('update_invite_status/<int:invite_id>/', views.update_invite_status, name='update_invite_status'),
+    path('get_invite_details/<int:invite_id>/', views.get_invite_details, name='get_invite_details'),
+    path('update_user_appointments/<int:appointment_id>/', views.update_user_appointments, name='update_user_appointments'),
 ]

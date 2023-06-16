@@ -45,7 +45,7 @@ const CompanySettings = () => {
 
     function fetchUser(id) {
       axios
-        .get(`http://127.0.0.1:8000/get_user/${id}`)
+        .get(`http://127.0.0.1:8000/get_user/${id}/`)
         .then((response) => {
           setUser(response.data);
           setSelectedPhoto(user.user_photo)

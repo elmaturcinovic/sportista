@@ -255,20 +255,27 @@ def get_days(request):
 
 @api_view(['POST'])
 def invite_friend(request):
-    email = request.data.get('email')
-    exists = User.objects.filter(user_email=email).exists()
+    appointment_id = request.data.get('appointment_id')
+    username = request.data.get('username')
+    id_sender = request.data.get('id')
+        
+    try:
+        sender = User.objects.get(id=id_sender)
+        receiver = User.objects.get(username=username)
+        appointment = UserAppointment.objects.get(id=appointment_id)
 
-    print(exists)
+        invite = Invites(sender=sender, receiver=receiver, appointment=appointment)
+        invite.save()
+            
+        serializer = InvitesSerializer(invite)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    except User.DoesNotExist:
+        return Response({"error": "User does not exist."}, status=status.HTTP_404_NOT_FOUND)
+    except UserAppointment.DoesNotExist:
+        return Response({"error": "Appointment does not exist."}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    if (exists):
-        subject = 'Pozivnica'
-        message = 'Pozvan si na sportski termin!'
-        recipient_list = [email]
-        send_mail(subject, message, None, recipient_list)
-        return JsonResponse({'message': 'Pozivnica uspesno poslana!'})
-    else:
-        return JsonResponse({'error': 'Nema korisnika sa ovom e-mail adresom.'}, status=405)
-    
 
 @api_view(['GET'])
 def get_user_appointments_by_user(request, user_id):

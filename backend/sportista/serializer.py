@@ -31,3 +31,8 @@ class UserAppointmentSerializer(ModelSerializer):
     class Meta:
         model = UserAppointment
         fields = '__all___'
+
+class InvitesSerializer(ModelSerializer):
+    class Meta:
+        model = Invites
+        fields = '__all___'

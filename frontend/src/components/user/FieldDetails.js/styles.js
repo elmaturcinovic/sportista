@@ -15,21 +15,21 @@ const useStyles = makeStyles(() =>
     },
     reserveFieldContainer: {
         display: 'flex',
-        marginTop: '20px'
+        marginTop: '20px',
+        width: '100%'
     },
     calendar: {
-        marginRight: '30px',
-        marginLeft: '100px'
+        marginRight: '20px',
+        marginLeft: '30px'
     },
     time: {
         backgroundColor: 'white',
         zIndex: 2,
         width: '100%',
         marginRight: '30px',
-        marginLeft: '30px',
+        marginLeft: '20px',
         borderRadius: 10,
         maxHeight: '420px',
-        maxWidth: '620px'
     },
     scrollViewCard: {
       overflow: 'auto', 

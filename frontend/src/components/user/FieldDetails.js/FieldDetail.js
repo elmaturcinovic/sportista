@@ -84,19 +84,22 @@ function FieldDetail() {
         </div>
         <div className={classes.fieldDetails}>
             <div><AboutField item={sportHall}/></div>
-            <div className={classes.reserveFieldContainer}>
-                
-                <div className={classes.time}>
-                    <div className={classes.aboutFieldTitle}>Termini za {sportHall.name} za {formattedDate}</div>
-                    <div className={classes.scrollViewCard}>
-                        {appointments.map((appointment) => (
-                            <UserFieldCard key={appointment.id} appointment={appointment} />
-                        ))}
-                    </div>
-                    
-                </div>
-                <div className={classes.calendar}><EventsCalendar onDateChange={handleDateChange}/></div>
+            <div className='reservation-wrapper'>
+              <div className={classes.reserveFieldContainer}>                
+              <div className={classes.calendar}><EventsCalendar onDateChange={handleDateChange}/></div>
+                  <div className={classes.time}>
+                      <div className={classes.aboutFieldTitle}>Termini za {sportHall.name} za {formattedDate}</div>
+                      <div className={classes.scrollViewCard}>
+                          {appointments.map((appointment) => (
+                              <UserFieldCard key={appointment.id} appointment={appointment} />
+                          ))}
+                      </div>
+                      
+                  </div>
+                  
+              </div>
             </div>
+            
         </div>
     </div>
   )

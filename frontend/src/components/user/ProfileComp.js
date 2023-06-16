@@ -3,11 +3,9 @@ import ChooseFileComp from "./ChooseFileComp";
 import ChangePasswordComp from "./ChangePasswordComp";
 import axios from 'axios';
 
-const ProfileComp = () => {
+const ProfileComp = ({user, fetchUser}) => {
 
   const [password, setPassword] = useState('');
-  const [user, setUser] = useState([]);
-  const [selectedPhoto, setSelectedPhoto] = useState(sessionStorage.getItem('image'));
 
   const id = sessionStorage.getItem('id');
   const email = sessionStorage.getItem('email');
@@ -19,6 +17,7 @@ const ProfileComp = () => {
 
   useEffect(() => {
     fetchUser(id);
+    console.log(user)
   }, [id]);
 
   useEffect(() => {
@@ -30,23 +29,9 @@ const ProfileComp = () => {
     setPassword(newPassword);
   };
 
-
-  function fetchUser(id) {
-    axios
-      .get(`http://127.0.0.1:8000/get_user/${id}`)
-      .then((response) => {
-        setUser(response.data);
-        setSelectedPhoto(user.user_photo)
-        sessionStorage.setItem('image', user.user_photo)
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
   useEffect(() => {
     fetchUser(id);
+    console.log(user)
   }, [id]);
 
 

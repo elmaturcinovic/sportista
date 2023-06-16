@@ -68,7 +68,7 @@ const SideBarComp = ({user, fetchUser}) => {
                 </button>
                 <button className="menu-button" onClick={logout}>Odjavi se</button>
             </div>
-            <img src={'logo.png'} alt="logo" id="user-logo-image"/>
+            <img src={'./../logo.png'} alt="logo" id="user-logo-image"/>
         </div>
     );
 }

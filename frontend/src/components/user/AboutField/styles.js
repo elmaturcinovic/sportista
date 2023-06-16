@@ -27,7 +27,6 @@ const useStyles = makeStyles(() =>
         display: 'flex',
         flex: 1,
         margin: 20,
-        border: '1px solid black',
         borderRadius: 20,
         background: 'white'
     },
@@ -43,7 +42,6 @@ const useStyles = makeStyles(() =>
         fontSize: 30,
         alignItems: 'center',
         gap: 12,
-        border: '1px solid black',
         borderRadius: 15,
         
     },

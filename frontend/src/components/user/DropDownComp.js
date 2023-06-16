@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 const DropDownComp = ({ label, selected, options, onChange }) => {
   const [selectedOption, setSelectedOption] = useState(selected);

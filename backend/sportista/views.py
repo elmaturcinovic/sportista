@@ -377,3 +377,21 @@ def get_all_sport_halls(request):
     sportshalls = SportsHall.objects.all()
     data = serializers.serialize('json', sportshalls)
     return HttpResponse(data, content_type='application/json')
+
+
+
+
+@api_view(['GET'])
+def get_invites_by_status(request):
+    status_param = request.GET.get('status')
+    if not status_param:
+        return Response('Missing status parameter', status=status.HTTP_400_BAD_REQUEST)
+    
+    try:
+        status_param = int(status_param)
+    except ValueError:
+        return Response('Invalid status parameter', status=status.HTTP_400_BAD_REQUEST)
+
+    invites = Invites.objects.filter(user__id=request.user.id, status=status_param)
+    data = [{'id': invite.id, 'sender': invite.sender.user_username, 'receiver': invite.receiver.user_name, 'appointment': invite.appointment.appointment.sport_hall.name, 'status': invite.status} for invite in invites]
+    return Response(data, status=status.HTTP_200_OK)

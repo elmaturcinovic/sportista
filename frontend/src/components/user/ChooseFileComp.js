@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 
-const ChooseFileComp = ({user, fetchUser, setSelectedPhoto}) => {
+const ChooseFileComp = ({user, fetchUser}) => {
   
   const id = sessionStorage.getItem('id');
   const [photo, setPhoto] = useState(user.user_photo);
@@ -12,10 +12,8 @@ const ChooseFileComp = ({user, fetchUser, setSelectedPhoto}) => {
     const formData = new FormData();
     formData.append('photo', file);
   
-
     axios.post('http://127.0.0.1:8000/upload_photo/', formData)
         .then(response => {
-
             const photoPath = response.data.path;
             console.log(photoPath)
             setPhoto(photoPath);
@@ -46,17 +44,14 @@ const handleSubmit = async (e) => {
 
   return (
     <div className="div-image-change">
-      <input
-        type="file"
-        onChange={handlePhotoChange}
-        id="profile-image-input"
-        style={{visibility:"hidden"}}
-      />
-      {photo && (
-        <p className="selected-file-image">Odabrana slika: {photo}</p>
-      )}
-      <label htmlFor="profile-image-input" style={{textAlign:"center", cursor: "pointer", 
-        border: "1px solid #61dafb", padding: "6px 12px", borderRadius: "25px", marginLeft: "10px"}}>Odaberite sliku</label>
+      <div>
+        <input
+          type="file"
+          onChange={handlePhotoChange}
+          id="profile-image-input"
+        />
+      </div>
+      
       <button
         className="change-profile-image"
         id='change-password-company'

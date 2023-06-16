@@ -416,5 +416,10 @@ td:first-child {
     margin-bottom: 20px;
     background-color: none;
 }
-
+.reservation-wrapper{
+    display: flex;
+    flex-direction: row;
+    height:max-content;
+    align-items: start;
+}
 

@@ -13,7 +13,7 @@ const useStyles = makeStyles(() =>
         flex: 1,
         textAlign: 'center',
         alignItems: 'center',
-        fontSize: '56px',
+        fontSize: '56px'
     },
     aboutFieldTitle:{
         margin: 15
@@ -25,10 +25,10 @@ const useStyles = makeStyles(() =>
     },
     aboutFieldImageContainer: {
         display: 'flex',
-        flex: 1,
         margin: 20,
         borderRadius: 20,
-        background: 'white'
+        background: 'white',
+        width: '450px'
     },
     aboutFieldImageContainerSize: {
         marginLeft: '170px'
@@ -46,7 +46,7 @@ const useStyles = makeStyles(() =>
         
     },
     aboutFieldImage: {
-        width: '100%',
+        width: '450px',
         height: '100%',
         borderRadius: 20
     },

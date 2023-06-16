@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from 'react'
-import EventsCalendar from '../../Companies/EventsCalendar/EventsCalendar'
-import AboutField from '../../shared/AboutField/AboutField'
+import EventsCalendar from '../EventsCalendar/EventsCalendar'
+import AboutField from '../AboutField/AboutField'
 import SideBarComp from '../SideBarComp'
 import UserFieldCard from '../UserFieldCard'
 import useStyles from './styles'
+import './../styles_user.css'
+
 import { useLocation } from 'react-router-dom';
 import axios from "axios";
 import { format, startOfDay } from 'date-fns';
@@ -73,7 +75,7 @@ function FieldDetail() {
       }, [id]);  
 
   return (
-    <div className={classes.container}>
+    <div className="field-details-div">
         <div className={classes.userProfileInfo}>
             <SideBarComp
               user={user}

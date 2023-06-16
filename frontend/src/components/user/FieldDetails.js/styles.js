@@ -29,7 +29,6 @@ const useStyles = makeStyles(() =>
         marginLeft: '30px',
         borderRadius: 10,
         maxHeight: '420px',
-        border: '1px solid black',
         maxWidth: '620px'
     },
     scrollViewCard: {

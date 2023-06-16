@@ -1,8 +1,9 @@
-.user-main-div {
+.user-main-div, .field-details-div {
     display: grid;
     grid-template-columns: 1fr 4fr;
-    height:max-content;
+    height:100vh;
     padding-bottom: 60px;
+    
 }
 
 /* CSS za SideBarComp */
@@ -258,6 +259,12 @@ td:first-child {
 /* za media CSS */
 
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
+    .user-main-div, .field-details-div {
+        display: flex;
+        flex-direction: column;
+        height:max-content;
+        padding-bottom: 60px;
+    }
     .cards {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -274,7 +281,7 @@ td:first-child {
 }
 
 @media only screen and (max-width: 767px) {
-    .user-main-div {
+    .user-main-div, .field-details-div {
         display: flex;
         flex-direction: column;
         height:max-content;

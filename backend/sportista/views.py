@@ -389,16 +389,95 @@ def get_all_sport_halls(request):
 
 
 @api_view(['GET'])
-def get_invites_by_status(request):
-    status_param = request.GET.get('status')
-    if not status_param:
-        return Response('Missing status parameter', status=status.HTTP_400_BAD_REQUEST)
-    
-    try:
-        status_param = int(status_param)
-    except ValueError:
-        return Response('Invalid status parameter', status=status.HTTP_400_BAD_REQUEST)
+def invites_sent_by_me(request):
+    user = request.user
+    sent_invites = Invites.objects.filter(sender=user)
 
-    invites = Invites.objects.filter(user__id=request.user.id, status=status_param)
-    data = [{'id': invite.id, 'sender': invite.sender.user_username, 'receiver': invite.receiver.user_name, 'appointment': invite.appointment.appointment.sport_hall.name, 'status': invite.status} for invite in invites]
-    return Response(data, status=status.HTTP_200_OK)
+    serialized_invites = []
+    for invite in sent_invites:
+        serialized_invite = {
+            'id': invite.id,
+            'receiver': {
+                'user_name': invite.receiver.user_name,
+                # Add other relevant properties of the receiver
+            },
+            'appointment': {
+                'sport_hall': {
+                    'name': invite.appointment.sport_hall.name,
+                    # Add other relevant properties of the sport hall
+                },
+                'time': invite.appointment.time,
+                # Add other relevant properties of the appointment
+            },
+            'status': invite.status,
+        }
+        serialized_invites.append(serialized_invite)
+
+    return JsonResponse(serialized_invites, safe=False)
+
+
+@api_view(['GET'])
+def invites_received_by_me(request):
+    user = request.user
+    received_invites = Invites.objects.filter(receiver=user)
+
+    serialized_invites = []
+    for invite in received_invites:
+        serialized_invite = {
+            'id': invite.id,
+            'sender': {
+                'user_username': invite.sender.user_username,
+                # Add other relevant properties of the sender
+            },
+            'appointment': {
+                'sport_hall': {
+                    'name': invite.appointment.sport_hall.name,
+                    # Add other relevant properties of the sport hall
+                },
+                'time': invite.appointment.time,
+                # Add other relevant properties of the appointment
+            },
+            'status': invite.status,
+        }
+        serialized_invites.append(serialized_invite)
+
+    return JsonResponse(serialized_invites, safe=False)
+
+
+api_view(['PUT'])
+def update_invite_status(request, invite_id):
+    try:
+        invite = Invites.objects.get(id=invite_id)
+    except Invites.DoesNotExist:
+        return Response({'error': 'Invite not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+    invite.status = 1
+    invite.save()
+
+    serializer = InvitesSerializer(invite)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+api_view(['GET'])
+def get_invite_details(request, invite_id):
+        try:
+            invite = Invites.objects.get(id=invite_id)
+        except Invites.DoesNotExist:
+            return Response({'error': 'Invite not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = InvitesSerializer(invite)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['PUT'])
+def update_user_appointments(request, appointment_id):
+    try:
+        user_appointment = UserAppointment.objects.get(appointment_id=appointment_id)
+    except UserAppointment.DoesNotExist:
+        return Response({'error': 'UserAppointment not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+    users = request.data.get('users', [])
+    user_appointment.users.set(users)
+    user_appointment.save()
+
+    serializer = UserAppointmentSerializer(user_appointment)
+    return Response(serializer.data, status=status.HTTP_200_OK)

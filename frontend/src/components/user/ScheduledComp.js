@@ -4,13 +4,14 @@ import CardComp from "./CardComp";
 import axios from 'axios';
 
 const ScheduledComp = () => {
+
     const [sportNames, setSportNames] = useState([]);
     const [sportCities, setSportCities] = useState([]);
     const [selectedSport, setSelectedSport] = useState("");
     const [selectedCity, setSelectedCity] = useState("");
     const [isFiltered, setIsFiltered] = useState(false); 
 
-//da se povuku sportovi
+    // Fetch sport names
     useEffect(() => {
         axios.get("http://127.0.0.1:8000/get_sport_names/")
             .then(response => {
@@ -22,7 +23,8 @@ const ScheduledComp = () => {
                 console.error("Greska povlacenja sportova:", error);
             });
     }, []);
-//da se povuku gradovi
+
+    // Fetch sport cities
     useEffect(() => {
         axios.get("http://127.0.0.1:8000/get_sport_cities/")
             .then(response => {
@@ -36,11 +38,31 @@ const ScheduledComp = () => {
     }, []);
 
     const handleFilterClick = () => {
-        setSelectedSport(selectedSport);
-        setSelectedCity(selectedCity);
         setIsFiltered(true);
-
     };
+
+    const handleSportChange = (value) => {
+        setSelectedSport(value);
+    };
+
+    const handleCityChange = (value) => {
+        setSelectedCity(value);
+    };
+    useEffect(() => {
+        var filter_sport = 0;
+        if(selectedSport === "Nogomet"){
+            filter_sport = 0;
+        }
+        else if(selectedSport === "Košarka"){
+            filter_sport = 1;
+        }
+        console.log("Korisnik je izabrao grad: ", selectedCity);
+      }, [selectedCity]);
+      useEffect(() => {
+        console.log("Korisnik je izabrao sport: ", selectedSport);
+      }, [selectedSport]);  
+
+
 
     return (
         <div className="schedule-main-div">
@@ -52,13 +74,13 @@ const ScheduledComp = () => {
                     label="Sport:"
                     selected={selectedSport}
                     options={sportNames}
-                    onChange={(value) => setSelectedSport(value)}
+                    onChange={handleSportChange}
                 />
                 <DropDownComp
                     label="Grad:"
                     selected={selectedCity}
                     options={sportCities}
-                    onChange={(value) => setSelectedCity(value)}
+                    onChange={handleCityChange}
                 />
                 <button className="filter-button" onClick={handleFilterClick}>
                     Pretraži termine

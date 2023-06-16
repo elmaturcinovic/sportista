@@ -48,7 +48,7 @@ const Appointments = () => {
 
     function fetchUser(id) {
         axios
-          .get(`http://127.0.0.1:8000/get_user/${id}`)
+          .get(`http://127.0.0.1:8000/get_user/${id}/`)
           .then((response) => {
             setUser(response.data);
             sessionStorage.setItem('image', user.user_photo)
@@ -148,30 +148,30 @@ const Appointments = () => {
         return `${hours}:${minutes}`;
       };
     
-      const handleFilterSubmit = (e) => {
-        e.preventDefault();
-            const filteredAppointments = appointments.filter((appointment) => {
-                console.log(filterData)
-                console.log(appointment)
-                if (filterData.sportHall !== '' && appointment.sport_hall !== filterData.sportHall) {
-                    return false;
+    const handleFilterSubmit = (e) => {
+    e.preventDefault();
+        const filteredAppointments = appointments.filter((appointment) => {
+            console.log(filterData)
+            console.log(appointment)
+            if (filterData.sportHall !== '' && appointment.sport_hall !== filterData.sportHall) {
+                return false;
+            }
+            if (filterData.sports.size > 0) {
+                const appointmentSports = new Set(appointment.sports.map((sport) => sport));
+                const intersection = [...filterData.sports].filter((sportId) => appointmentSports.has(sportId));
+                if (intersection.length === 0) {
+                return false;
                 }
-                if (filterData.sports.size > 0) {
-                    const appointmentSports = new Set(appointment.sports.map((sport) => sport));
-                    const intersection = [...filterData.sports].filter((sportId) => appointmentSports.has(sportId));
-                    if (intersection.length === 0) {
-                    return false;
-                    }
-                }
-                if (filterData.date !== '' && appointment.date !== filterData.date) {
-                    return false;
-                }
-                return true;
-            });
-        
-        setAppointments(filteredAppointments);
-        setShowFilter(false)
-      };
+            }
+            if (filterData.date !== '' && appointment.date !== filterData.date) {
+                return false;
+            }
+            return true;
+        });
+    
+    setAppointments(filteredAppointments);
+    setShowFilter(false)
+    };
       
 
     return (

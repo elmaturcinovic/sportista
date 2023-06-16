@@ -162,7 +162,7 @@ const CompanyFieldDetails = () => {
         try {
           const updatedSportHall = { ...sportHall };
           updatedSportHall.sports = selectedSports;
-          await axios.put(`http://127.0.0.1:8000/update_sport_hall/${sportHallId}`, updatedSportHall);
+          await axios.put(`http://127.0.0.1:8000/update_sport_hall/${sportHallId}/`, updatedSportHall);
           fetchSportHall(sportHallId);
         } catch (error) {
           console.error('Error updating sport hall:', error);
@@ -171,7 +171,7 @@ const CompanyFieldDetails = () => {
     const handleWorkTimeFormSubmit = async (updatedSportHall) => {
         console.log(updatedSportHall)
         try {
-          await axios.put(`http://127.0.0.1:8000/update_sport_hall/${sportHallId}`, updatedSportHall);
+          await axios.put(`http://127.0.0.1:8000/update_sport_hall/${sportHallId}/`, updatedSportHall);
           fetchSportHall(sportHallId);
 
         } catch (error) {
@@ -182,7 +182,7 @@ const CompanyFieldDetails = () => {
 
     const handlePhotoFormSubmit = async (updatedSportHall) => {
         try {
-          await axios.put(`http://127.0.0.1:8000/update_sport_hall/${sportHallId}`, updatedSportHall);
+          await axios.put(`http://127.0.0.1:8000/update_sport_hall/${sportHallId}/`, updatedSportHall);
           fetchSportHall(sportHallId);
         } catch (error) {
           console.error('Error updating sport hall:', error);
@@ -202,7 +202,7 @@ const CompanyFieldDetails = () => {
           const updatedSportHall = { ...sportHall };
           updatedSportHall.working_days = selectedWorkDays;
           console.log(updatedSportHall)
-          await axios.put(`http://127.0.0.1:8000/update_sport_hall/${sportHallId}`, updatedSportHall);
+          await axios.put(`http://127.0.0.1:8000/update_sport_hall/${sportHallId}/`, updatedSportHall);
           fetchSportHall(sportHallId);
         } catch (error) {
           console.error('Error updating sport hall:', error);

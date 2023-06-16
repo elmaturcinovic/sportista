@@ -19,9 +19,8 @@ const AboutField = ({ item }) => {
         </div>
         <div className={classes.aboutFieldContentContainer}>
             <div className={classes.aboutFieldImageContainer}>
-               <div className={classes.aboutFieldImageContainerSize}> 
-               
-                    <img src={`http://localhost:8000${photo}`} alt="cover" className={classes.aboutFieldImage} />
+               <div className={classes.aboutFieldImageContainerSize} style={{margin : '0px',width: '100%', height: '100%'}}> 
+                    <img src={`http://localhost:8000${photo}`} alt="cover" className={classes.aboutFieldImage}  style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
                </div>
             </div>
             <div className={classes.aboutFieldTextContainer}>

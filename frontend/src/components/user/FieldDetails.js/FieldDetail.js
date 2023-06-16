@@ -9,8 +9,10 @@ import axios from "axios";
 import { format, startOfDay } from 'date-fns';
 
 function FieldDetail() {
-    const classes = useStyles()
+    const id = sessionStorage.getItem('id');
 
+    const classes = useStyles()
+    const [user, setUser] = useState([]);
     const location = useLocation();
     const item = location.state?.item;
     const [appointments,setAppointments]= useState([])
@@ -54,10 +56,30 @@ function FieldDetail() {
         setFormattedDate(newFormattedDate);
       };
 
+      function fetchUser(id) {
+        axios
+          .get(`http://127.0.0.1:8000/get_user/${id}/`)
+          .then((response) => {
+            setUser(response.data);
+            sessionStorage.setItem('image', user.user_photo)
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+  
+      useEffect(() => {
+        fetchUser(id);
+      }, [id]);  
+
   return (
     <div className={classes.container}>
         <div className={classes.userProfileInfo}>
-            <SideBarComp/>
+            <SideBarComp
+              user={user}
+              fetchUser={fetchUser}
+            />
         </div>
         <div className={classes.fieldDetails}>
             <div><AboutField item={item}/></div>

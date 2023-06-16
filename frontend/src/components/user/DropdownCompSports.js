@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const DropDownComp = ({ label, selected, options, onChange }) => {
+const DropDownCompSports = ({ label, selected, options, onChange }) => {
   const [selectedOption, setSelectedOption] = useState(selected);
 
   const handleOptionChange = (event) => {
@@ -15,8 +15,8 @@ const DropDownComp = ({ label, selected, options, onChange }) => {
       <select id="dropdown" value={selectedOption} onChange={handleOptionChange}>
         <option value="">Odaberite {label.toLowerCase()} </option>
         {options && options.map((option, index) => (
-          <option key={index} value={option}>
-            {option}
+          <option key={index} value={option.id}>
+            {option.sport_name}
           </option>
         ))}
       </select>
@@ -24,4 +24,4 @@ const DropDownComp = ({ label, selected, options, onChange }) => {
   );
 };
 
-export default DropDownComp;
+export default DropDownCompSports;

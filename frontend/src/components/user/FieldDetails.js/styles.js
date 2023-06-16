@@ -4,8 +4,7 @@ const useStyles = makeStyles(() =>
   createStyles({
     container: {
       display: 'flex',
-      height: '1020px',
-      border: '1px solid black',
+      height: '100%',
       flexDirection: 'row'
     },
     userProfileInfo: {

@@ -6,13 +6,13 @@ import SingleCard from './SingleCard';
 const CardComp = ({ sportHalls }) => {
   
   return (
-    <Router>
+    <div>
       <div className="cards">
         {sportHalls.map((item) => (
           <SingleCard item={item}/>
         ))}
       </div>
-    </Router>
+    </div>
   );
 };
 

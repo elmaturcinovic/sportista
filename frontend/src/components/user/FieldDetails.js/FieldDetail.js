@@ -7,14 +7,13 @@ import useStyles from './styles'
 import { useLocation } from 'react-router-dom';
 import axios from "axios";
 import { format, startOfDay } from 'date-fns';
+import { useParams } from 'react-router-dom/cjs/react-router-dom.min'
 
 function FieldDetail() {
     const id = sessionStorage.getItem('id');
-
+    const { sportHallId } = useParams();
     const classes = useStyles()
     const [user, setUser] = useState([]);
-    const location = useLocation();
-    const item = location.state?.item;
     const [appointments,setAppointments]= useState([])
     const [sportHall,setSportHall] = useState([])
     const [formattedDate, setFormattedDate] = useState(format(new Date(), 'yyyy-MM-dd'));
@@ -22,7 +21,7 @@ function FieldDetail() {
     useEffect(() => {
         const fetchSportHallData = async () => {
           try {
-            const response = await axios.get(`http://127.0.0.1:8000//get_sport_hall_by_id/${item.id}/`);
+            const response = await axios.get(`http://127.0.0.1:8000//get_sport_hall_by_id/${sportHallId}/`);
             setSportHall(response.data);
           } catch (error) {
             console.log(error);
@@ -30,12 +29,12 @@ function FieldDetail() {
         };
     
         fetchSportHallData();
-      }, [item.id]);
+      }, [sportHallId]);
  
       useEffect(() => {
         const fetchAppointmentsData = async () => {
           try {
-            const response = await axios.get(`http://127.0.0.1:8000//get_appointments_by_sport_hall/${sportHall.id}/`);
+            const response = await axios.get(`http://127.0.0.1:8000//get_appointments_by_sport_hall/${sportHallId}/`);
             const filteredAppointments = response.data.filter(appointment => {
                 return appointment.date === formattedDate;
             });
@@ -82,7 +81,7 @@ function FieldDetail() {
             />
         </div>
         <div className={classes.fieldDetails}>
-            <div><AboutField item={item}/></div>
+            <div><AboutField item={sportHall}/></div>
             <div className={classes.reserveFieldContainer}>
                 
                 <div className={classes.time}>

@@ -58,6 +58,8 @@ class SportsHall(models.Model):
     work_time_begin = models.TimeField(null=True, blank=True)
     work_time_end = models.TimeField(null=True, blank=True)
     working_days = models.ManyToManyField(Day, blank=True)
+    email = models.CharField(max_length=50)
+    phone_number = models.CharField(max_length=20)
 
 
     def __str__(self):
@@ -88,6 +90,7 @@ class UserAppointment(models.Model):
     users = models.ManyToManyField(User)
     available_spots = models.IntegerField()
     used_spots = models.IntegerField(default=0)
+    sport = models.ForeignKey(Sport, on_delete=models.CASCADE)
     available = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):

@@ -18,13 +18,15 @@ function FieldDetail() {
     const [user, setUser] = useState([]);
     const [appointments,setAppointments]= useState([])
     const [sportHall,setSportHall] = useState([])
-    const [formattedDate, setFormattedDate] = useState(format(new Date(), 'yyyy-MM-dd'));
+    const [formattedDate, setFormattedDate] = useState(format(new Date(), 'dd.MM.yyyy.'));
+    const [showAppointments, setShowAppointments] = useState(false);
 
     useEffect(() => {
         const fetchSportHallData = async () => {
           try {
             const response = await axios.get(`http://127.0.0.1:8000//get_sport_hall_by_id/${sportHallId}/`);
             setSportHall(response.data);
+            console.log(response.data)
           } catch (error) {
             console.log(error);
           }
@@ -52,9 +54,11 @@ function FieldDetail() {
       const today = format(new Date(), 'yyyy-MM-dd');
 
       const handleDateChange = (newDate) => {
+
         const date = startOfDay(newDate);
         const newFormattedDate = format(date, 'yyyy-MM-dd');
         setFormattedDate(newFormattedDate);
+        setShowAppointments(true);
       };
 
       function fetchUser(id) {
@@ -83,23 +87,36 @@ function FieldDetail() {
             />
         </div>
         <div className={classes.fieldDetails}>
-            <div><AboutField item={sportHall}/></div>
-            <div className='reservation-wrapper'>
-              <div className={classes.reserveFieldContainer}>                
-              <div className={classes.calendar}><EventsCalendar onDateChange={handleDateChange}/></div>
-                  <div className={classes.time}>
-                      <div className={classes.aboutFieldTitle}>Termini za {sportHall.name} za {formattedDate}</div>
+            <div className="schedule-first-div">
+              <div className="schedule-first-div">
+                  <h2 id="heading-h2">{sportHall.name}</h2>
+              </div>
+              <div><AboutField item={sportHall}/></div>
+              <div className="schedule-first-div">
+                  <h2 id="heading-h2">Rezervacija termina</h2>
+              </div>
+              <div className='reservation-wrapper'>
+                <div className={classes.reserveFieldContainer}>                
+                  <div className={classes.calendar}>
+                    <h3>Odaberi datum:</h3>
+                    <EventsCalendar onDateChange={handleDateChange}/>
+                  </div>
+                  {showAppointments &&
+                  <div className={classes.timeWrapper}>
+                    <h3>Odaberi termin:</h3>
+                    <div className={classes.time}>
+                      <div className={classes.aboutFieldTitle}>{formattedDate}</div>
                       <div className={classes.scrollViewCard}>
                           {appointments.map((appointment) => (
                               <UserFieldCard key={appointment.id} appointment={appointment} />
                           ))}
-                      </div>
-                      
-                  </div>
-                  
+                      </div>  
+                    </div>
+                  </div>   
+                  }  
+                </div>
               </div>
             </div>
-            
         </div>
     </div>
   )

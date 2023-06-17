@@ -121,28 +121,29 @@ def add_sport_hall(request):
     name = request.data.get('name')
     address = request.data.get('address')
     city = request.data.get('city')
-    sport_names = request.data.getlist('sports')
+    email = request.data.get('email')
+    phone_number = request.data.get('phone_number')
+    sports = request.data.get('sports', [])
     photo = request.data.get('photo')
     owner_id = request.data.get('owner')
     try:
         owner = User.objects.get(id=owner_id)
     except User.DoesNotExist:
         return Response({'message': 'Invalid owner ID'}, status=status.HTTP_400_BAD_REQUEST)
-    
-    sports = Sport.objects.filter(sport_name__in=sport_names)
-
 
     sport_hall = SportsHall(
         name=name,
         address=address,
         city=city,
+        email=email,
+        phone_number=phone_number,
         owner= owner, 
-        photo=photo,      
+        photo=photo,
     )
     print(sport_hall)
     sport_hall.save()
     sport_hall.sports.set(sports)
-
+    sport_hall.save()
     return Response({'message': 'Sport hall created', 'id' : sport_hall.id}, status=status.HTTP_201_CREATED)
 
 
@@ -395,3 +396,26 @@ def get_invites_by_status(request):
     invites = Invites.objects.filter(user__id=request.user.id, status=status_param)
     data = [{'id': invite.id, 'sender': invite.sender.user_username, 'receiver': invite.receiver.user_name, 'appointment': invite.appointment.appointment.sport_hall.name, 'status': invite.status} for invite in invites]
     return Response(data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def add_user_appointment(request):
+    appointment_id = request.data.get('appointment')
+    users = request.data.get('users')
+    used_spots = request.data.get('used_spots')
+    available_spots = request.data.get('available_spots')
+    sport_id = request.data.get('sport')
+    available = request.data.get('available')
+
+    # Create the UserAppointment object and save it to the database
+    user_appointment = UserAppointment(
+        appointment=appointment_id,
+        used_spots=used_spots,
+        available_spots=available_spots,
+        sport=sport_id,
+        available=available
+    )
+    user_appointment.save()
+    user_appointment.users.set(users)
+
+    # Return a response indicating successful creation
+    return Response({'message': 'UserAppointment created successfully'}, status=201)

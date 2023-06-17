@@ -17,6 +17,8 @@ const ModalComp = ({ showModal, setShowModal, selectedSports, setSelectedSports,
     name: "",
     address: "",
     city: "",
+    email: "",
+    phone_number:"",
     sports: new Set(),
     photo: null,
   });
@@ -36,6 +38,8 @@ const ModalComp = ({ showModal, setShowModal, selectedSports, setSelectedSports,
       name: "",
       address: "",
       city: "",
+      email: "",
+      phone_number:"",
       sports: new Set(),
       photo: null,
     });
@@ -52,7 +56,7 @@ const ModalComp = ({ showModal, setShowModal, selectedSports, setSelectedSports,
     );
 }
 
-  const { name, address, city, sports, photo } = formState;
+  const { name, address, city, email, phone_number, sports, photo } = formState;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -108,6 +112,7 @@ const ModalComp = ({ showModal, setShowModal, selectedSports, setSelectedSports,
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(formState)
     try {
       const sportHallId = await handleAddSportHall(formState);
       setShowModal(false);
@@ -145,6 +150,18 @@ const ModalComp = ({ showModal, setShowModal, selectedSports, setSelectedSports,
             <label>
               Grad:
               <input type="text" name="city" value={city} onChange={handleInputChange} />
+            </label>
+          </div>
+          <div className="form-group">
+            <label>
+              Email:
+              <input type="text" name="email" value={email} onChange={handleInputChange} />
+            </label>
+          </div>
+          <div className="form-group">
+            <label>
+              Telefon:
+              <input type="text" name="phone_number" value={phone_number} onChange={handleInputChange} />
             </label>
           </div>
           <div className="form-group">
@@ -191,6 +208,8 @@ const CompanyHomepage = () => {
   const [city, setCity] = useState('');
   const [sports, setSports] = useState([]);
   const [photo, setPhoto] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone_number, setPhoneNumber] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [selectedSports, setSelectedSports] = useState(new Set());
   const [user, setUser] = useState([]);
@@ -244,6 +263,8 @@ const CompanyHomepage = () => {
     formData.append('name', formState.name);
     formData.append('address', formState.address);
     formData.append('city', formState.city)
+    formData.append('email', formState.email)
+    formData.append('phone_number', formState.phone_number)    
     formData.append('owner', id)
 
     formState.sports.forEach((sport) => {

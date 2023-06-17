@@ -12,8 +12,10 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from django.core import serializers
+import logging
 
 
+logger = logging.getLogger(__name__)
 
 
 @api_view(['POST'])
@@ -181,6 +183,12 @@ def update_profile(request):
 def get_all_sports_halls(request):
     sport_halls = SportsHall.objects.all()
     serializer = SportsHallSerializer(sport_halls, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def get_all_users(request):
+    users = User.objects.all()
+    serializer = UserSerializer(users, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
@@ -480,22 +488,37 @@ def decline_invite(request, invite_id):
 @api_view(['POST'])
 def add_user_appointment(request):
     appointment_id = request.data.get('appointment')
-    users = request.data.get('users')
+    appointment = Appointment.objects.get(id=appointment_id)
+    user_ids = [int(user_id) for user_id in request.data.getlist('users')]  # Convert all values to integers
     used_spots = request.data.get('used_spots')
     available_spots = request.data.get('available_spots')
     sport_id = request.data.get('sport')
+    logger.info('The value of my_variable is: %s', user_ids)
+
     available = request.data.get('available')
+    sport = Sport.objects.get(id=sport_id)
+    if available == "false":
+        available_boolean = False
+    else:
+        available_boolean = True
+
+    # Retrieve user objects based on the provided user IDs
+    users = [User.objects.get(id=user_id) for user_id in user_ids]
+    logger.info("User ids: %s", user_ids)
+    logger.info('User objects: %s', users)
 
     # Create the UserAppointment object and save it to the database
     user_appointment = UserAppointment(
-        appointment=appointment_id,
+        appointment=appointment,
         used_spots=used_spots,
         available_spots=available_spots,
-        sport=sport_id,
-        available=available
+        sport=sport,
+        available=available_boolean
     )
     user_appointment.save()
     user_appointment.users.set(users)
 
     # Return a response indicating successful creation
     return Response({'message': 'UserAppointment created successfully'}, status=201)
+
+

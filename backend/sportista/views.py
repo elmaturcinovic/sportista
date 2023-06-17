@@ -399,15 +399,13 @@ def invites_sent_by_me(request):
             'id': invite.id,
             'receiver': {
                 'user_name': invite.receiver.user_name,
-                # Add other relevant properties of the receiver
             },
             'appointment': {
                 'sport_hall': {
                     'name': invite.appointment.sport_hall.name,
-                    # Add other relevant properties of the sport hall
+
                 },
                 'time': invite.appointment.time,
-                # Add other relevant properties of the appointment
             },
             'status': invite.status,
         }
@@ -427,15 +425,12 @@ def invites_received_by_me(request):
             'id': invite.id,
             'sender': {
                 'user_username': invite.sender.user_username,
-                # Add other relevant properties of the sender
             },
             'appointment': {
                 'sport_hall': {
                     'name': invite.appointment.sport_hall.name,
-                    # Add other relevant properties of the sport hall
                 },
                 'time': invite.appointment.time,
-                # Add other relevant properties of the appointment
             },
             'status': invite.status,
         }
@@ -443,41 +438,39 @@ def invites_received_by_me(request):
 
     return JsonResponse(serialized_invites, safe=False)
 
-
-api_view(['PUT'])
-def update_invite_status(request, invite_id):
+@api_view(['PATCH'])
+def accept_invite(request, invite_id):
     try:
         invite = Invites.objects.get(id=invite_id)
+        invite.status = 1
+        invite.save()
+        return Response(status=status.HTTP_200_OK)
     except Invites.DoesNotExist:
-        return Response({'error': 'Invite not found.'}, status=status.HTTP_404_NOT_FOUND)
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
-    invite.status = 1
-    invite.save()
-
-    serializer = InvitesSerializer(invite)
-    return Response(serializer.data, status=status.HTTP_200_OK)
-
-api_view(['GET'])
-def get_invite_details(request, invite_id):
-        try:
-            invite = Invites.objects.get(id=invite_id)
-        except Invites.DoesNotExist:
-            return Response({'error': 'Invite not found.'}, status=status.HTTP_404_NOT_FOUND)
-
-        serializer = InvitesSerializer(invite)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-@api_view(['PUT'])
-def update_user_appointments(request, appointment_id):
+@api_view(['POST'])
+def update_user_appointment(request, invite_id):
     try:
-        user_appointment = UserAppointment.objects.get(appointment_id=appointment_id)
-    except UserAppointment.DoesNotExist:
-        return Response({'error': 'UserAppointment not found.'}, status=status.HTTP_404_NOT_FOUND)
+        appointment_id = request.data.get('appointmentId')
+        user_id = request.data.get('userId')
 
-    users = request.data.get('users', [])
-    user_appointment.users.set(users)
-    user_appointment.save()
+        appointment = UserAppointment.objects.get(appointment_id=appointment_id)
+        appointment.users.add(user_id)
+        appointment.used_spots += 1
+        appointment.save()
 
-    serializer = UserAppointmentSerializer(user_appointment)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_200_OK)
+    except (UserAppointment.DoesNotExist, KeyError):
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['PATCH'])
+def decline_invite(request, invite_id):
+    try:
+        invite = Invites.objects.get(id=invite_id)
+        invite.status = 2
+        invite.save()
+        return Response(status=status.HTTP_200_OK)
+    except Invites.DoesNotExist:
+        return Response({'error': 'Invite not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

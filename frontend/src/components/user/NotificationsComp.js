@@ -32,7 +32,7 @@ const NotificationsComp = () => {
   };
 
 //Na klik Prihvati poziv, mijenja se status invite-a na 1 (Accepted) i dodaje se novi termin kod usera
-  const acceptInvite = async (inviteId) => {
+  const acceptInvite = async (inviteId, notification) => {
     try {
       await axios.patch(`http://127.0.0.1:8000/accept_invite/${inviteId}/`, {
         status: 1,
@@ -48,7 +48,7 @@ const NotificationsComp = () => {
   };
 
 //Na klik Odbaci poziv, mijenja se status invite-a na 2 (Rejected)
-  const declineInvite = async (inviteId) => {
+  const declineInvite = async (inviteId, notification) => {
     try {
       await axios.patch(`http://127.0.0.1:8000/decline_invite/${inviteId}/`, {
         status: 2,
@@ -83,12 +83,14 @@ const NotificationsComp = () => {
                 <td style={{ padding: '8px' }}>{notification.appointment.sport_hall.name}</td>
                 <td style={{ padding: '8px' }}>{notification.appointment.time}</td>
                 <td style={{ padding: '8px' }}>
-                  <button className="accept-invite-friend" onClick={() => acceptInvite(notification.id)}>Prihvati poziv</button>
+                  <button className="accept-invite-friend" onClick={() => acceptInvite(notification.id, notification)}>
+                    Prihvati poziv
+                    </button>
                 </td>
                 <td style={{ padding: '8px' }}>
-                  <button className="decline-invite-friend" onClick={() => declineInvite(notification.id)}>
+                  <button className="decline-invite-friend" onClick={() => declineInvite(notification.id, notification)}>
                     Odbaci poziv
-                  </button>
+                    </button>
                 </td>
               </tr>
             ))}

@@ -11,11 +11,11 @@ class Sport(models.Model):
 
 
 def get_default_user_photo():
-    return '/images/avatar.png'
+    return 'media/images/avatar.png'
 
 
 def get_default_sport_hall_photo():
-    return '/images/sport_hall.png'
+    return 'media/images/sport_hall.png'
 
 
 class User(models.Model):
@@ -104,7 +104,11 @@ class UserAppointment(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"Appointment at {self.appointment.sport_hall} for {self.user} for {self.used_spots}/{self.appointment.capacity} people"
+        if (self.users):
+            user = self.users.first()
+        else:
+            user = None
+        return f"Appointment at {self.appointment.sport_hall} for {user} for {self.used_spots}/{self.appointment.capacity} people"
 
 class Rating(models.Model):
     sport_hall = models.ForeignKey(SportsHall, on_delete=models.CASCADE)

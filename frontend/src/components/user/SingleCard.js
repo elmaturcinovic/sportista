@@ -42,7 +42,7 @@ const SingleCard = ({item}) => {
             />
         </div>
         <div className="content-container">
-            <h2 id="company-name-card">{item.name}</h2>
+            <h4 id="company-name-card">{item.name}</h4>
             <h5 id="company-address-card">{item.address}, {item.city}</h5>
             <h6 id="company-sports-card">
                 {sportNames.map((sport) => sport).join(', ')}

@@ -38,4 +38,9 @@ urlpatterns = [
     path('decline_invite/<int:invite_id>/', views.decline_invite, name='decline_invite'),
     
     path('add_user_appointment/', views.add_user_appointment, name="add_user_appointment"),
+    path('get_all_users/', views.get_all_users, name="get_all_users"),
+    path('get_user_appointments_by_appointments/', views.get_user_appointments_by_appointments, name='get_user_appointments_by_appointments'),
+
+
+
 ]

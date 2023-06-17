@@ -484,6 +484,13 @@ def add_user_appointment(request):
     # Return a response indicating successful creation
     return Response({'message': 'UserAppointment created successfully'}, status=201)
 
+@api_view(['GET'])
+def get_user_appointments_by_appointments(request):
+    appointment_ids = request.GET.getlist('appointmentIds[]')
+    user_appointments = UserAppointment.objects.filter(appointment__in=appointment_ids)
+    serialized_user_appointments = UserAppointmentSerializer(user_appointments, many=True)
+    return Response(serialized_user_appointments.data)
+
 
 @api_view(['DELETE'])
 def delete_appointment(request, appointment_id):

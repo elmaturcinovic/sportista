@@ -4,11 +4,11 @@ import './styles_user.css';
 import axios from 'axios';
 import DropDownCompSports from './DropdownCompSports';
 
-function UserFieldCard({ appointment }) {
+function UserFieldCard({ appointment, booked, availableSpots1, fetchAppointmentsData }) {
   const user_id = sessionStorage.getItem('id')
   const { id: appointmentId, time_start, time_end, sport_hall, date, capacity, price, sports } = appointment;
   const [openModal, setOpenModal] = useState(false);
-  const [sportHall, setSportHall] = useState('');
+  const [sportHallObject, setSportHallObject] = useState('');
   const [sportNames, setSportNames] = useState([]);
   const [selectedSport, setSelectedSport] = useState();
   const [sportObjects, setSportsObjects] = useState([]);
@@ -17,8 +17,19 @@ function UserFieldCard({ appointment }) {
   const [availableSpots, setAvailableSpots] = useState(capacity - numberOfPlayers);
   const [users, setUsers] = useState([parseInt(sessionStorage.getItem('id'))]);
   console.log(users)
+  
 
-
+  const[background, setBackground] = useState('#d7fce1')
+  useEffect(()=>{
+    if (booked) {
+      if (appointment.available) {
+        setBackground('#fcf8d7')
+      }else{
+        setBackground('#fff0f0')
+      }
+    }
+  }, [appointment, booked])
+  
 
   useEffect(() => {
     fetchSportNames(sports);
@@ -29,9 +40,8 @@ function UserFieldCard({ appointment }) {
       .get(`http://127.0.0.1:8000/get_sport_hall_by_id/${sport_hall}`)
       .then(
         (response) => {
-          setSportHall(response.data);
+          setSportHallObject(response.data);
           console.log(response.data);
-          console.log(date);
         },
         (error) => {
           console.log(error);
@@ -66,15 +76,6 @@ function UserFieldCard({ appointment }) {
     formData.append('available_spots', capacity - numberOfPlayers);
     formData.append('sport', selectedSport);
     formData.append('available', allowOtherPlayers);
-    console.log("form data:")
-    console.log(parseInt(appointmentId))
-    console.log(users)
-    console.log(date)
-    console.log(numberOfPlayers)
-    console.log(capacity - numberOfPlayers)
-    console.log(selectedSport)
-    console.log(allowOtherPlayers)
-    console.log(formData);
 
     axios
     .post('http://127.0.0.1:8000/add_user_appointment/', formData)
@@ -85,7 +86,7 @@ function UserFieldCard({ appointment }) {
     .catch((error) => {
       console.log(error); // Handle any errors
     });
-
+    fetchAppointmentsData();
     setOpenModal(false);
   };
 
@@ -127,8 +128,15 @@ function UserFieldCard({ appointment }) {
 
   return (
     <div>
-      <div className='user-card-container' onClick={showModal}>
-        <div className='user-card-title'>{sportNames.map((sport) => sport).join(', ')}</div>
+      <div 
+        className={`user-card-container ${booked && !appointment.available ? 'disabled' : ''}`} 
+        onClick={booked && !appointment.available ? null : showModal}
+        style={{ backgroundColor: background }}
+      >
+        <div className='user-card-title'>
+          {sportNames.map((sport) => sport).join(', ')} 
+          {(!booked || (booked && appointment.available)) && <> ({availableSpots1} osoba)</>}
+        </div>
         <div className='user-card-time'>
           Vrijeme: {formatTime(time_start)} - {formatTime(time_end)}
         </div>
@@ -144,7 +152,7 @@ function UserFieldCard({ appointment }) {
               <tbody>
                 <tr>
                   <th>Naziv terena: </th>
-                  <td>{sportHall.name}</td>
+                  <td>{sportHallObject.name}</td>
                 </tr>
                 <tr>
                   <th>Vrijeme:</th>

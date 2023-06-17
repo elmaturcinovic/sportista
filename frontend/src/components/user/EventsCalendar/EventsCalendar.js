@@ -16,7 +16,6 @@ const EventsCalendar = ({ onDateChange }) => {
     onDateChange(formattedDate);
   };
 
-
   const getTimes = ()=> {
     if(!date.justDate) return
 

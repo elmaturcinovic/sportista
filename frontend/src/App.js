@@ -9,7 +9,6 @@ import Login from './components/auth/Login';
 import './App.css';
 import './stylesheet_auth.css'
 import UserProfile from './components/user/UserProfile';
-import UserScheduledPage from "./components/user/UserScheduledPage";
 import UserNotificationsPage from './components/user/UserNotificationsPage';
 import CompanyHomepage from './components/Companies/CompanyHomepage';
 import FieldDetail from './components/user/FieldDetails.js/FieldDetail';

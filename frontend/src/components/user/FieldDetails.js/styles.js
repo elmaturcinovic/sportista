@@ -37,13 +37,14 @@ const useStyles = makeStyles(() =>
         backgroundColor: 'white',
         width: '100%',
         borderRadius: 10,
-        maxHeight: '425px',
+        maxHeight: '430px',
         color: '#303030'
     },
     scrollViewCard: {
       overflow: 'auto', 
-      maxHeight: '360px',
-      color: '#303030'
+      maxHeight: '430px',
+      color: '#303030',
+      borderRadius: '15px'
 
     },
     aboutFieldTitle: {

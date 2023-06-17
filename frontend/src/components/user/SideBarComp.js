@@ -1,18 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {useHistory } from "react-router-dom/cjs/react-router-dom";
+import axios from "axios";
 
+const SideBarComp = ({user, fetchUser}) => {
 
-const SideBarComp = () => {
-
-    //usestate staviti na 0, radi prikaza stavljeno na 3
-    const [notificationCount, setNotificationCount] = useState(3); 
-
+    //usestate staviti na 0, radi prikaza stavljeno na 4
+    //mora se uzeti broj obavijesti iz notif komponente
+    const [notificationCount, setNotificationCount] = useState(4); 
+    
+    const id = sessionStorage.getItem("id")
     const name = sessionStorage.getItem("name")
     const lastname = sessionStorage.getItem("lastname")
     const username = sessionStorage.getItem("username")
     const email = sessionStorage.getItem("email")
     const photo = sessionStorage.getItem("image")
 
+    
+    useEffect(() => {
+        fetchUser(id);
+        console.log(user)
+    }, [id]);
+    
 
     const field = {
         name: name,
@@ -49,7 +57,7 @@ const SideBarComp = () => {
     return (
         <div className="side-bar-div">
             <div className="image-username">
-                <img src={`http://localhost:8000${field.photo}`} alt="Slika profila" id="profile-image"/>
+                <img src={`http://localhost:8000${user.user_photo}`} alt="Slika profila" id="profile-image"/>
                 <p className="username">{field.username}</p>
             </div>
             <div className="user-buttons">
@@ -61,7 +69,7 @@ const SideBarComp = () => {
                 </button>
                 <button className="menu-button" onClick={logout}>Odjavi se</button>
             </div>
-            <img src={'logo.png'} alt="logo" id="user-logo-image"/>
+            <img src={'./../logo.png'} alt="logo" id="user-logo-image"/>
         </div>
     );
 }

@@ -1,9 +1,24 @@
 import { useState, useEffect } from "react";
 import ChooseFileComp from "./ChooseFileComp";
 import ChangePasswordComp from "./ChangePasswordComp";
+import axios from 'axios';
 
-const ProfileComp = () => {
+const ProfileComp = ({user, fetchUser}) => {
+
   const [password, setPassword] = useState('');
+
+  const id = sessionStorage.getItem('id');
+  const email = sessionStorage.getItem('email');
+  const cover_photo = sessionStorage.getItem('image')
+  const name = sessionStorage.getItem('name');
+  const lastname = sessionStorage.getItem('lastname');
+  const username = sessionStorage.getItem('username');
+  const pass_invisible = "*".repeat(password.length);
+
+  useEffect(() => {
+    fetchUser(id);
+    console.log(user)
+  }, [id]);
 
   useEffect(() => {
     const storedPassword = sessionStorage.getItem("password");
@@ -14,11 +29,11 @@ const ProfileComp = () => {
     setPassword(newPassword);
   };
 
-    const name = sessionStorage.getItem("name");
-    const lastname = sessionStorage.getItem("lastname");
-    const username = sessionStorage.getItem("username");
-    const email = sessionStorage.getItem("email");
-    const pass_invisible = "*".repeat(password.length);
+  useEffect(() => {
+    fetchUser(id);
+    console.log(user)
+  }, [id]);
+
 
     return (
         <div className="profile-div">
@@ -63,7 +78,10 @@ const ProfileComp = () => {
                 </table>
             </div>
             <div className="schedule-second-div">
-                <ChooseFileComp/>
+                <ChooseFileComp 
+                    user={user}
+                    fetchUser={fetchUser}
+                />
             </div>
     </div>
   );

@@ -16,6 +16,7 @@ const Appointments = () => {
     const cover_photo = sessionStorage.getItem('image');
     const history = useHistory(); 
     const [sports, setSports] = useState([]);
+    const [user, setUser] = useState([]);
     const [selectedSports, setSelectedSports] = useState([]);
     const [sportHalls, setSportHalls] = useState([]);
     const [showFilter, setShowFilter] = useState(false);
@@ -28,10 +29,11 @@ const Appointments = () => {
     });
 
     useEffect(() => {
+        fetchUser(id);
         fetchSports();
         fetchSportHalls();
         fetchAppointments();
-      }, []);
+      }, [id]);
 
     // Function to fetch sport names from the backend
     function fetchSports() {
@@ -43,6 +45,19 @@ const Appointments = () => {
         }
         );
     }
+
+    function fetchUser(id) {
+        axios
+          .get(`http://127.0.0.1:8000/get_user/${id}/`)
+          .then((response) => {
+            setUser(response.data);
+            sessionStorage.setItem('image', user.user_photo)
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     
     function fetchSportHalls() {
         axios.get(`http://127.0.0.1:8000/get_sport_halls_by_user/${id}/`).then((response) => {
@@ -99,6 +114,9 @@ const Appointments = () => {
         formData.append('time_start', formState.time_start)
         formData.append('time_end', formState.time_end)
         formData.append('capacity', formState.capacity)
+        formData.append('price', formState.price)
+
+        console.log(formData)
 
         try {
             const response = await axios.post('http://127.0.0.1:8000/add_new_appointment/', formData);
@@ -130,35 +148,35 @@ const Appointments = () => {
         return `${hours}:${minutes}`;
       };
     
-      const handleFilterSubmit = (e) => {
-        e.preventDefault();
-            const filteredAppointments = appointments.filter((appointment) => {
-                console.log(filterData)
-                console.log(appointment)
-                if (filterData.sportHall !== '' && appointment.sport_hall !== filterData.sportHall) {
-                    return false;
+    const handleFilterSubmit = (e) => {
+    e.preventDefault();
+        const filteredAppointments = appointments.filter((appointment) => {
+            console.log(filterData)
+            console.log(appointment)
+            if (filterData.sportHall !== '' && appointment.sport_hall !== filterData.sportHall) {
+                return false;
+            }
+            if (filterData.sports.size > 0) {
+                const appointmentSports = new Set(appointment.sports.map((sport) => sport));
+                const intersection = [...filterData.sports].filter((sportId) => appointmentSports.has(sportId));
+                if (intersection.length === 0) {
+                return false;
                 }
-                if (filterData.sports.size > 0) {
-                    const appointmentSports = new Set(appointment.sports.map((sport) => sport));
-                    const intersection = [...filterData.sports].filter((sportId) => appointmentSports.has(sportId));
-                    if (intersection.length === 0) {
-                    return false;
-                    }
-                }
-                if (filterData.date !== '' && appointment.date !== filterData.date) {
-                    return false;
-                }
-                return true;
-            });
-        
-        setAppointments(filteredAppointments);
-        setShowFilter(false)
-      };
+            }
+            if (filterData.date !== '' && appointment.date !== filterData.date) {
+                return false;
+            }
+            return true;
+        });
+    
+    setAppointments(filteredAppointments);
+    setShowFilter(false)
+    };
       
 
     return (
         <div className='homepage'>
-            <div className='cover-photo' style={{ width: '100%', height: '200px', background: `url(http://localhost:8000${cover_photo}) no-repeat center/cover` }}></div>
+            <div className='cover-photo' style={{ width: '100%', height: '200px', background: `url(http://localhost:8000${user.user_photo}) no-repeat center/cover` }}></div>
             <Navbar></Navbar>
             <div className='content'>
                 <div className='title title-filters'>
@@ -242,8 +260,9 @@ const Appointments = () => {
                             <th>ID</th>
                             <th>Naziv terena</th>
                             <th>Datum</th>
-                            <th>Početak</th>
-                            <th>Kraj</th>
+                            <th>Vrijeme</th>
+                            <th>Sport</th>
+                            <th>Cijena</th>
                             <th>Status</th>
                             <th className='right-col'>
                                 <button className="add-button" onClick={() => setShowModal(true)}>
@@ -258,8 +277,11 @@ const Appointments = () => {
                             <td>#{appointment.id}</td>
                             <td>{appointment.sport_hall}</td>
                             <td>{appointment.date}</td>
-                            <td>{formatTime(appointment.time_start)}</td>
-                            <td>{formatTime(appointment.time_end)}</td>
+                            <td>{formatTime(appointment.time_start)}-{formatTime(appointment.time_end)}</td>
+                            <td>
+                                {appointment.sports.map((sport) => sport).join(', ')}
+                            </td>
+                            <td>{appointment.price} KM</td>
                             <td></td>
                             <td className='right-col'><AiOutlineDelete className='delete-icon' onClick={() => deleteAppointment(appointment.id)} /></td>
                         </tr>   

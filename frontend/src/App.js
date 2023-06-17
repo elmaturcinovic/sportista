@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from  'react-router-dom';
 import Registration from './components/auth/Registration';
 import LandingPage from './components/auth/LandingPage';
-import CompanyProfile from './components/Companies/CompanyProfile';
 import ToggleSwitch from './components/ToggleSwitch';
 import UserMainPage from "./components/user/UserMainPage";
 import Login from './components/auth/Login';
@@ -52,7 +51,7 @@ function App() {
                     </Route>
                     <Route exact path="/profil">
                         {id && tip==0 && <UserProfile/>}
-                        {id && tip==1 && <CompanyProfile/> }
+                        {id && tip==1 && <CompanySettings/>}
                         {!id && <Redirect to="/"/>}
                     </Route>
 
@@ -61,12 +60,6 @@ function App() {
                         {id && tip==1 && <CompanyFieldDetails/> }
                         {!id && <Redirect to="/"/>}
                     </Route>
-                    
-                    <Route exact path="/field-detail">
-                        {id && tip==0 && <FieldDetail/>}
-                        {id && tip==1 &&  <UserProfile/>}
-                        {!id && <Redirect to="/"/>}
-                    </Route> 
                     <Route exact path="/termini">
                         {id && tip==1 && <Appointments/> }
                         {!id && <Redirect to="/"/>}
@@ -74,7 +67,6 @@ function App() {
 
                     <Route path="/rezervirani-termini" component={UserReservedPage}/>
                     <Route path="/moje-obavijesti" component={UserNotificationsPage}/>
-                    <Route path="/postavke" component={CompanySettings}/>
                 </Switch>
             </Router>
 

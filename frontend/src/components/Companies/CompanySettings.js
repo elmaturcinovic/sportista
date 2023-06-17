@@ -1,34 +1,75 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import Navbar from "./Navbar";
-import ChangePasswordComp from "../user/ChangePasswordComp";
-import ChooseFileComp from "../user/ChooseFileComp"
+import { AiOutlineEdit } from 'react-icons/ai';
+import CoverPhotoSelectionForm from "./CoverPhotoSelectionForm";
+import axios from "axios";
+import ChangePasswordForm from "./ChangePasswordForm";
 
 
 const CompanySettings = () => {
-
+  
   const [password, setPassword] = useState('');
+  const [showPhotoSelectionForm, setShowPhotoSelectionForm] = useState(false);
+  const [user, setUser] = useState([]);
+  const [showPasswordChangeForm, setShowPasswordChangeForm] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState(sessionStorage.getItem('image'));
 
-  useEffect(() => {
-    const storedPassword = sessionStorage.getItem("password");
-    setPassword(storedPassword);
-  }, []);
+  const id = sessionStorage.getItem('id');
+  const email = sessionStorage.getItem('email');
+  const cover_photo = sessionStorage.getItem('image')
+  const name = sessionStorage.getItem('name');
+  const lastname = sessionStorage.getItem('lastname');
+  const username = sessionStorage.getItem('username');
+  const pass_invisible = "*".repeat(password.length);
 
-  const handlePasswordChange = (newPassword) => {
-    setPassword(newPassword);
+    useEffect(() => {
+      fetchUser(id);
+    }, [id]);
+
+    useEffect(() => {
+      const storedPassword = sessionStorage.getItem("password");
+      setPassword(storedPassword);
+    }, []);
+
+    const handlePasswordChange = (newPassword) => {
+      setPassword(newPassword);
+    };
+
+    const handleEditPhoto = () => {
+      setShowPhotoSelectionForm(!showPhotoSelectionForm);
+    };
+    const handleChangePassword = () => {
+      setShowPasswordChangeForm(!showPasswordChangeForm);
   };
-    
-    const id = sessionStorage.getItem('id');
-    const email = sessionStorage.getItem('email');
-    const cover_photo = sessionStorage.getItem('image')
-    const name = sessionStorage.getItem('name');
-    const lastname = sessionStorage.getItem('lastname');
-    const username = sessionStorage.getItem('username');
-    const pass_invisible = "*".repeat(password.length);
+
+    function fetchUser(id) {
+      axios
+        .get(`http://127.0.0.1:8000/get_user/${id}/`)
+        .then((response) => {
+          setUser(response.data);
+          setSelectedPhoto(user.user_photo)
+          sessionStorage.setItem('image', user.user_photo)
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    useEffect(() => {
+      fetchUser(id);
+    }, [id]);
 
     return (
       <div className='homepage'>
-        <div className='cover-photo' style={{ width: '100%', height: '200px', background: `url(http://localhost:8000${cover_photo}) no-repeat center/cover` }}></div>
+        <div className="cover-wrapper">
+        <div className='cover-photo' style={{ width: '100%', height: '200px', background: `url(http://localhost:8000${user.user_photo}) no-repeat center/cover` }}></div>
+          <div className="edit-cover-photo-icon" onClick={handleEditPhoto}>
+            <AiOutlineEdit />
+          </div>
+        </div>
+        
         <Navbar></Navbar>
         <div className='content'>
             <div className='title'>
@@ -37,17 +78,12 @@ const CompanySettings = () => {
             <table className="table">
                 <tbody>
                     <tr>
-                        <td>Ime:</td>
-                        <td>{name}</td>
+                        <td>Ime i prezime vlasnika:</td>
+                        <td>{name} {lastname}</td>
                         <td></td>
                     </tr>
                     <tr>
-                        <td>Prezime:</td>
-                        <td>{lastname}</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Korisnicko ime:</td>
+                        <td>Korisničko ime (ime kompanije):</td>
                         <td>{username}</td>
                         <td></td>
                    </tr>
@@ -59,17 +95,28 @@ const CompanySettings = () => {
                     <tr>
                         <td>Lozinka:</td>
                         <td>{pass_invisible}</td>
-                        <td></td>
+                        <td className="right-col">
+                            <AiOutlineEdit  onClick={handleChangePassword}/>
+                        </td>
                     </tr>
                 </tbody>
             </table>
-            <div className="comp-settings-button" style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "start" }}>       
-                <ChangePasswordComp
+            {showPasswordChangeForm &&
+                <ChangePasswordForm
                     password={password}
                     onPasswordChange={handlePasswordChange}
+                    showPasswordChangeForm={showPasswordChangeForm}
+                    setShowPasswordChangeForm={setShowPasswordChangeForm}
                 />
-                <ChooseFileComp/>
-            </div>
+            }
+            {showPhotoSelectionForm &&
+            <CoverPhotoSelectionForm
+              showPhotoSelectionForm={showPhotoSelectionForm}
+              setShowPhotoSelectionForm={setShowPhotoSelectionForm}
+              user={user}
+              fetchUser={fetchUser}
+            />
+            }
         </div>
       </div>
     );

@@ -17,6 +17,8 @@ const ModalComp = ({ showModal, setShowModal, selectedSports, setSelectedSports,
     name: "",
     address: "",
     city: "",
+    email: "",
+    phone_number:"",
     sports: new Set(),
     photo: null,
   });
@@ -36,6 +38,8 @@ const ModalComp = ({ showModal, setShowModal, selectedSports, setSelectedSports,
       name: "",
       address: "",
       city: "",
+      email: "",
+      phone_number:"",
       sports: new Set(),
       photo: null,
     });
@@ -52,7 +56,7 @@ const ModalComp = ({ showModal, setShowModal, selectedSports, setSelectedSports,
     );
 }
 
-  const { name, address, city, sports, photo } = formState;
+  const { name, address, city, email, phone_number, sports, photo } = formState;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -82,15 +86,33 @@ const ModalComp = ({ showModal, setShowModal, selectedSports, setSelectedSports,
       }));
     }
   };
+
   const handlePhotoChange = (e) => {
-    setFormState((prevState) => ({
-      ...prevState,
-      photo: e.target.files[0],
-    }));
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('photo', file);
+  
+    // Upload the photo to the backend
+    axios.post('http://127.0.0.1:8000/upload_photo/', formData)
+        .then(response => {
+            // Get the path to the uploaded photo from the response
+            const photoPath = response.data.path;
+            console.log(photoPath)
+    
+            // Update the photo variable with the path
+            setFormState((prevState) => ({
+              ...prevState,
+              photo: photoPath,
+            }));
+        })
+        .catch(error => {
+            console.error('Error uploading photo:', error);
+        });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(formState)
     try {
       const sportHallId = await handleAddSportHall(formState);
       setShowModal(false);
@@ -128,6 +150,18 @@ const ModalComp = ({ showModal, setShowModal, selectedSports, setSelectedSports,
             <label>
               Grad:
               <input type="text" name="city" value={city} onChange={handleInputChange} />
+            </label>
+          </div>
+          <div className="form-group">
+            <label>
+              Email:
+              <input type="text" name="email" value={email} onChange={handleInputChange} />
+            </label>
+          </div>
+          <div className="form-group">
+            <label>
+              Telefon:
+              <input type="text" name="phone_number" value={phone_number} onChange={handleInputChange} />
             </label>
           </div>
           <div className="form-group">
@@ -174,10 +208,18 @@ const CompanyHomepage = () => {
   const [city, setCity] = useState('');
   const [sports, setSports] = useState([]);
   const [photo, setPhoto] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone_number, setPhoneNumber] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [selectedSports, setSelectedSports] = useState(new Set());
+  const [user, setUser] = useState([]);
+
 
   const [sportHalls, setSportHalls] = useState([]);
+
+  useEffect(() => {
+    fetchUser(id);
+  }, [id]);
 
   useEffect(() => {
     fetchSportHalls();
@@ -191,6 +233,19 @@ const CompanyHomepage = () => {
       console.log(error);
     }
     );
+  }
+
+  function fetchUser(id) {
+    axios
+      .get(`http://127.0.0.1:8000/get_user/${id}/`)
+      .then((response) => {
+        setUser(response.data);
+        sessionStorage.setItem('image', user.user_photo)
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   const deleteSportHall = async (sportHallId) => {
@@ -208,6 +263,8 @@ const CompanyHomepage = () => {
     formData.append('name', formState.name);
     formData.append('address', formState.address);
     formData.append('city', formState.city)
+    formData.append('email', formState.email)
+    formData.append('phone_number', formState.phone_number)    
     formData.append('owner', id)
 
     formState.sports.forEach((sport) => {
@@ -259,7 +316,7 @@ const navigateToSportHallDetails = (sportHallId) => {
 
   return (
     <div className='homepage'>
-      <div className='cover-photo' style={{ width: '100%', height: '200px', background: `url(http://localhost:8000${cover_photo}) no-repeat center/cover` }}></div>
+      <div className='cover-photo' style={{ width: '100%', height: '200px', background: `url(http://localhost:8000${user.user_photo}) no-repeat center/cover` }}></div>
       <Navbar></Navbar>
       <div className='content'>
         <div className='title'>
@@ -282,7 +339,7 @@ const navigateToSportHallDetails = (sportHallId) => {
           <tbody>
             {sportHalls.map(sportHall => (
               <tr key={sportHall.id} >
-                <td><img className='sport_hall_photo_table' src={`http://localhost:8000${sportHall.photo}`} /></td>
+                <td><img className='sport_hall_photo_table' src={`http://localhost:8000${user.user_photo}`} /></td>
                 <td onClick={() => navigateToSportHallDetails(sportHall.id)}>{sportHall.name}</td>
                 <td>{sportHall.address}, {sportHall.city}</td>
                 <td>{determineStatus(sportHall.working_days, sportHall.work_time_begin, sportHall.work_time_end)}</td>

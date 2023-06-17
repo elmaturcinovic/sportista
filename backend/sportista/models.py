@@ -58,6 +58,8 @@ class SportsHall(models.Model):
     work_time_begin = models.TimeField(null=True, blank=True)
     work_time_end = models.TimeField(null=True, blank=True)
     working_days = models.ManyToManyField(Day, blank=True)
+    email = models.CharField(max_length=50)
+    phone_number = models.CharField(max_length=20)
 
 
     def __str__(self):
@@ -78,15 +80,17 @@ class Appointment(models.Model):
     time_start = models.TimeField()
     time_end = models.TimeField()
     capacity = models.IntegerField(null=True, blank=True)
+    price = models.FloatField(default=0) 
 
     def __str__(self):
-        return f"Appointment at {self.sport_hall} for {self.sports} on {self.date} at {self.time_start}"
+        return f"Appointment at {self.sport_hall} for {self.sports} on {self.date} at {self.time_start}. Price: {self.price}"
 
 class UserAppointment(models.Model):
     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE)
     users = models.ManyToManyField(User)
     available_spots = models.IntegerField()
     used_spots = models.IntegerField(default=0)
+    sport = models.ForeignKey(Sport, on_delete=models.CASCADE)
     available = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):

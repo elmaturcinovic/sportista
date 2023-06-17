@@ -15,13 +15,12 @@ const AddAppointmentModal = ({showModal, setShowModal, handleAddAppointment, all
         date: '',
         time_start: '',
         time_end: '',
-        capacity: ''
+        capacity: '',
+        price: 0.00
     });
     const [workTimeStart, setWorkTimeStart] = useState('');
     const [workTimeEnd, setWorkTimeEnd] = useState('');
-
-
-
+    
     useEffect(() => {
         if (showModal) {
           if (sportOptions.length === 0) {
@@ -45,12 +44,13 @@ const AddAppointmentModal = ({showModal, setShowModal, handleAddAppointment, all
             date: '',
             time_start: '',
             time_end: '',
-            capacity: ''
+            capacity: '',
+            price: 0.00
         });
         setSelectedSports(new Set())
     };
 
-    const { sport_hall, sports, date, time_start, time_end, capacity } = formState;
+    const { sport_hall, sports, date, time_start, time_end, capacity, price } = formState;
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -92,7 +92,7 @@ const AddAppointmentModal = ({showModal, setShowModal, handleAddAppointment, all
                 ...prevFormState,
                 time_start: response.data.work_time_begin,
                 time_end: response.data.work_time_end,
-              }));
+            }));
         } catch (error) {
             console.log(error);
         }
@@ -206,6 +206,14 @@ const AddAppointmentModal = ({showModal, setShowModal, handleAddAppointment, all
                             </th>
                             <td>
                                 <input id="capacity" type="number" name="capacity" defaultValue='0' min='0' onChange={handleInputChange} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                               <label className='filter-form-label'>Cijena termina:</label>
+                            </th>
+                            <td>
+                                <input id="price" type="number" step="0.01" name="price" defaultValue='0.00' min='0.00' onChange={handleInputChange} /> KM
                             </td>
                         </tr>
                     </tbody>

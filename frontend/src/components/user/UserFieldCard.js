@@ -5,6 +5,7 @@ import axios from 'axios';
 import DropDownCompSports from './DropdownCompSports';
 
 function UserFieldCard({ appointment }) {
+  const user_id = sessionStorage.getItem('id')
   const { id: appointmentId, time_start, time_end, sport_hall, date, capacity, price, sports } = appointment;
   const [openModal, setOpenModal] = useState(false);
   const [sportHall, setSportHall] = useState('');
@@ -14,6 +15,10 @@ function UserFieldCard({ appointment }) {
   const [numberOfPlayers, setNumberOfPlayers] = useState(1);
   const [allowOtherPlayers, setAllowOtherPlayers] = useState(false);
   const [availableSpots, setAvailableSpots] = useState(capacity - numberOfPlayers);
+  const [users, setUsers] = useState([parseInt(sessionStorage.getItem('id'))]);
+  console.log(users)
+
+
 
   useEffect(() => {
     fetchSportNames(sports);
@@ -54,15 +59,16 @@ function UserFieldCard({ appointment }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData();
-    formData.append('appointment', appointmentId);
-    formData.append('users', `[${sessionStorage.getItem('id')}]`);
+    formData.append('appointment', appointment.id);
+    formData.append('users', users);
     formData.append('date', date);
     formData.append('used_spots', numberOfPlayers);
     formData.append('available_spots', capacity - numberOfPlayers);
     formData.append('sport', selectedSport);
     formData.append('available', allowOtherPlayers);
-    console.log(appointmentId)
-    console.log(`[${sessionStorage.getItem('id')}]`)
+    console.log("form data:")
+    console.log(parseInt(appointmentId))
+    console.log(users)
     console.log(date)
     console.log(numberOfPlayers)
     console.log(capacity - numberOfPlayers)
@@ -108,7 +114,7 @@ function UserFieldCard({ appointment }) {
   }
 
   const handleSportChange = (selectedValue) => {
-    setSelectedSport(selectedValue);
+    setSelectedSport(parseInt(selectedValue));
     console.log(selectedValue); // Updated selectedSport value
   };
 

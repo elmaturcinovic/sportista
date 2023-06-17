@@ -30,12 +30,14 @@ urlpatterns = [
     path('get_user_appointments_by_user/<int:user_id>/', views.get_user_appointments_by_user, name="get_user_appointments_by_user"),
     path('delete_user_appointment/<int:user_id>/', views.delete_user_appointment, name="delete_user_appointment"), 
     path('get_all_sport_halls/', views.get_all_sport_halls, name="get_all_sport_halls"),
-   
-    path('invites_sent_by_me/<int:user_id>/', views.invites_sent_by_me, name="invites_sent_by_me"),
-    path('invites_received_by_me/<int:user_id>/', views.invites_received_by_me, name="invites_received_by_me"),
-   
+    path('add_user_appointment/', views.add_user_appointment, name="add_user_appointment"),
+    path('invites_sent_by_me/', views.invites_sent_by_me, name="invites_sent_by_me"),
+    path('invites_received_by_me/', views.invites_received_by_me, name="invites_received_by_me"),
     path('accept_invite/<int:invite_id>/', views.accept_invite, name='accept_invite'),
     
     path('update_user_appointment/<int:invite_id>/', views.update_user_appointment, name='update_user_appointment'),
     path('decline_invite/<int:invite_id>/', views.decline_invite, name='decline_invite'),
+    path('get_all_users/', views.get_all_users, name="get_all_users"),
+
+
 ]

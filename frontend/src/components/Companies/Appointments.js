@@ -72,7 +72,7 @@ const Appointments = () => {
     function fetchAppointments() {
         axios.get(`http://127.0.0.1:8000/get_all_appointments_by_owner/${id}/`).then((response) => {
           setAppointments(response.data);
-          console.log(response.data);
+          console.log("ALLALLALALALAL", response.data);
         }, (error) => {
           console.log(error);
         }
@@ -273,7 +273,7 @@ const Appointments = () => {
                     </thead>
                     <tbody>
                         {appointments.map(appointment => (
-                        <tr>
+                        <tr className='slobodan'>
                             <td>#{appointment.id}</td>
                             <td>{appointment.sport_hall}</td>
                             <td>{appointment.date}</td>
@@ -282,7 +282,7 @@ const Appointments = () => {
                                 {appointment.sports.map((sport) => sport).join(', ')}
                             </td>
                             <td>{appointment.price} KM</td>
-                            <td></td>
+                            <td>{!appointment.available ? 'slobodan' : 'zauzet'}</td>
                             <td className='right-col'><AiOutlineDelete className='delete-icon' onClick={() => deleteAppointment(appointment.id)} /></td>
                         </tr>   
                         ))}

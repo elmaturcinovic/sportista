@@ -42,13 +42,13 @@ const getReceivedInvites = async () => {
       await axios.patch(`http://127.0.0.1:8000/accept_invite/${inviteId}/`, {
         status: 1,
       });
-      await axios.post(`http://127.0.0.1:8000/update_user_appointment/${inviteId}/`, {
+      await axios.post(`http://127.0.0.1:8000/update_user_appointment/`, {
         appointmentId: notification.appointment.id,
         userId: notification.receiver.id,
       });
       getReceivedInvites();
     } catch (error) {
-      console.error('Error accepting invite:', error);
+      console.error('Greška prihvatanja pozivnice za sportski termin sa ID: ', inviteId, " sa greškom: ", error);
     }
   };
 
@@ -60,7 +60,7 @@ const getReceivedInvites = async () => {
       });
       getReceivedInvites();
     } catch (error) {
-      console.error('Error declining invite:', error);
+      console.error('Greška odbijanja pozivnice za sportski termin sa ID: ', inviteId, " sa greškom: ", error);
     }
   };
 
@@ -85,7 +85,7 @@ const getReceivedInvites = async () => {
                 <td style={{ padding: '8px' }}>
                   Korisnik {notification.sender.user_username} vam šalje poziv da mu se pridružite!
                 </td>
-                <td style={{ padding: '8px' }}>{notification.appointment.sport_hall.name}</td>
+                <td style={{ padding: '8px' }}>{notification.id}</td>
                 <td style={{ padding: '8px' }}>{notification.appointment.time}</td>
                 <td style={{ padding: '8px' }}>
                   <button className="accept-invite-friend" onClick={() => acceptInvite(notification.id, notification)}>
@@ -104,15 +104,20 @@ const getReceivedInvites = async () => {
                 <td
                   style={{
                     padding: '10px',
-                    backgroundColor: notification.status === 1 ? '#61dafb' : '#FA8072',
+                    backgroundColor: notification.status === 1 ? '#d7fce1' : notification.status === 0 ? '#fcf8d7' : '#fff0f0',
                     borderRadius: '25px',
+                    border: "solid 1px rgba(0, 0, 0, 0.176)"
                   }}
                 >
-                  {notification.status === 1
-                    ? `Korisnik ${notification.receiver.user_name} je prihvatio vaš zahtjev za termin!`
-                    : `Korisnik ${notification.receiver.user_name} je odbio vaš zahtjev za termin!`}
+                  {
+                  notification.status === 1
+                    ? `Korisnik *invite ID: ${notification.id} je prihvatio vaš zahtjev za termin!`
+                    : notification.status === 0
+                    ? `Korisniku *invite ID: ${notification.id} ste poslali zahtjev za termin!`
+                    : `Korisnik *invite ID: ${notification.id} je odbio vaš zahtjev za termin!`
+                    }
                 </td>
-                <td style={{ padding: '8px' }}>{notification.appointment.sport_hall.name}</td>
+                <td style={{ padding: '8px' }}>{notification.appointment.sport_hall}</td>
                 <td style={{ padding: '8px' }}>{notification.appointment.time}</td>
               </tr>
             ))}

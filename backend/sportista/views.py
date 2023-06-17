@@ -22,15 +22,14 @@ logger = logging.getLogger(__name__)
 def index(request):
     username = request.data.get('username')
     password = request.data.get('password')
-    print(username + " " + password)
-    rez = User.objects.get(user_username = username, user_password = password)
-    try:
-        user = User.objects.get(user_username=username, user_password=password)
+    if User.objects.filter(user_username = username, user_password = password).exists():
+        user = User.objects.get(user_username = username, user_password = password)
         serializer = UserSerializer(user)
         print(serializer.data)
         return Response(serializer.data)
-    except ObjectDoesNotExist:
-        return Response({'error': 'User not found'}, status=404)
+    else:
+        return HttpResponse("-1")
+    
 
 @api_view(['POST'])
 def emailReset(request):

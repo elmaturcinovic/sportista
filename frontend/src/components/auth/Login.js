@@ -36,10 +36,9 @@ function Login(){
         axios.post('http://127.0.0.1:8000/sportista/', {
             username: k.username,
             password: k.password,
-        }).then((response) => {
+        }).then((response)=>{
             console.log(response);
-    
-            if (response.data.error) {
+            if (response.data === -1) {
                 alert('Neispravni podaci.');
             } else {
                 const data = response.data;

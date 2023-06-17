@@ -386,58 +386,17 @@ def get_all_sport_halls(request):
     data = serializers.serialize('json', sportshalls)
     return HttpResponse(data, content_type='application/json')
 
-
-
+@api_view(['GET'])
+def invites_sent_by_me(request, user_id):
+    invites = Invites.objects.filter(sender=user_id)
+    serializer = InvitesSerializer(invites, many=True)
+    return Response(serializer.data)
 
 @api_view(['GET'])
-def invites_sent_by_me(request):
-    user = request.user
-    sent_invites = Invites.objects.filter(sender=user)
-
-    serialized_invites = []
-    for invite in sent_invites:
-        serialized_invite = {
-            'id': invite.id,
-            'receiver': {
-                'user_name': invite.receiver.user_name,
-            },
-            'appointment': {
-                'sport_hall': {
-                    'name': invite.appointment.sport_hall.name,
-
-                },
-                'time': invite.appointment.time,
-            },
-            'status': invite.status,
-        }
-        serialized_invites.append(serialized_invite)
-
-    return JsonResponse(serialized_invites, safe=False)
-
-
-@api_view(['GET'])
-def invites_received_by_me(request):
-    user = request.user
-    received_invites = Invites.objects.filter(receiver=user)
-
-    serialized_invites = []
-    for invite in received_invites:
-        serialized_invite = {
-            'id': invite.id,
-            'sender': {
-                'user_username': invite.sender.user_username,
-            },
-            'appointment': {
-                'sport_hall': {
-                    'name': invite.appointment.sport_hall.name,
-                },
-                'time': invite.appointment.time,
-            },
-            'status': invite.status,
-        }
-        serialized_invites.append(serialized_invite)
-
-    return JsonResponse(serialized_invites, safe=False)
+def invites_received_by_me(request, user_id):
+    invites = Invites.objects.filter(receiver=user_id)
+    serializer = InvitesSerializer(invites, many=True)
+    return Response(serializer.data)
 
 @api_view(['PATCH'])
 def accept_invite(request, invite_id):

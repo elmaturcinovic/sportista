@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const NotificationsComp = () => {
+
+  const moj_id = sessionStorage.getItem('id');
+
   const [sentInvites, setSentInvites] = useState([]);
   const [receivedInvites, setReceivedInvites] = useState([]);
 
@@ -14,22 +17,24 @@ const NotificationsComp = () => {
   //Uzmi sve obavijesti gdje sam ja sender
   const getSentInvites = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:8000/invites_sent_by_me/');
+      const response = await axios.get(`http://127.0.0.1:8000/invites_sent_by_me/${moj_id}/`);
       setSentInvites(response.data);
+      console.log("Obavestenja kod kojih sam ja sender: ");
     } catch (error) {
       console.error('Error retrieving sent invites:', error);
     }
   };
 
 //Uzmi sve obavijesti gdje sam ja receiver sa statusima 1 i 2
-  const getReceivedInvites = async () => {
-    try {
-      const response = await axios.get('http://127.0.0.1:8000/invites_received_by_me/');
-      setReceivedInvites(response.data);
-    } catch (error) {
-      console.error('Error retrieving received invites:', error);
-    }
-  };
+const getReceivedInvites = async () => {
+  try {
+    const response = await axios.get(`http://127.0.0.1:8000/invites_received_by_me/${moj_id}/`);
+    setReceivedInvites(response.data);
+    console.log("Obavestenja kod kojih sam ja receiver: ");
+  } catch (error) {
+    console.error('Error retrieving received invites:', error);
+  }
+};
 
 //Na klik Prihvati poziv, mijenja se status invite-a na 1 (Accepted) i dodaje se novi termin kod usera
   const acceptInvite = async (inviteId, notification) => {
@@ -48,7 +53,7 @@ const NotificationsComp = () => {
   };
 
 //Na klik Odbaci poziv, mijenja se status invite-a na 2 (Rejected)
-  const declineInvite = async (inviteId, notification) => {
+  const declineInvite = async (inviteId) => {
     try {
       await axios.patch(`http://127.0.0.1:8000/decline_invite/${inviteId}/`, {
         status: 2,

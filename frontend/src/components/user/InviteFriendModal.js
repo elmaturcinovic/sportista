@@ -3,40 +3,34 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 
-const InviteFriendModal = ({ isOpen, closeModal }) => {
-
+const InviteFriendModal = ({ isOpen, closeModal, appointmentId }) => {
+  
   const id_sender = sessionStorage.getItem('id');
   const username_sender = sessionStorage.getItem('username');
-
-  const [appointmentID, setAppointmentID] = useState(0);
   const [friendUsername, setFriendUsername] = useState('');
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
 
   const handleInvite = () => {
-    setAppointmentID()
-    axios
-      .post('http://127.0.0.1:8000/invite_friend/', {
-
-        appointment_id: appointmentID,
-        username: friendUsername,
-        id: id_sender,
-      })
-      .then((response) => {
-        console.log('Pozivnica uspesno poslana!');
-        console.log(
-          'Pozivnicu salje: ' +
-            username_sender +
-            ' sa ID: ' +
-            id_sender +
-            '. Pozivnica se salje korisniku: ' +
-            friendUsername
-        );
-        closeModal();
-      })
-      .catch((error) => {
-        console.error('Greska:', error);
-        setMessage("Pozivnica nije poslana.");
-      });
+    axios.post('http://127.0.0.1:8000/invite_friend/', {
+      appointment_id: appointmentId,
+      username: friendUsername,
+      id: id_sender,
+    }).then((response) => {
+      console.log('Pozivnica uspesno poslana!');
+      console.log(
+        'Pozivnicu salje: ' +
+        username_sender +
+        ' sa ID: ' +
+        id_sender +
+        '. Pozivnica se salje korisniku: ' +
+        friendUsername
+      );
+      closeModal();
+    }).catch((error) => {
+      console.error('Greska:', error);
+      console.log("Nije poslana pozivnica termina: ", appointmentId, " od user-a: ", username_sender, " sa ID-jem: ", id_sender, " korisniku sa username-om: ", friendUsername);
+      setMessage("Pozivnica nije poslana.");
+    });
   };
 
   return (

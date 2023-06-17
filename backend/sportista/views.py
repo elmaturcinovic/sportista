@@ -256,20 +256,27 @@ def get_days(request):
 
 @api_view(['POST'])
 def invite_friend(request):
-    email = request.data.get('email')
-    exists = User.objects.filter(user_email=email).exists()
+    appointment_id = request.data.get('appointment_id')
+    username = request.data.get('username')
+    id_sender = request.data.get('id')
+        
+    try:
+        sender = User.objects.get(id=id_sender)
+        receiver = User.objects.get(username=username)
+        appointment = UserAppointment.objects.get(id=appointment_id)
 
-    print(exists)
+        invite = Invites(sender=sender, receiver=receiver, appointment=appointment)
+        invite.save()
+            
+        serializer = InvitesSerializer(invite)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    except User.DoesNotExist:
+        return Response({"error": "User does not exist."}, status=status.HTTP_404_NOT_FOUND)
+    except UserAppointment.DoesNotExist:
+        return Response({"error": "Appointment does not exist."}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    if (exists):
-        subject = 'Pozivnica'
-        message = 'Pozvan si na sportski termin!'
-        recipient_list = [email]
-        send_mail(subject, message, None, recipient_list)
-        return JsonResponse({'message': 'Pozivnica uspesno poslana!'})
-    else:
-        return JsonResponse({'error': 'Nema korisnika sa ovom e-mail adresom.'}, status=405)
-    
 
 @api_view(['GET'])
 def get_user_appointments_by_user(request, user_id):
@@ -383,19 +390,92 @@ def get_all_sport_halls(request):
 
 
 @api_view(['GET'])
-def get_invites_by_status(request):
-    status_param = request.GET.get('status')
-    if not status_param:
-        return Response('Missing status parameter', status=status.HTTP_400_BAD_REQUEST)
-    
-    try:
-        status_param = int(status_param)
-    except ValueError:
-        return Response('Invalid status parameter', status=status.HTTP_400_BAD_REQUEST)
+def invites_sent_by_me(request):
+    user = request.user
+    sent_invites = Invites.objects.filter(sender=user)
 
-    invites = Invites.objects.filter(user__id=request.user.id, status=status_param)
-    data = [{'id': invite.id, 'sender': invite.sender.user_username, 'receiver': invite.receiver.user_name, 'appointment': invite.appointment.appointment.sport_hall.name, 'status': invite.status} for invite in invites]
-    return Response(data, status=status.HTTP_200_OK)
+    serialized_invites = []
+    for invite in sent_invites:
+        serialized_invite = {
+            'id': invite.id,
+            'receiver': {
+                'user_name': invite.receiver.user_name,
+            },
+            'appointment': {
+                'sport_hall': {
+                    'name': invite.appointment.sport_hall.name,
+
+                },
+                'time': invite.appointment.time,
+            },
+            'status': invite.status,
+        }
+        serialized_invites.append(serialized_invite)
+
+    return JsonResponse(serialized_invites, safe=False)
+
+
+@api_view(['GET'])
+def invites_received_by_me(request):
+    user = request.user
+    received_invites = Invites.objects.filter(receiver=user)
+
+    serialized_invites = []
+    for invite in received_invites:
+        serialized_invite = {
+            'id': invite.id,
+            'sender': {
+                'user_username': invite.sender.user_username,
+            },
+            'appointment': {
+                'sport_hall': {
+                    'name': invite.appointment.sport_hall.name,
+                },
+                'time': invite.appointment.time,
+            },
+            'status': invite.status,
+        }
+        serialized_invites.append(serialized_invite)
+
+    return JsonResponse(serialized_invites, safe=False)
+
+@api_view(['PATCH'])
+def accept_invite(request, invite_id):
+    try:
+        invite = Invites.objects.get(id=invite_id)
+        invite.status = 1
+        invite.save()
+        return Response(status=status.HTTP_200_OK)
+    except Invites.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['POST'])
+def update_user_appointment(request, invite_id):
+    try:
+        appointment_id = request.data.get('appointmentId')
+        user_id = request.data.get('userId')
+
+        appointment = UserAppointment.objects.get(appointment_id=appointment_id)
+        appointment.users.add(user_id)
+        appointment.used_spots += 1
+        appointment.save()
+
+        return Response(status=status.HTTP_200_OK)
+    except (UserAppointment.DoesNotExist, KeyError):
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['PATCH'])
+def decline_invite(request, invite_id):
+    try:
+        invite = Invites.objects.get(id=invite_id)
+        invite.status = 2
+        invite.save()
+        return Response(status=status.HTTP_200_OK)
+    except Invites.DoesNotExist:
+        return Response({'error': 'Invite not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 @api_view(['POST'])
 def add_user_appointment(request):

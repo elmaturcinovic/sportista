@@ -43,6 +43,7 @@ const ReservedAppointmentsComp = () => {
     );
   }
 
+  //brise korisnikov termin na klik
   const deleteUserAppointment = async (sportUserAppointmentId) => {
     axios.delete(`http://127.0.0.1:8000/delete_user_appointment/${sportUserAppointmentId}/`).then((response) => {
       fetchUserAppointmets()
@@ -53,52 +54,52 @@ const ReservedAppointmentsComp = () => {
   };
 
 
-    return (
-      <div className="schedule-main-div">
-        <div className="schedule-first-div">
-          <h2 className="headline-profile">Rezervisani termini</h2>
-      </div>
-      <div className="schedule-second-div">
-        <table id="table_id" style={{textAlign: "center"}}>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Naziv terena</th>
-              <th>Datum</th>
-              <th>Vrijeme</th>
-              <th>Pozovite prijatelja</th>
-              <th>Odjavite termin</th>
+  return (
+    <div className="schedule-main-div">
+      <div className="schedule-first-div">
+        <h2 className="headline-profile">Rezervisani termini</h2>
+    </div>
+    <div className="schedule-second-div">
+      <table id="table_id" style={{textAlign: "center"}}>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Naziv terena</th>
+            <th>Datum</th>
+            <th>Vrijeme</th>
+            <th>Pozovite prijatelja</th>
+            <th>Odjavite termin</th>
+          </tr>
+        </thead>
+        <tbody>
+          {/*userAppointment.map... */}
+          {notifications.map(userAppoinment => (
+            <tr key={userAppoinment.id} className="tr-table-app">
+              <td>#{userAppoinment.id}</td>
+              <td>{userAppoinment.name}</td>
+              <td>{userAppoinment.date}</td>
+              {/*<td>{userAppoinment.work_time_begin}, {userAppoinment.work_time_end}</td>*/}
+              <td>{userAppoinment.time}</td>
+              <td>
+                <button onClick={openModal} className="invite-friend">
+                  <AiOutlinePlus className='icon-invite'/>
+                </button> 
+              </td>
+              <td className='right-col' style={{textAlign: "center"}}> 
+                <button className="delete-appointment">
+                <AiOutlineDelete className='delete-icon' onClick={() => deleteUserAppointment(userAppoinment.id)} />
+                </button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {/*userAppointment.map... */}
-            {notifications.map(userAppoinment => (
-              <tr key={userAppoinment.id} className="tr-table-app">
-                <td><img className='sport_appointment_photo_table' src={`http://localhost:8000${userAppoinment.photo}`}/></td>
-                <td>{userAppoinment.name}</td>
-                <td>{userAppoinment.date}</td>
-                {/*<td>{userAppoinment.work_time_begin}, {userAppoinment.work_time_end}</td>*/}
-                <td>{userAppoinment.time}</td>
-                <td>
-                  <button onClick={openModal} className="invite-friend">
-                    <AiOutlinePlus className='icon-invite'/>
-                  </button> 
-                </td>
-                <td className='right-col' style={{textAlign: "center"}}> 
-                  <button className="delete-appointment">
-                  <AiOutlineDelete className='delete-icon' onClick={() => deleteUserAppointment(userAppoinment.id)} />
-                  </button>
-                </td>
-              </tr>
-                )
               )
-            }
-          </tbody>
-        </table>
-        </div>    
-        <InviteFriendModal isOpen={isFriendModalOpen} closeModal={closeModal} />      
-      </div>
-    );
+            )
+          }
+        </tbody>
+      </table>
+      </div>    
+      <InviteFriendModal isOpen={isFriendModalOpen} closeModal={closeModal} />      
+    </div>
+  );
 };
   
 

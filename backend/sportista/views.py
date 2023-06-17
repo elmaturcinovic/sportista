@@ -419,9 +419,9 @@ def accept_invite(request, invite_id):
     except Invites.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-#ko
+
 @api_view(['POST'])
-def update_user_appointment(request, invite_id):
+def update_user_appointment(request):
     try:
         appointment_id = request.data.get('appointmentId')
         user_id = request.data.get('userId')

@@ -227,4 +227,9 @@ th, td{
     margin-bottom: 10px;
     color: #303030;
 }
-  
+.slobodan {
+    background-color: #3DD47A !important;
+}
+.zauzet {
+    background-color: red;
+}

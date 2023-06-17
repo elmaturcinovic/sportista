@@ -270,7 +270,7 @@ def invite_friend(request):
         
     try:
         sender = User.objects.get(id=id_sender)
-        receiver = User.objects.get(username=username)
+        receiver = User.objects.get(user_username=username)
         appointment = UserAppointment.objects.get(id=appointment_id)
 
         invite = Invites(sender=sender, receiver=receiver, appointment=appointment)
@@ -289,8 +289,8 @@ def invite_friend(request):
 @api_view(['GET'])
 def get_user_appointments_by_user(request, user_id):
     try:
-        sport_appointments = UserAppointment.objects.filter(id=user_id)
-        serializer = UserAppointmentSerializer(sport_appointments, many=True)
+        user_appointments = UserAppointment.objects.filter(users__id=user_id)
+        serializer = UserAppointmentSerializer(user_appointments, many=True)
         print(serializer.data)
         return Response(serializer.data, status=status.HTTP_200_OK)
     except SportsHall.DoesNotExist:
@@ -298,9 +298,10 @@ def get_user_appointments_by_user(request, user_id):
 
 
 @api_view(['DELETE'])
-def delete_user_appointment(request, sport_appointment_id):
+def delete_user_appointment(request):
     try:
-        sport_appointment = UserAppointment.objects.get(id=sport_appointment_id)
+        appointment_id = request.data.get('')
+        sport_appointment = UserAppointment.objects.get(id=appointment_id)
         sport_appointment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     except SportsHall.DoesNotExist:
@@ -347,13 +348,15 @@ def add_new_appointment(request):
     return Response(serializer.errors, status=400)
 
 @api_view(['DELETE'])
-def delete_appointment(request, appointment_id):
+def delete_user_appointment(request):
     try:
-        appointment = Appointment.objects.get(id=appointment_id)
-        appointment.delete()
+        appointment_id = request.data.get('appointment_id')
+        sport_appointment = UserAppointment.objects.get(id=appointment_id)
+        sport_appointment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    except SportsHall.DoesNotExist:
+    except UserAppointment.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+
     
 @api_view(['GET'])
 def get_user(request, user_id):
@@ -481,4 +484,13 @@ def add_user_appointment(request):
     # Return a response indicating successful creation
     return Response({'message': 'UserAppointment created successfully'}, status=201)
 
+
+@api_view(['DELETE'])
+def delete_appointment(request, appointment_id):
+    try:
+        appointment = Appointment.objects.get(id=appointment_id)
+        appointment.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    except SportsHall.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 

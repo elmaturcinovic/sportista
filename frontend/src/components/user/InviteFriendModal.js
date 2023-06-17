@@ -28,7 +28,7 @@ const InviteFriendModal = ({ isOpen, closeModal, appointmentId }) => {
       closeModal();
     }).catch((error) => {
       console.error('Greska:', error);
-      console.log(username_sender, id_sender, friendUsername, appointmentId);
+      console.log("Nije poslana pozivnica termina: ", appointmentId, " od user-a: ", username_sender, " sa ID-jem: ", id_sender, " korisniku sa username-om: ", friendUsername);
       setMessage("Pozivnica nije poslana.");
     });
   };

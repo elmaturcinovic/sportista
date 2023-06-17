@@ -6,14 +6,6 @@ import InviteFriendModal from "./InviteFriendModal";
 const ReservedAppointmentsComp = () => {
 
 
-  //privremeno
-  const notifications = [
-    {id: 1, name: "Dvorana 101", date: "20.06.2023", time: "17:00h -- 19:30h"},
-    {id: 2, name: "Dvorana 102", date: "21.06.2023", time: "13:00h -- 15:30h"},
-  ];
-
-
-
   const [userAppointments, setUserAppointments] = useState([]);
   const [isFriendModalOpen, setIsFriendModalOpen] = useState(false);
   const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
@@ -43,12 +35,17 @@ const ReservedAppointmentsComp = () => {
   }
 
   const deleteUserAppointment = async (sportUserAppointmentId) => {
-    axios.delete(`http://127.0.0.1:8000/delete_user_appointment/${sportUserAppointmentId}/`).then((response) => {
-      fetchUserAppointments();
-    }).catch((error) => {
-      console.log('Greska brisanja termina:', error);
-    });
+    axios.delete('http://127.0.0.1:8000/delete_user_appointment/', { data: { appointment_id: sportUserAppointmentId } })
+      .then((response) => {
+        fetchUserAppointments();
+        console.log("Uspešno obrisan sportski termin sa ID: ", sportUserAppointmentId);
+      })
+      .catch((error) => {
+        console.log('Greška brisanja sportskog termina sa ID:', sportUserAppointmentId, "with error:", error);
+      });
   };
+  
+  
 
   return (
     <div className="schedule-main-div">
@@ -68,21 +65,20 @@ const ReservedAppointmentsComp = () => {
             </tr>
           </thead>
           <tbody>
-            {/* userAppointments.map ... umesto notif*/}
-            {notifications.map(userAppointment => (
+            {userAppointments.map(userAppointment => (
               <tr key={userAppointment.id} className="tr-table-app">
                 <td>#{userAppointment.id}</td>
-                <td>{userAppointment.name}</td>
-                <td>{userAppointment.date}</td>
-                <td>{userAppointment.time}</td>
+                <td>{userAppointment.id}</td>
+                <td>{userAppointment.id}</td>
+                <td>{userAppointment.id}</td>
                 <td>
                   <button onClick={() => openModal(userAppointment.id)} className="invite-friend">
-                    <AiOutlinePlus className='icon-invite' />
+                    <AiOutlinePlus className='icon-invite'/>
                   </button>
                 </td>
                 <td className='right-col' style={{ textAlign: "center" }}>
                   <button className="delete-appointment" onClick={() => deleteUserAppointment(userAppointment.id)}>
-                    <AiOutlineDelete className='delete-icon' />
+                    <AiOutlineDelete className='delete-icon'/>
                   </button>
                 </td>
               </tr>

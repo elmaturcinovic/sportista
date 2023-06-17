@@ -4,9 +4,8 @@ const useStyles = makeStyles(() =>
   createStyles({
     container: {
       display: 'flex',
-      height: '1020px',
-      border: '1px solid black',
-      flexDirection: 'row'
+      height: '100%',
+      flexDirection: 'row',
     },
     userProfileInfo: {
         flex: 1
@@ -16,26 +15,36 @@ const useStyles = makeStyles(() =>
     },
     reserveFieldContainer: {
         display: 'flex',
-        marginTop: '20px'
+        marginTop: '20px',
+        width: '100%'
     },
     calendar: {
-        marginRight: '30px',
-        marginLeft: '100px'
+        textAlign: 'center',
+        marginRight: '20px',
+        marginLeft: '30px'
+    },
+    timeWrapper:{
+      textAlign: 'center',
+      marginRight: '20px',
+      marginLeft: '30px',
+      display: 'flex',
+      flexDirection: 'column',
+      zIndex: 2,
+      width: '100%',
+      height: '430px'
     },
     time: {
         backgroundColor: 'white',
-        zIndex: 2,
         width: '100%',
-        marginRight: '30px',
-        marginLeft: '30px',
         borderRadius: 10,
-        maxHeight: '420px',
-        border: '1px solid black',
-        maxWidth: '620px'
+        maxHeight: '425px',
+        color: '#303030'
     },
     scrollViewCard: {
       overflow: 'auto', 
-      maxHeight: '340px'
+      maxHeight: '360px',
+      color: '#303030'
+
     },
     aboutFieldTitle: {
       textAlign: 'center',

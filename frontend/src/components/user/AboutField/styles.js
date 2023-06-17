@@ -5,7 +5,7 @@ const useStyles = makeStyles(() =>
     container: {
       display: 'flex',
       flexDirection: 'column',
-      height: '450px',
+      height: '350px',
       margin: 10
     },
     aboutFieldTitleContainer: {
@@ -14,6 +14,8 @@ const useStyles = makeStyles(() =>
         textAlign: 'center',
         alignItems: 'center',
         fontSize: '56px',
+        color: '#303030'
+        
     },
     aboutFieldTitle:{
         margin: 15
@@ -25,11 +27,10 @@ const useStyles = makeStyles(() =>
     },
     aboutFieldImageContainer: {
         display: 'flex',
-        flex: 1,
         margin: 20,
-        border: '1px solid black',
         borderRadius: 20,
-        background: 'white'
+        background: 'white',
+        width: '450px'
     },
     aboutFieldImageContainerSize: {
         marginLeft: '170px'
@@ -38,17 +39,18 @@ const useStyles = makeStyles(() =>
         backgroundColor: 'white',
         display: 'flex',
         flex: 1,
-        margin: 20,
+        margin: '20px',
+        padding:'40px',
         flexDirection: 'column',
         fontSize: 30,
         alignItems: 'center',
         gap: 12,
-        border: '1px solid black',
         borderRadius: 15,
-        
+        color: '#303030'
+  
     },
     aboutFieldImage: {
-        width: '100%',
+        width: '450px',
         height: '100%',
         borderRadius: 20
     },
@@ -70,9 +72,15 @@ const useStyles = makeStyles(() =>
         textAlign: 'left',
         display: 'flex',
         alignItems: 'center',
+        height: '20px'
     },
     insideText: {
-        fontSize: '26px'
+        fontSize: '20px'
+    },
+    insideTextTitle: {
+        fontSize: '25px',
+        fontWeight: 600,
+        marginBottom: '30px',
     }
   })
 )

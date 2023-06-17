@@ -12,8 +12,10 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from django.core import serializers
+import logging
 
 
+logger = logging.getLogger(__name__)
 
 
 @api_view(['POST'])
@@ -121,28 +123,29 @@ def add_sport_hall(request):
     name = request.data.get('name')
     address = request.data.get('address')
     city = request.data.get('city')
-    sport_names = request.data.getlist('sports')
+    email = request.data.get('email')
+    phone_number = request.data.get('phone_number')
+    sports = request.data.get('sports', [])
     photo = request.data.get('photo')
     owner_id = request.data.get('owner')
     try:
         owner = User.objects.get(id=owner_id)
     except User.DoesNotExist:
         return Response({'message': 'Invalid owner ID'}, status=status.HTTP_400_BAD_REQUEST)
-    
-    sports = Sport.objects.filter(sport_name__in=sport_names)
-
 
     sport_hall = SportsHall(
         name=name,
         address=address,
         city=city,
+        email=email,
+        phone_number=phone_number,
         owner= owner, 
-        photo=photo,      
+        photo=photo,
     )
     print(sport_hall)
     sport_hall.save()
     sport_hall.sports.set(sports)
-
+    sport_hall.save()
     return Response({'message': 'Sport hall created', 'id' : sport_hall.id}, status=status.HTTP_201_CREATED)
 
 
@@ -180,6 +183,12 @@ def update_profile(request):
 def get_all_sports_halls(request):
     sport_halls = SportsHall.objects.all()
     serializer = SportsHallSerializer(sport_halls, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def get_all_users(request):
+    users = User.objects.all()
+    serializer = UserSerializer(users, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
@@ -255,26 +264,33 @@ def get_days(request):
 
 @api_view(['POST'])
 def invite_friend(request):
-    email = request.data.get('email')
-    exists = User.objects.filter(user_email=email).exists()
+    appointment_id = request.data.get('appointment_id')
+    username = request.data.get('username')
+    id_sender = request.data.get('id')
+        
+    try:
+        sender = User.objects.get(id=id_sender)
+        receiver = User.objects.get(user_username=username)
+        appointment = UserAppointment.objects.get(id=appointment_id)
 
-    print(exists)
+        invite = Invites(sender=sender, receiver=receiver, appointment=appointment)
+        invite.save()
+            
+        serializer = InvitesSerializer(invite)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    except User.DoesNotExist:
+        return Response({"error": "User does not exist."}, status=status.HTTP_404_NOT_FOUND)
+    except UserAppointment.DoesNotExist:
+        return Response({"error": "Appointment does not exist."}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    if (exists):
-        subject = 'Pozivnica'
-        message = 'Pozvan si na sportski termin!'
-        recipient_list = [email]
-        send_mail(subject, message, None, recipient_list)
-        return JsonResponse({'message': 'Pozivnica uspesno poslana!'})
-    else:
-        return JsonResponse({'error': 'Nema korisnika sa ovom e-mail adresom.'}, status=405)
-    
 
 @api_view(['GET'])
 def get_user_appointments_by_user(request, user_id):
     try:
-        sport_appointments = UserAppointment.objects.filter(id=user_id)
-        serializer = UserAppointmentSerializer(sport_appointments, many=True)
+        user_appointments = UserAppointment.objects.filter(users__id=user_id)
+        serializer = UserAppointmentSerializer(user_appointments, many=True)
         print(serializer.data)
         return Response(serializer.data, status=status.HTTP_200_OK)
     except SportsHall.DoesNotExist:
@@ -282,9 +298,10 @@ def get_user_appointments_by_user(request, user_id):
 
 
 @api_view(['DELETE'])
-def delete_user_appointment(request, sport_appointment_id):
+def delete_user_appointment(request):
     try:
-        sport_appointment = UserAppointment.objects.get(id=sport_appointment_id)
+        appointment_id = request.data.get('')
+        sport_appointment = UserAppointment.objects.get(id=appointment_id)
         sport_appointment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     except SportsHall.DoesNotExist:
@@ -331,13 +348,15 @@ def add_new_appointment(request):
     return Response(serializer.errors, status=400)
 
 @api_view(['DELETE'])
-def delete_appointment(request, appointment_id):
+def delete_user_appointment(request):
     try:
-        appointment = Appointment.objects.get(id=appointment_id)
-        appointment.delete()
+        appointment_id = request.data.get('appointment_id')
+        sport_appointment = UserAppointment.objects.get(id=appointment_id)
+        sport_appointment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    except SportsHall.DoesNotExist:
+    except UserAppointment.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+
     
 @api_view(['GET'])
 def get_user(request, user_id):
@@ -378,20 +397,100 @@ def get_all_sport_halls(request):
     data = serializers.serialize('json', sportshalls)
     return HttpResponse(data, content_type='application/json')
 
-
-
+@api_view(['GET'])
+def invites_sent_by_me(request, user_id):
+    invites = Invites.objects.filter(sender=user_id)
+    serializer = InvitesSerializer(invites, many=True)
+    return Response(serializer.data)
 
 @api_view(['GET'])
-def get_invites_by_status(request):
-    status_param = request.GET.get('status')
-    if not status_param:
-        return Response('Missing status parameter', status=status.HTTP_400_BAD_REQUEST)
-    
-    try:
-        status_param = int(status_param)
-    except ValueError:
-        return Response('Invalid status parameter', status=status.HTTP_400_BAD_REQUEST)
+def invites_received_by_me(request, user_id):
+    invites = Invites.objects.filter(receiver=user_id)
+    serializer = InvitesSerializer(invites, many=True)
+    return Response(serializer.data)
 
-    invites = Invites.objects.filter(user__id=request.user.id, status=status_param)
-    data = [{'id': invite.id, 'sender': invite.sender.user_username, 'receiver': invite.receiver.user_name, 'appointment': invite.appointment.appointment.sport_hall.name, 'status': invite.status} for invite in invites]
-    return Response(data, status=status.HTTP_200_OK)
+@api_view(['PATCH'])
+def accept_invite(request, invite_id):
+    try:
+        invite = Invites.objects.get(id=invite_id)
+        invite.status = 1
+        invite.save()
+        return Response(status=status.HTTP_200_OK)
+    except Invites.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['POST'])
+def update_user_appointment(request):
+    try:
+        appointment_id = request.data.get('appointmentId')
+        user_id = request.data.get('userId')
+
+        appointment = UserAppointment.objects.get(appointment_id=appointment_id)
+        appointment.users.add(user_id)
+        appointment.used_spots += 1
+        appointment.save()
+
+        return Response(status=status.HTTP_200_OK)
+    except (UserAppointment.DoesNotExist, KeyError):
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['PATCH'])
+def decline_invite(request, invite_id):
+    try:
+        invite = Invites.objects.get(id=invite_id)
+        invite.status = 2
+        invite.save()
+        return Response(status=status.HTTP_200_OK)
+    except Invites.DoesNotExist:
+        return Response({'error': 'Invite not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['POST'])
+def add_user_appointment(request):
+    appointment_id = request.data.get('appointment')
+    appointment = Appointment.objects.get(id=appointment_id)
+    user_ids = [int(user_id) for user_id in request.data.getlist('users')]  # Convert all values to integers
+    used_spots = request.data.get('used_spots')
+    available_spots = request.data.get('available_spots')
+    sport_id = request.data.get('sport')
+    logger.info('The value of my_variable is: %s', user_ids)
+
+    available = request.data.get('available')
+    sport = Sport.objects.get(id=sport_id)
+    if available == "false":
+        available_boolean = False
+    else:
+        available_boolean = True
+
+    # Retrieve user objects based on the provided user IDs
+    users = [User.objects.get(id=user_id) for user_id in user_ids]
+    logger.info("User ids: %s", user_ids)
+    logger.info('User objects: %s', users)
+
+    # Create the UserAppointment object and save it to the database
+    user_appointment = UserAppointment(
+        appointment=appointment,
+        used_spots=used_spots,
+        available_spots=available_spots,
+        sport=sport,
+        available=available_boolean
+    )
+    user_appointment.save()
+    user_appointment.users.set(users)
+
+    # Return a response indicating successful creation
+    return Response({'message': 'UserAppointment created successfully'}, status=201)
+
+
+@api_view(['DELETE'])
+def delete_appointment(request, appointment_id):
+    try:
+        appointment = Appointment.objects.get(id=appointment_id)
+        appointment.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    except SportsHall.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+

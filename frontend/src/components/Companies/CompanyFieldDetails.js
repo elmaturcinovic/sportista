@@ -8,7 +8,6 @@ import Navbar from './Navbar';
 import SportSelectionForm from './SportSelectionForm';
 import WorkingTimeSelection from './WorkingTimeSelection';
 import WorkDaysSelection from './WorkDaysSelection';
-import { faLeaf } from '@fortawesome/free-solid-svg-icons';
 import PhotoSelectionForm from './PhotoSelectionForm';
 
 const CompanyFieldDetails = () => {
@@ -56,7 +55,7 @@ const CompanyFieldDetails = () => {
 
     function fetchUser(id) {
         axios
-          .get(`http://127.0.0.1:8000/get_user/${id}`)
+          .get(`http://127.0.0.1:8000/get_user/${id}/`)
           .then((response) => {
             setUser(response.data);
             setSelectedPhoto(user.user_photo)
@@ -95,7 +94,7 @@ const CompanyFieldDetails = () => {
 
     function fetchSportHall(sportHallId) {
         axios
-        .get(`http://127.0.0.1:8000/get_sport_hall_by_id/${sportHallId}`)
+        .get(`http://127.0.0.1:8000/get_sport_hall_by_id/${sportHallId}/`)
         .then((response) => {
             setSportHall(response.data);
             console.log(response.data);
@@ -122,7 +121,7 @@ const CompanyFieldDetails = () => {
 
     function fetchDayNames(dayIds) {
         axios
-        .get(`http://127.0.0.1:8000/get_day_names_selected`, {
+        .get(`http://127.0.0.1:8000/get_day_names_selected/`, {
             params: { dayIds: dayIds },
         })
         .then((response) => {
@@ -222,6 +221,8 @@ const CompanyFieldDetails = () => {
         work_time_begin,
         work_time_end,
         working_days,
+        email,
+        phone_number
     } = sportHall;
 
     return (
@@ -261,46 +262,56 @@ const CompanyFieldDetails = () => {
                                         <table className="table o-terenu-table">
                                             <tbody>
                                                 <tr className="o-terenu-row">
-                                                <td>Adresa:</td>
-                                                <td>{address}</td>
-                                                <td></td>
+                                                    <td>Adresa:</td>
+                                                    <td>{address}</td>
+                                                    <td></td>
                                                 </tr>
                                                 <tr className="o-terenu-row">
-                                                <td>Grad:</td>
-                                                <td>{city}</td>
-                                                <td></td>
+                                                    <td>Grad:</td>
+                                                    <td>{city}</td>
+                                                    <td></td>
                                                 </tr>
                                                 <tr className="o-terenu-row">
-                                                <td>Vlasnik terena:</td>
-                                                <td>{sessionStorage.username}</td>
-                                                <td></td>
+                                                    <td>Email:</td>
+                                                    <td>{email}</td>
+                                                    <td></td>
                                                 </tr>
                                                 <tr className="o-terenu-row">
-                                                <td>Sportovi:</td>
-                                                <td>
-                                                    {sportNames.map((sport) => sport).join(', ')}
-                                                </td>
-                                                <td>
-                                                    <AiOutlineEdit onClick={handleEditSportovi} />
-                                                </td>
+                                                    <td>Telefon:</td>
+                                                    <td>{phone_number}</td>
+                                                    <td></td>
                                                 </tr>
                                                 <tr className="o-terenu-row">
-                                                <td>Radno vrijeme:</td>
-                                                <td>
-                                                {formatWorkTime(work_time_begin)} - {formatWorkTime(work_time_end)}
-                                                </td>
-                                                <td>
-                                                    <AiOutlineEdit onClick={handleEditRadnoVrijeme}/>
-                                                </td>
+                                                    <td>Vlasnik terena:</td>
+                                                    <td>{sessionStorage.username}</td>
+                                                    <td></td>
                                                 </tr>
                                                 <tr className="o-terenu-row">
-                                                <td>Radni dani:</td>
-                                                <td>
-                                                    {dayNames.map((day) => day).join(', ')}
-                                                </td>
-                                                <td>
-                                                    <AiOutlineEdit  onClick={handleEditRadniDani}/>
-                                                </td>
+                                                    <td>Sportovi:</td>
+                                                    <td>
+                                                        {sportNames.map((sport) => sport).join(', ')}
+                                                    </td>
+                                                    <td>
+                                                        <AiOutlineEdit onClick={handleEditSportovi} />
+                                                    </td>
+                                                </tr>
+                                                <tr className="o-terenu-row">
+                                                    <td>Radno vrijeme:</td>
+                                                    <td>
+                                                    {formatWorkTime(work_time_begin)} - {formatWorkTime(work_time_end)}
+                                                    </td>
+                                                    <td>
+                                                        <AiOutlineEdit onClick={handleEditRadnoVrijeme}/>
+                                                    </td>
+                                                </tr>
+                                                <tr className="o-terenu-row">
+                                                    <td>Radni dani:</td>
+                                                    <td>
+                                                        {dayNames.map((day) => day).join(', ')}
+                                                    </td>
+                                                    <td>
+                                                        <AiOutlineEdit  onClick={handleEditRadniDani}/>
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>

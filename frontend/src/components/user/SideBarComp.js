@@ -7,6 +7,7 @@ const SideBarComp = ({user, fetchUser}) => {
     //usestate staviti na 0, radi prikaza stavljeno na 4
     //mora se uzeti broj obavijesti iz notif komponente
     const [notificationCount, setNotificationCount] = useState(4); 
+    
     const id = sessionStorage.getItem("id")
     const name = sessionStorage.getItem("name")
     const lastname = sessionStorage.getItem("lastname")
@@ -14,12 +15,12 @@ const SideBarComp = ({user, fetchUser}) => {
     const email = sessionStorage.getItem("email")
     const photo = sessionStorage.getItem("image")
 
-    /*
+    
     useEffect(() => {
         fetchUser(id);
         console.log(user)
     }, [id]);
-    */
+    
 
     const field = {
         name: name,
@@ -68,7 +69,7 @@ const SideBarComp = ({user, fetchUser}) => {
                 </button>
                 <button className="menu-button" onClick={logout}>Odjavi se</button>
             </div>
-            <img src={'logo.png'} alt="logo" id="user-logo-image"/>
+            <img src={'./../logo.png'} alt="logo" id="user-logo-image"/>
         </div>
     );
 }

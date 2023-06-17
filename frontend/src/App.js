@@ -60,12 +60,6 @@ function App() {
                         {id && tip==1 && <CompanyFieldDetails/> }
                         {!id && <Redirect to="/"/>}
                     </Route>
-                    
-                    <Route exact path="/field-detail">
-                        {id && tip==0 && <FieldDetail/>}
-                        {id && tip==1 &&  <UserProfile/>}
-                        {!id && <Redirect to="/"/>}
-                    </Route> 
                     <Route exact path="/termini">
                         {id && tip==1 && <Appointments/> }
                         {!id && <Redirect to="/"/>}

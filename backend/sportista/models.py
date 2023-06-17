@@ -9,10 +9,10 @@ class Sport(models.Model):
         return self.sport_name
 
 def get_default_user_photo():
-    return '/images/avatar.png'
+    return 'media/images/avatar.png'
 
 def get_default_sport_hall_photo():
-    return '/images/sport_hall.png'
+    return 'media/images/sport_hall.png'
 
 class User(models.Model):
     USER_TYPE_CHOICES = (
@@ -58,6 +58,8 @@ class SportsHall(models.Model):
     work_time_begin = models.TimeField(null=True, blank=True)
     work_time_end = models.TimeField(null=True, blank=True)
     working_days = models.ManyToManyField(Day, blank=True)
+    email = models.CharField(max_length=50)
+    phone_number = models.CharField(max_length=20)
 
 
     def __str__(self):
@@ -88,6 +90,7 @@ class UserAppointment(models.Model):
     users = models.ManyToManyField(User)
     available_spots = models.IntegerField()
     used_spots = models.IntegerField(default=0)
+    sport = models.ForeignKey(Sport, on_delete=models.CASCADE)
     available = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):
@@ -96,7 +99,11 @@ class UserAppointment(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"Appointment at {self.appointment.sport_hall} for {self.user} for {self.used_spots}/{self.appointment.capacity} people"
+        if (self.users):
+            user = self.users.first()
+        else:
+            user = None
+        return f"Appointment at {self.appointment.sport_hall} for {user} for {self.used_spots}/{self.appointment.capacity} people"
 
 class Rating(models.Model):
     sport_hall = models.ForeignKey(SportsHall, on_delete=models.CASCADE)

@@ -12,11 +12,8 @@ const SingleCard = ({item}) => {
         fetchSportNames(item.sports);
     }, [item])
 
-    const handleCard = (item) => {
-        history.push({
-        pathname: '/field-detail',
-        state: { item },
-        });
+    const navigateToSportHallDetails = (sportHallId) => {
+        history.push(`/teren-detalji/${sportHallId}`);
     };
 
     function fetchSportNames(sportIds) {
@@ -34,8 +31,6 @@ const SingleCard = ({item}) => {
         });
     }
 
-
-
   return (
     <div key={item.id} className="one-card">
         <div className="image-container">
@@ -52,7 +47,7 @@ const SingleCard = ({item}) => {
             <h6 id="company-sports-card">
                 {sportNames.map((sport) => sport).join(', ')}
             </h6>
-            <button className="button-card" onClick={() => handleCard(item)}>Klik za više detalja</button>
+            <button className="button-card" onClick={() => navigateToSportHallDetails(item.id)}>Detalji</button>
         </div>
     </div>
   )

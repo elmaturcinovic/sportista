@@ -1,8 +1,9 @@
-.user-main-div {
+.user-main-div, .field-details-div {
     display: grid;
     grid-template-columns: 1fr 4fr;
     height:max-content;
     padding-bottom: 60px;
+    
 }
 
 /* CSS za SideBarComp */
@@ -102,7 +103,6 @@ td:first-child {
 #profile-image-input::file-selector-button {
     cursor: pointer;
     width: max-content;
-    
 }
 
 .div-image-change {
@@ -130,13 +130,13 @@ td:first-child {
 /* CSS za DropDownComp  */
 
 #label-drop, #label-date {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 800;
     width: 120px;
 }
 
 #dropdown {
-    font-size: 20px;
+    font-size: 16px;
     border: none;
     border-radius: 20px;
     background-color: lightgray;
@@ -150,7 +150,7 @@ td:first-child {
 
 .cards {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-gap: 8px;
 }
 
@@ -164,8 +164,9 @@ td:first-child {
 
 #company-image-card {
     width: 100%;
-    height: 70%;
+    height: 250px;
     border-radius: 30px;
+    background: 'url(../public/teren2.jpg) no-repeat center/cover';
 }
 
 #company-name-card, #company-address-card, #company-sports-card {
@@ -257,11 +258,26 @@ td:first-child {
 
 /* za media CSS */
 
+@media only screen and (min-width: 1025px) and (max-width: 1500px) {
+    #company-image-card {
+        height: 200px;
+    }
+}
+
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
+    .user-main-div, .field-details-div {
+        display: flex;
+        flex-direction: column;
+        height:max-content;
+        padding-bottom: 60px;
+    }
     .cards {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
         grid-gap: 8px;
+    }
+    #company-image-card {
+        height: 250px;
     }
 
     .menu-button {
@@ -274,7 +290,7 @@ td:first-child {
 }
 
 @media only screen and (max-width: 767px) {
-    .user-main-div {
+    .user-main-div, .field-details-div {
         display: flex;
         flex-direction: column;
         height:max-content;
@@ -283,8 +299,11 @@ td:first-child {
     
     .cards {
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
         grid-gap: 8px;
+    }
+    #company-image-card {
+        height: 110px;
     }
 
     .table-one {
@@ -321,7 +340,7 @@ td:first-child {
         margin-bottom: 5px;
       }
     
-      .change-password, .change-profile-image {
+      .change-password, .change-profile-image, .filter-button, .reset-filter {
         display: block;
         height: auto;
         margin-top: 10px;
@@ -332,8 +351,9 @@ td:first-child {
       }
     
     #dropdown {
-        width: 40%;
+        width: 100%;
     }
+
 }
 .image-container {
     flex: 19;
@@ -342,10 +362,6 @@ td:first-child {
 .content-container {
     flex: 1;
 
-}
-.image-size {
-    width: 100px;
-    height: 100px;
 }
 
 .delete-icon, .icon-invite {
@@ -409,5 +425,16 @@ td:first-child {
     margin-bottom: 20px;
     background-color: none;
 }
+.reservation-wrapper{
+    display: flex;
+    flex-direction: row;
+    height:max-content;
+    align-items: start;
+}
 
-
+.appointment-form th, .appointment-form td{
+    padding: 5px;
+    vertical-align: top;
+    text-align: left;
+    width: min-content;
+}

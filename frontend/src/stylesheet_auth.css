@@ -71,8 +71,8 @@
   
   .toggle-container {
     position: absolute;
-    bottom: 10px; 
-    right: 10px; 
+    bottom: 10px; /* Adjust the desired distance from the bottom */
+    right: 10px; /* Adjust the desired distance from the right */
     width: auto;
   }
 

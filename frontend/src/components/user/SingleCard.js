@@ -47,7 +47,7 @@ const SingleCard = ({item}) => {
             <h6 id="company-sports-card">
                 {sportNames.map((sport) => sport).join(', ')}
             </h6>
-            <button className="button-card" onClick={() => navigateToSportHallDetails(item.id)}>Klik za više detalja</button>
+            <button className="button-card" onClick={() => navigateToSportHallDetails(item.id)}>Detalji</button>
         </div>
     </div>
   )

@@ -41,7 +41,6 @@
 .light-theme {
   /* Specify light theme styles here */
   background-image: url("../public/background.jpeg");
-  background-color: whitesmoke;
   color: #303030;
 }
 
@@ -49,7 +48,6 @@
 .dark-theme {
   /* Specify dark theme styles here */
   background-image: url("../public/background_inverted.png");
-  background-color: #303030;
   color: whitesmoke;
 }
 

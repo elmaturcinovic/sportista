@@ -105,6 +105,7 @@ const ScheduledComp = () => {
             <div className="schedule-first-div">
                 <DropDownCompSports
                     label="Sport:"
+                    showLabel={true}
                     selected={selectedSport}
                     options={sports}
                     onChange={handleSportChange}
@@ -115,7 +116,6 @@ const ScheduledComp = () => {
                     options={sportCities}
                     onChange={handleCityChange}
                 />
-                <br></br>
                 <div className="buttons">
                     <button className="filter-button" onClick={handleFilterSubmit}>
                         Filtriraj terene

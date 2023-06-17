@@ -1,7 +1,7 @@
 .user-main-div, .field-details-div {
     display: grid;
     grid-template-columns: 1fr 4fr;
-    height:100vh;
+    height:max-content;
     padding-bottom: 60px;
     
 }
@@ -131,13 +131,13 @@ td:first-child {
 /* CSS za DropDownComp  */
 
 #label-drop, #label-date {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 800;
     width: 120px;
 }
 
 #dropdown {
-    font-size: 20px;
+    font-size: 16px;
     border: none;
     border-radius: 20px;
     background-color: lightgray;
@@ -423,3 +423,9 @@ td:first-child {
     align-items: start;
 }
 
+.appointment-form th, .appointment-form td{
+    padding: 5px;
+    vertical-align: top;
+    text-align: left;
+    width: min-content;
+}

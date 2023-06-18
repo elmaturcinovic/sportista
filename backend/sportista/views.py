@@ -555,19 +555,29 @@ def add_user_appointment(request):
 
 @api_view(['PUT'])
 def join_user_appointment(request, user_appointment_id):
+    user_id = request.data.get('user_id')
+    number_of_players = int(request.data.get('number_of_players'))
+    logger.info("user id %s",  user_id)
+    logger.info("appointment id %s", user_appointment_id)
+    logger.info("num of players %s", number_of_players)
+
     try:
         user_appointment = UserAppointment.objects.get(id=user_appointment_id)
     except UserAppointment.DoesNotExist:
-        return Response({'error': 'UserAppointment not found'}, status=404)
+        return Response({'error': 'User appointment not found.'}, status=404)
 
-    used_spots = request.data.get('used_spots')
-    available_spots = request.data.get('available_spots')
-    
-    user_appointment.used_spots = used_spots
-    user_appointment.available_spots = available_spots
+    user_appointment.users.add(user_id)
+    user_appointment.available_spots -= number_of_players
+    user_appointment.used_spots += number_of_players
+
+    # Check if available_spots is 0 and update the available field accordingly
+    if user_appointment.available_spots == 0:
+        user_appointment.available = False
+
+    # Save the updated user appointment
     user_appointment.save()
 
-    return Response({'message': 'UserAppointment updated successfully'}, status=200)
+    return Response({'message': 'User appointment updated successfully.'}, status=200)
     
 @api_view(['GET'])
 def get_user_appointments_by_appointments(request):

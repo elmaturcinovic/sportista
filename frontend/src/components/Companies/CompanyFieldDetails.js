@@ -157,7 +157,7 @@ const CompanyFieldDetails = () => {
         setShowPhotoSelectionForm(!showPhotoSelectionForm);
     };
 
-    const handleSportFormSubmit = async () => {
+    const handleSportFormSubmit = async (updatedSportHall) => {
         try {
           const updatedSportHall = { ...sportHall };
           updatedSportHall.sports = selectedSports;

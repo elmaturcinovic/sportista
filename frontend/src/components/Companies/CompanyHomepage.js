@@ -78,12 +78,14 @@ const ModalComp = ({ showModal, setShowModal, selectedSports, setSelectedSports,
         ...prevFormState,
         sports: new Set([...prevFormState.sports].filter((sportId) => sportId !== selectedSportId)),
       }));
+      console.log(selectedSports)
     } else {
       setSelectedSports((prevSelectedSports) => new Set([...prevSelectedSports, selectedSportId]));
       setFormState((prevFormState) => ({
         ...prevFormState,
         sports: new Set([...prevFormState.sports, selectedSportId]),
       }));
+      console.log(selectedSports)
     }
   };
 
@@ -271,6 +273,7 @@ const CompanyHomepage = () => {
       formData.append('sports', sport);
       console.log(sport)
     });
+    console.log(formState.sports)
 
   formData.append('photo', formState.photo);
   try {

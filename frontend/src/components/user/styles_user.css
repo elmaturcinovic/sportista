@@ -261,9 +261,29 @@ td:first-child {
 
 /* za media CSS */
 
+@media only screen and (min-width: 1501px) and (max-width: 1800px) {
+    #company-image-card {
+        height: 200px;
+    }
+    .accept-invite-friend, .decline-invite-friend  {
+        height: auto;
+    }
+}
+
 @media only screen and (min-width: 1025px) and (max-width: 1500px) {
     #company-image-card {
         height: 200px;
+    }
+    .accept-invite-friend, .decline-invite-friend  {
+        height: auto;
+    }
+    .notification-badge {
+        position: absolute;
+        
+        bottom: 30px;
+        background-color: #61dafb;
+        padding: 3px;
+        margin: 0;
     }
 }
 
@@ -283,7 +303,7 @@ td:first-child {
         height: 250px;
     }
 
-    .menu-button {
+    .menu-button, .accept-invite-friend, .decline-invite-friend  {
         height: auto;
     }
 
@@ -293,6 +313,11 @@ td:first-child {
 }
 
 @media only screen and (max-width: 767px) {
+
+    .side-bar-div {
+        height: auto;
+    }
+
     .user-main-div, .field-details-div {
         display: flex;
         flex-direction: column;
@@ -356,6 +381,13 @@ td:first-child {
     #dropdown {
         width: 100%;
     }
+    .notif_table td {
+        display: block;
+        width: 100%;
+      }
+    .accept-invite-friend, .decline-invite-friend  {
+        height: auto;
+    }  
 
 }
 .image-container {

@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import {useHistory } from "react-router-dom/cjs/react-router-dom";
 import axios from "axios";
 
+
 const SideBarComp = ({user, fetchUser}) => {
 
-    //usestate staviti na 0, radi prikaza stavljeno na 4
-    //mora se uzeti broj obavijesti iz notif komponente
-    const [notificationCount, setNotificationCount] = useState(4); 
+    const [notificationCount, setNotificationCount] = useState(); 
+    const [notificationCountRec, setNotificationCountRec] = useState(); 
     
     const id = sessionStorage.getItem("id")
     const name = sessionStorage.getItem("name")
@@ -18,9 +18,35 @@ const SideBarComp = ({user, fetchUser}) => {
     
     useEffect(() => {
         fetchUser(id);
-        console.log(user)
+        fetchNotificationCount();
+        fetchNotificationCountRec();
+        console.log(user);
     }, [id]);
+
+
+    const fetchNotificationCount = () => {
+        axios
+          .get(`http://localhost:8000/invites_sent_by_me/${id}/`)
+          .then(response => {
+            const count = response.data.length;
+            setNotificationCount(count);
+          })
+          .catch(error => {
+            console.error("Greska dobavljanja obavijesti:", error);
+          });
+      };
     
+    const fetchNotificationCountRec = () => {
+        axios
+          .get(`http://localhost:8000/invites_received_by_me/${id}/`)
+          .then(response => {
+            const count = response.data.length;
+            setNotificationCountRec(count);
+          })
+          .catch(error => {
+            console.error("Greska dobavljanja obavijesti:", error);
+          });
+      };
 
     const field = {
         name: name,
@@ -65,7 +91,7 @@ const SideBarComp = ({user, fetchUser}) => {
                 <button className="menu-button" onClick={handleProfileClick}>Moj profil</button>
                 <button className="menu-button" onClick={handleReservedClick}>Rezervirani termini</button>
                 <button className="menu-button" id="notif" onClick={handleNotificationsClick}>Obavijesti
-                    {notificationCount > 0 && <span className="notification-badge">{notificationCount}</span>}
+                    {notificationCount > 0 && <span className="notification-badge">{notificationCount + notificationCountRec}</span>}
                 </button>
                 <button className="menu-button" onClick={logout}>Odjavi se</button>
             </div>

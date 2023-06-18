@@ -68,9 +68,9 @@ const ReservedAppointmentsComp = () => {
             {userAppointments.map(userAppointment => (
               <tr key={userAppointment.id} className="tr-table-app">
                 <td>#{userAppointment.id}</td>
-                <td>{userAppointment.id}</td>
-                <td>{userAppointment.id}</td>
-                <td>{userAppointment.id}</td>
+                <td>ID app: {userAppointment.appointment}</td>
+                <td>ID app: {userAppointment.appointment}</td>
+                <td>ID app: {userAppointment.appointment}</td>
                 <td>
                   <button onClick={() => openModal(userAppointment.id)} className="invite-friend">
                     <AiOutlinePlus className='icon-invite'/>

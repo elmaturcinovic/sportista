@@ -34,7 +34,7 @@ urlpatterns = [
     path('invites_sent_by_me/<int:user_id>/', views.invites_sent_by_me, name="invites_sent_by_me"),
     path('invites_received_by_me/<int:user_id>/', views.invites_received_by_me, name="invites_received_by_me"),
     path('accept_invite/<int:invite_id>/', views.accept_invite, name='accept_invite'),
-    path('update_user_appointment/<int:invite_id>/', views.update_user_appointment, name='update_user_appointment'),
+    path('update_user_appointment/', views.update_user_appointment, name='update_user_appointment'),
     path('decline_invite/<int:invite_id>/', views.decline_invite, name='decline_invite'),
     
     path('add_user_appointment/', views.add_user_appointment, name="add_user_appointment"),
@@ -42,5 +42,6 @@ urlpatterns = [
     path('get_user_appointments_by_appointments/', views.get_user_appointments_by_appointments, name='get_user_appointments_by_appointments'),
 
 
+    path('get_user_appointment_by_user_appointment_id/<int:user_appointment_id>/', views.get_user_appointment_by_appointment_id, name="get_user_appointment_by_appointment_id"),
 
 ]

@@ -294,6 +294,15 @@ def get_user_appointments_by_user(request, user_id):
         return Response(serializer.data, status=status.HTTP_200_OK)
     except SportsHall.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+    
+@api_view(['GET'])
+def get_user_appointment_by_appointment_id(request, user_appointment_id):
+    try:
+        user_appointment = UserAppointment.objects.filter(id=user_appointment_id)
+        serializer = UserAppointmentSerializer(user_appointment, many=True)  
+        return Response(serializer.data)
+    except UserAppointment.DoesNotExist:
+        return Response(status=404)    
 
 
 @api_view(['DELETE'])
@@ -426,18 +435,53 @@ def accept_invite(request, invite_id):
 
 @api_view(['POST'])
 def update_user_appointment(request):
+    user_id = request.data.get('userId')
+    appointment_id = request.data.get('appointmentId')
+    used_spots = request.data.get('usedSpots')
+    available_spots = request.data.get('availableSpots')
+    sport_id = request.data.get('sport')
+    available = request.data.get('available')
+    sport = Sport.objects.get(id=sport_id)
+
+    if available == 'true':
+        available_boolean = False
+    else:
+        available_boolean = True
+
+    print({user_id})
+    print({appointment_id})
+    print({used_spots})
+    print({available_spots})
+    print({sport_id})
+    print({available_boolean})
+    print(User.objects.get(id=user_id))
+
     try:
-        appointment_id = request.data.get('appointmentId')
-        user_id = request.data.get('userId')
+        current_appointment = Appointment.objects.get(id=appointment_id)
+        user = User.objects.get(id=user_id)
+    except (Appointment.DoesNotExist, User.DoesNotExist):
+        return Response({'error': 'Nije dobar ID termina ili korisnika.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        appointment = UserAppointment.objects.get(appointment_id=appointment_id)
-        appointment.users.add(user_id)
-        appointment.used_spots += 1
-        appointment.save()
+    user_new_appointment = UserAppointment.objects.filter(appointment=current_appointment, users=user).first()
 
-        return Response(status=status.HTTP_200_OK)
-    except (UserAppointment.DoesNotExist, KeyError):
-        return Response(status=status.HTTP_404_NOT_FOUND)
+    if user_new_appointment is None:
+        user_new_appointment = UserAppointment(
+            appointment=current_appointment,
+            used_spots=used_spots,
+            available_spots=available_spots,
+            sport=sport,
+            available=available_boolean
+        )
+        try:
+            user_new_appointment.save()
+            user_new_appointment.users.add(user)
+            return Response({'message': 'Uspesno kreiran sportski termin'}, status=status.HTTP_201_CREATED)
+        except UserAppointment.DoesNotExist:
+            return Response({'message': 'Sportski termin vec kreiran.'})
+    else:
+        return Response({'message': 'Sportski termin vec postoji.'})
+
+    
 
 @api_view(['PATCH'])
 def decline_invite(request, invite_id):
@@ -504,4 +548,3 @@ def delete_appointment(request, appointment_id):
         return Response(status=status.HTTP_204_NO_CONTENT)
     except SportsHall.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-

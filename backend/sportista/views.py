@@ -552,6 +552,23 @@ def add_user_appointment(request):
     # Return a response indicating successful creation
     return Response({'message': 'UserAppointment created successfully'}, status=201)
 
+
+@api_view(['PUT'])
+def join_user_appointment(request, user_appointment_id):
+    try:
+        user_appointment = UserAppointment.objects.get(id=user_appointment_id)
+    except UserAppointment.DoesNotExist:
+        return Response({'error': 'UserAppointment not found'}, status=404)
+
+    used_spots = request.data.get('used_spots')
+    available_spots = request.data.get('available_spots')
+    
+    user_appointment.used_spots = used_spots
+    user_appointment.available_spots = available_spots
+    user_appointment.save()
+
+    return Response({'message': 'UserAppointment updated successfully'}, status=200)
+    
 @api_view(['GET'])
 def get_user_appointments_by_appointments(request):
     appointment_ids = request.GET.getlist('appointmentIds[]')

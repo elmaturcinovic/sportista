@@ -22,15 +22,14 @@ logger = logging.getLogger(__name__)
 def index(request):
     username = request.data.get('username')
     password = request.data.get('password')
-    print(username + " " + password)
-    rez = User.objects.get(user_username = username, user_password = password)
-    try:
-        user = User.objects.get(user_username=username, user_password=password)
+    if User.objects.filter(user_username = username, user_password = password).exists():
+        user = User.objects.get(user_username = username, user_password = password)
         serializer = UserSerializer(user)
         print(serializer.data)
         return Response(serializer.data)
-    except ObjectDoesNotExist:
-        return Response({'error': 'User not found'}, status=404)
+    else:
+        return HttpResponse("-1")
+    
 
 @api_view(['POST'])
 def emailReset(request):
@@ -314,11 +313,14 @@ def get_all_appointments_by_owner(request, owner_id):
         sport_halls = SportsHall.objects.filter(owner_id=owner_id)
         sport_hall_ids = sport_halls.values_list('id', flat=True)
         print(sport_hall_ids)
-        
+
         appointments = Appointment.objects.filter(sport_hall_id__in=sport_hall_ids)
         appointment_data = []
 
         for appointment in appointments:
+            user_appointments = UserAppointment.objects.filter(appointment=appointment)
+            available_spots = appointment.capacity - sum(user_appointment.used_spots for user_appointment in user_appointments)
+
             appointment_data.append({
                 'id': appointment.id,
                 'sport_hall': appointment.sport_hall.name,
@@ -327,13 +329,15 @@ def get_all_appointments_by_owner(request, owner_id):
                 'time_start': appointment.time_start,
                 'time_end': appointment.time_end,
                 'capacity': appointment.capacity,
-                'price': appointment.price
+                'price': appointment.price,
+                'available': appointment.available and available_spots > 0
             })
 
         return Response(appointment_data)
 
     except SportsHall.DoesNotExist:
         return Response({'error': 'Owner does not exist'}, status=404)
+
 
 
 @api_view(['POST'])

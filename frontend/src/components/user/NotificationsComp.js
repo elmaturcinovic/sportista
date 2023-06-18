@@ -151,7 +151,7 @@ const getReceivedInvites = async () => {
           }}
         >
           <tbody>
-            {receivedInvites.map((received_invite) => (
+            {receivedInvites.map((received_invite) => ( received_invite.status==0 &&
               <tr key={received_invite.id}>
                 <td style={{ padding: '8px' }}>
                   Korisnik {received_invite.senderData.user_username} vam šalje poziv da mu se pridružite!

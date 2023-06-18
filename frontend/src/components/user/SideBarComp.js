@@ -28,7 +28,9 @@ const SideBarComp = ({user, fetchUser}) => {
         axios
           .get(`http://localhost:8000/invites_sent_by_me/${id}/`)
           .then(response => {
-            const count = response.data.length;
+            const filteredData = response.data.filter(object => object.status === 1 || object.status ==2);
+            const count = filteredData.length;
+            console.log(count)
             setNotificationCount(count);
           })
           .catch(error => {
@@ -40,7 +42,9 @@ const SideBarComp = ({user, fetchUser}) => {
         axios
           .get(`http://localhost:8000/invites_received_by_me/${id}/`)
           .then(response => {
-            const count = response.data.length;
+            const filteredData = response.data.filter(object => object.status === 0 );
+            const count = filteredData.length;
+            console.log(count)
             setNotificationCountRec(count);
           })
           .catch(error => {

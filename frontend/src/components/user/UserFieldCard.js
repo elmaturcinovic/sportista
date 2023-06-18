@@ -4,6 +4,7 @@ import './styles_user.css';
 import axios from 'axios';
 import DropDownCompSports from './DropdownCompSports';
 
+
 function UserFieldCard({ appointment, booked, availableSpots1, fetchAppointmentsData }) {
   const user_id = sessionStorage.getItem('id')
   const { id: appointmentId, time_start, time_end, sport_hall, date, capacity, price, sports } = appointment;
@@ -91,6 +92,31 @@ function UserFieldCard({ appointment, booked, availableSpots1, fetchAppointments
     setOpenModal(false);
   };
 
+  const handleUpdateSubmit = (event) => {
+    event.preventDefault();
+  
+    const formData = new FormData();
+    console.log('numberOfPlayers',numberOfPlayers)
+    console.log('availableSpots',availableSpots)
+    formData.append('used_spots', numberOfPlayers);
+    formData.append('available_spots', availableSpots - numberOfPlayers);
+    formData.append('user_id', user_id)
+  
+    axios
+      .put(`http://127.0.0.1:8000/join_user_appointment/${appointment.id}/`, formData)
+      .then((response) => {
+        console.log(response.data);
+        setOpenModal(false);
+        fetchAppointmentsData();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  
+    setOpenModal(false);
+  };
+  
+
   const formatTime = (time) => {
     if (!time) {
       return '';
@@ -153,7 +179,7 @@ function UserFieldCard({ appointment, booked, availableSpots1, fetchAppointments
          <h3>Prikljuci se necijem terminu</h3>
        </Modal.Header>
        <Modal.Body>
-         <form className='appointment-form ' onSubmit={handleSubmit}>
+         <form className='appointment-form ' onSubmit={handleUpdateSubmit}>
            <table>
              <tbody>
                <tr>
@@ -174,9 +200,9 @@ function UserFieldCard({ appointment, booked, availableSpots1, fetchAppointments
                  <th>Broj igrača:</th>
                  <td>
                  <select name="numberOfPlayers" value={numberOfPlayers} onChange={handleNumberOfPlayersChange}>
-                      {Array.from({ length: availableSpots + 1  }, (_, i) => (
+                      {Array.from({ length: availableSpots }, (_, i) => (
                         <option key={i + 1} value={i + 1}>
-                          {i+1}
+                          {i + 1}
                         </option>
                       ))}
                     </select>

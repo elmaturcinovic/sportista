@@ -38,6 +38,7 @@ urlpatterns = [
     path('decline_invite/<int:invite_id>/', views.decline_invite, name='decline_invite'),
     
     path('add_user_appointment/', views.add_user_appointment, name="add_user_appointment"),
+    path('join_user_appointment/<int:user_appointment_id>/', views.join_user_appointment, name='join_user_appointment'),
     path('get_all_users/', views.get_all_users, name="get_all_users"),
     path('get_user_appointments_by_appointments/', views.get_user_appointments_by_appointments, name='get_user_appointments_by_appointments'),
     path('get_appointment_by_id/<int:appointment_id>', views.get_appointment_by_id, name='get_appointment_by_id'),

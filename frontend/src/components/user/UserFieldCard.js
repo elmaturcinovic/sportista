@@ -13,8 +13,9 @@ function UserFieldCard({ appointment, booked, availableSpots1, fetchAppointments
   const [selectedSport, setSelectedSport] = useState();
   const [sportObjects, setSportsObjects] = useState([]);
   const [numberOfPlayers, setNumberOfPlayers] = useState(1);
-  const [allowOtherPlayers, setAllowOtherPlayers] = useState(false);
+  const [allowOtherPlayers, setAllowOtherPlayers] = useState(true);
   const [availableSpots, setAvailableSpots] = useState(capacity - numberOfPlayers);
+
   const [users, setUsers] = useState([parseInt(sessionStorage.getItem('id'))]);
   console.log(users)
   
@@ -121,10 +122,14 @@ function UserFieldCard({ appointment, booked, availableSpots1, fetchAppointments
 
   const handleNumberOfPlayersChange = (event) => {
     const players = parseInt(event.target.value);
+    console.log(players)
     setNumberOfPlayers(players);
-    setAllowOtherPlayers(players < capacity);
+    if(capacity===players){
+      setAllowOtherPlayers(false);
+    }
     setAvailableSpots(capacity - players);
   };
+
 
   return (
     <div>

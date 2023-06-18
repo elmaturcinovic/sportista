@@ -339,7 +339,7 @@ const navigateToSportHallDetails = (sportHallId) => {
           <tbody>
             {sportHalls.map(sportHall => (
               <tr key={sportHall.id} >
-                <td><img className='sport_hall_photo_table' src={`http://localhost:8000${user.user_photo}`} /></td>
+                <td><img className='sport_hall_photo_table' src={`http://localhost:8000${sportHall.photo}`} /></td>
                 <td onClick={() => navigateToSportHallDetails(sportHall.id)}>{sportHall.name}</td>
                 <td>{sportHall.address}, {sportHall.city}</td>
                 <td>{determineStatus(sportHall.working_days, sportHall.work_time_begin, sportHall.work_time_end)}</td>

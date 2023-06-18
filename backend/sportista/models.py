@@ -2,17 +2,21 @@ from django.db import models
 
 # Create your models here.
 
+
 class Sport(models.Model):
     sport_name = models.CharField(max_length=255, unique=True)
 
     def __str__(self):
         return self.sport_name
 
+
 def get_default_user_photo():
     return 'media/images/avatar.png'
 
+
 def get_default_sport_hall_photo():
     return 'media/images/sport_hall.png'
+
 
 class User(models.Model):
     USER_TYPE_CHOICES = (
@@ -80,7 +84,8 @@ class Appointment(models.Model):
     time_start = models.TimeField()
     time_end = models.TimeField()
     capacity = models.IntegerField(null=True, blank=True)
-    price = models.FloatField(default=0) 
+    price = models.FloatField(default=0)
+    available = models.BooleanField(default=True)
 
     def __str__(self):
         return f"Appointment at {self.sport_hall} for {self.sports} on {self.date} at {self.time_start}. Price: {self.price}"
@@ -112,17 +117,18 @@ class Rating(models.Model):
 
     def __str__(self):
         return f"Rating {self.rating} for {self.sport_hall} by {self.user}"
-    
 class Invites(models.Model):
     STATUS_CHOICES = (
         (0, 'Sent'),
         (1, 'Accepted'),
         (2, 'Rejected')
     )
-    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_invites')
-    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_invites')
+    sender = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='sent_invites')
+    receiver = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='received_invites')
     appointment = models.ForeignKey(UserAppointment, on_delete=models.CASCADE)
     status = models.IntegerField(choices=STATUS_CHOICES, default=0)
-    
+
     def __str__(self):
         return f"Invite from {self.sender.user_username} to {self.receiver.user_name} for appointment at {self.appointment.appointment.sport_hall.name}: {self.status}"

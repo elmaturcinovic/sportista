@@ -66,10 +66,10 @@ function Registration(){
             passwordConfirm: k.passwordConfirm
         }).then((response)=>{
             console.log(response);
-                if (response.data === -1)
-                    alert("Korisnik je već registrovan.");
-                else
-                    window.location.href="/prijava";
+            if (response.data === -1)
+                alert("Korisnik je već registrovan.");
+            else
+                window.location.href="/prijava";
 
             }, (error) => {
                 console.log(error);

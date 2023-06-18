@@ -98,8 +98,8 @@ function UserFieldCard({ appointment, booked, availableSpots1, fetchAppointments
     const formData = new FormData();
     console.log('numberOfPlayers',numberOfPlayers)
     console.log('availableSpots',availableSpots)
-    formData.append('used_spots', numberOfPlayers);
-    formData.append('available_spots', availableSpots - numberOfPlayers);
+    formData.append('number_of_players', numberOfPlayers);
+    formData.append('appointment_id', appointmentId);
     formData.append('user_id', user_id)
   
     axios
@@ -176,7 +176,7 @@ function UserFieldCard({ appointment, booked, availableSpots1, fetchAppointments
       {booked && appointment.available && 
        <Modal show={openModal} onHide={showModal}>
        <Modal.Header closeButton>
-         <h3>Prikljuci se necijem terminu</h3>
+         <h3>Pridruži se terminu</h3>
        </Modal.Header>
        <Modal.Body>
          <form className='appointment-form ' onSubmit={handleUpdateSubmit}>
@@ -200,9 +200,9 @@ function UserFieldCard({ appointment, booked, availableSpots1, fetchAppointments
                  <th>Broj igrača:</th>
                  <td>
                  <select name="numberOfPlayers" value={numberOfPlayers} onChange={handleNumberOfPlayersChange}>
-                      {Array.from({ length: availableSpots }, (_, i) => (
+                      {Array.from({ length: availableSpots + 1  }, (_, i) => (
                         <option key={i + 1} value={i + 1}>
-                          {i + 1}
+                          {i+1}
                         </option>
                       ))}
                     </select>
@@ -218,7 +218,7 @@ function UserFieldCard({ appointment, booked, availableSpots1, fetchAppointments
            </table>
            <Modal.Footer>
              <button type="submit" className='add-button'>
-               Prijavi se 
+               Pridruži se 
              </button>
            </Modal.Footer>
          </form>
@@ -292,7 +292,7 @@ function UserFieldCard({ appointment, booked, availableSpots1, fetchAppointments
             </table>
             <Modal.Footer>
               <button type="submit" className='add-button'>
-                Rezervisi termin
+                Rezerviši termin
               </button>
             </Modal.Footer>
           </form>

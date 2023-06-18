@@ -468,7 +468,7 @@ def update_user_appointment(request):
         user_new_appointment = UserAppointment(
             appointment=current_appointment,
             used_spots=used_spots,
-            available_spots=available_spots,
+            available_spots=available_spots-1,
             sport=sport,
             available=available_boolean
         )
@@ -577,3 +577,23 @@ def get_appointment_by_id(request, appointment_id):
         return Response(appointment_data)
     except Appointment.DoesNotExist:
         return Response({'error': 'Appointment not found'}, status=404)
+    
+
+@api_view(['GET'])
+def get_appointment(request, appointment_id):
+    try:
+        app = Appointment.objects.get(id=appointment_id)
+        serializer = AppointmentSerializer(app)
+        return Response(serializer.data)
+    except Appointment.DoesNotExist:
+        return Response(status=404)
+
+@api_view(['GET'])
+def get_user_appointment(request, user_appointment_id):
+    try:
+        logger.info(user_appointment_id)
+        app = UserAppointment.objects.get(id=user_appointment_id)
+        serializer = UserAppointmentSerializer(app)
+        return Response(serializer.data)
+    except UserAppointment.DoesNotExist:
+        return Response(status=404)

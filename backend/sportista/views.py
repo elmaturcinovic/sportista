@@ -548,3 +548,32 @@ def delete_appointment(request, appointment_id):
         return Response(status=status.HTTP_204_NO_CONTENT)
     except SportsHall.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+def get_appointment_by_id(request, appointment_id):
+    try:
+        appointment = Appointment.objects.get(pk=appointment_id)
+        appointment_data = {
+            'id': appointment.id,
+            'sport_hall': appointment.sport_hall.name,
+            'sports': [sport.name for sport in appointment.sports.all()],
+            'date': appointment.date,
+            'time_start': appointment.time_start,
+            'time_end': appointment.time_end,
+            'capacity': appointment.capacity,
+            'price': appointment.price,
+            'available': appointment.available
+        }
+        user_appointment = UserAppointment.objects.filter(appointment=appointment).first()
+        if user_appointment:
+            user_appointment_data = {
+                'available_spots': user_appointment.available_spots,
+                'used_spots': user_appointment.used_spots,
+                'sport': user_appointment.sport.name,
+                'available': user_appointment.available
+            }
+            appointment_data['user_appointment'] = user_appointment_data
+
+        return Response(appointment_data)
+    except Appointment.DoesNotExist:
+        return Response({'error': 'Appointment not found'}, status=404)

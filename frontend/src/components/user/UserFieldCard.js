@@ -37,7 +37,7 @@ function UserFieldCard({ appointment, booked, availableSpots1, fetchAppointments
 
   useEffect(() => {
     axios
-      .get(`http://127.0.0.1:8000/get_sport_hall_by_id/${sport_hall}`)
+      .get(`http://127.0.0.1:8000/get_sport_hall_by_id/${sport_hall}/`)
       .then(
         (response) => {
           setSportHallObject(response.data);
@@ -142,6 +142,59 @@ function UserFieldCard({ appointment, booked, availableSpots1, fetchAppointments
         </div>
         <div className='user-card-price'>Cijena: {price} KM</div>
       </div>
+      {booked && appointment.available && 
+       <Modal show={openModal} onHide={showModal}>
+       <Modal.Header closeButton>
+         <h3>Prikljuci se necijem terminu</h3>
+       </Modal.Header>
+       <Modal.Body>
+         <form className='appointment-form ' onSubmit={handleSubmit}>
+           <table>
+             <tbody>
+               <tr>
+                 <th>Naziv terena: </th>
+                 <td>{sportHallObject.name}</td>
+               </tr>
+               <tr>
+                 <th>Vrijeme:</th>
+                 <td>
+                   {formatTime(time_start)} - {formatTime(time_end)}
+                 </td>
+               </tr>
+               <tr>
+                 <th>Cijena:</th>
+                 <td>{price} KM</td>
+               </tr>
+               <tr>
+                 <th>Broj igrača:</th>
+                 <td>
+                 <select name="numberOfPlayers" value={numberOfPlayers} onChange={handleNumberOfPlayersChange}>
+                      {Array.from({ length: availableSpots + 1  }, (_, i) => (
+                        <option key={i + 1} value={i + 1}>
+                          {i+1}
+                        </option>
+                      ))}
+                    </select>
+                 </td>
+               </tr>
+               <tr>
+                 <th>Sport:</th>
+                 <td>
+                  {sportNames[0]}
+                </td>
+               </tr>
+             </tbody>
+           </table>
+           <Modal.Footer>
+             <button type="submit" className='add-button'>
+               Prijavi se 
+             </button>
+           </Modal.Footer>
+         </form>
+       </Modal.Body>
+     </Modal>
+      }
+      {!booked &&
       <Modal show={openModal} onHide={showModal}>
         <Modal.Header closeButton>
           <h3>Rezerviši termin</h3>
@@ -214,6 +267,7 @@ function UserFieldCard({ appointment, booked, availableSpots1, fetchAppointments
           </form>
         </Modal.Body>
       </Modal>
+      }
     </div>
   );
 }

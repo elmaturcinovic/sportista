@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import Modal from "react-bootstrap/Modal";
 
+
 import "./styles_companies.css"
 import 'bootstrap/dist/css/bootstrap.css';
 
@@ -10,6 +11,7 @@ import { AiOutlinePlus, AiOutlineDelete } from 'react-icons/ai'
 import { FiFilter } from 'react-icons/fi';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom';
 import AddAppointmentModal from './AddAppointmentModal';
+import CheckAppointmentModal from './CheckAppointmentDetails';
 
 const Appointments = () => {
     const id = sessionStorage.getItem('id');
@@ -22,12 +24,14 @@ const Appointments = () => {
     const [showFilter, setShowFilter] = useState(false);
     const [appointments, setAppointments] = useState([])
     const [showModal, setShowModal] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedAppointment, setSelectedAppointment] = useState(null);
     const [filterData, setFilterData] = useState({
         sportHall: '',
         sports: new Set(),
         date: '',
-    });
-
+    }); 
+    
     useEffect(() => {
         fetchUser(id);
         fetchSports();
@@ -69,7 +73,7 @@ const Appointments = () => {
         );
     }
 
-    function fetchAppointments() {
+    /* function fetchAppointments() {
         axios.get(`http://127.0.0.1:8000/get_all_appointments_by_owner/${id}/`).then((response) => {
           setAppointments(response.data);
           console.log("ALLALLALALALAL", response.data);
@@ -78,6 +82,50 @@ const Appointments = () => {
         }
         );
     }
+ */
+    const fetchAppointments = async () => {
+        try {
+          const response = await axios.get(`http://127.0.0.1:8000//get_all_appointments_by_owner/${id}/`);
+          const appts = response.data
+          console.log("filtered appointments:")
+          console.log(appts)
+  
+      
+          const userAppointmentsResponse = await axios.get(`http://127.0.0.1:8000//get_user_appointments_by_appointments/`, {
+            params: {
+              appointmentIds: appts.map(appointment => appointment.id)
+            }
+          });
+          console.log("appointment ids")
+          console.log(appts.map(appointment => appointment.id))
+      
+          const userAppointments = userAppointmentsResponse.data;
+          console.log("user appointments")
+          console.log(userAppointments)
+      
+          const mergedAppointments = appts.map(appointment => {
+            const userAppointment = userAppointments.find(userAppointment => userAppointment.appointment === appointment.id);
+            if (userAppointment) {
+              appointment = {
+                ...appointment,
+                ...userAppointment,
+                booked: true,
+                availableSpots: userAppointment.available_spots
+              };
+            } else {
+              appointment.booked = false;
+              appointment.availableSpots = appointment.capacity
+            }
+            return appointment;
+          });
+          console.log("merged appointments")
+          console.log(mergedAppointments)
+      
+          setAppointments(mergedAppointments);
+        } catch (error) {
+          console.log(error);
+        }
+      };
 
     const handleFilterToggle = () => {
         setShowFilter(!showFilter);
@@ -100,6 +148,16 @@ const Appointments = () => {
     
     const handleDateChange = (event) => {
         setFilterData({ ...filterData, date: event.target.value });
+    };
+
+    const handleRowClick = (appointment) => {
+        setSelectedAppointment(appointment);
+        setIsOpen(true);
+        console.log(appointment)
+      };
+
+    const closeModal = () => {
+         setIsOpen(false);
     };
 
     const handleAddAppointment = async (formState) => {
@@ -172,7 +230,6 @@ const Appointments = () => {
     setAppointments(filteredAppointments);
     setShowFilter(false)
     };
-      
 
     return (
         <div className='homepage'>
@@ -273,7 +330,7 @@ const Appointments = () => {
                     </thead>
                     <tbody>
                         {appointments.map(appointment => (
-                        <tr className='slobodan'>
+                        <tr className='slobodan' clickable onClick={() => handleRowClick(appointment)}>
                             <td>#{appointment.id}</td>
                             <td>{appointment.sport_hall}</td>
                             <td>{appointment.date}</td>
@@ -282,11 +339,30 @@ const Appointments = () => {
                                 {appointment.sports.map((sport) => sport).join(', ')}
                             </td>
                             <td>{appointment.price} KM</td>
-                            <td>{!appointment.available ? 'slobodan' : 'zauzet'}</td>
+                            <td>
+                            {(() => {
+                                if (!appointment.booked) {
+                                return 'slobodan';
+                                } else {
+                                    if (appointment.available) {
+                                        return 'zauzet (otvoren)';
+                                    } else {
+                                        return 'popunjen';
+                                    }
+                                }
+                            })()}
+                            </td>
                             <td className='right-col'><AiOutlineDelete className='delete-icon' onClick={() => deleteAppointment(appointment.id)} /></td>
                         </tr>   
                         ))}
                     </tbody>
+                    {isOpen && (
+                        <CheckAppointmentModal
+                        isOpen={isOpen}
+                        closeModal={closeModal}
+                        appointment={selectedAppointment}
+                        />
+                    )}
                 </table>
                 <AddAppointmentModal
                     showModal={showModal}

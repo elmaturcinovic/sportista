@@ -229,7 +229,26 @@ th, td{
 }
 .slobodan {
     background-color: #3DD47A !important;
+    cursor: pointer;
+    
 }
 .zauzet {
     background-color: red;
+    cursor: pointer;
+}
+.green-modal {
+    background-color: #d7fce1;
+}
+.yellow-modal {
+    background-color: #fcf8d7;
+}
+.red-modal {
+    background-color: #fff0f0;
+}
+.mainModalContainer{
+    display: 'flex';
+    flex-direction: column;
+}
+th {
+    padding-right: 30px;
 }

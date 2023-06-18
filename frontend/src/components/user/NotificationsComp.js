@@ -13,34 +13,74 @@ const NotificationsComp = () => {
     getReceivedInvites();
   }, []);
 
+  function fetchUser(id) {
+    axios
+      .get(`http://127.0.0.1:8000/get_user/${id}/`)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
-  //Uzmi sve obavijesti gdje sam ja sender
-  const getSentInvites = async () => {
-    try {
-      const response = await axios.get(`http://127.0.0.1:8000/invites_sent_by_me/${moj_id}/`);
-      setSentInvites(response.data);
-    } catch (error) {
-      console.error('Greska povlacenja poslanih pozivnica:', error);
-    }
-  };
 
-//Uzmi sve obavijesti gdje sam ja receiver sa statusima 1 i 2
+  // Uzmi sve obavijesti gdje sam ja sender
+const getSentInvites = async () => {
+  try {
+    const response = await axios.get(`http://127.0.0.1:8000/invites_sent_by_me/${moj_id}/`);
+    const invites = response.data;
+    const fetchedSentInvites = await Promise.all(
+      invites.map(async (invite) => {
+          const senderResponse = await axios.get(`http://127.0.0.1:8000/get_user/${invite.sender}/`);
+          const receiverResponse = await axios.get(`http://127.0.0.1:8000/get_user/${invite.receiver}/`);
+          return {
+            ...invite,
+            senderData: senderResponse.data,
+            receiverData: receiverResponse.data,
+          };
+        })
+    );
+    setSentInvites(fetchedSentInvites);
+    console.log("Sent invites");
+    console.log(fetchedSentInvites);
+  } catch (error) {
+    console.error('Greska povlacenja poslanih pozivnica:', error);
+  }
+};
+
+// Uzmi sve obavijesti gdje sam ja receiver sa statusima 1 i 2
 const getReceivedInvites = async () => {
   try {
     const response = await axios.get(`http://127.0.0.1:8000/invites_received_by_me/${moj_id}/`);
-    setReceivedInvites(response.data);
+    const invites = response.data;
+    const fetchedReceivedInvites = await Promise.all(
+      invites.map(async (invite) => {
+        const senderResponse = await axios.get(`http://127.0.0.1:8000/get_user/${invite.sender}/`);
+        const receiverResponse = await axios.get(`http://127.0.0.1:8000/get_user/${invite.receiver}/`);
+        return {
+          ...invite,
+          senderData: senderResponse.data,
+          receiverData: receiverResponse.data,
+        };
+      })
+    );
+    setReceivedInvites(fetchedReceivedInvites);
+    console.log("Received invites");
+    console.log(fetchedReceivedInvites);
   } catch (error) {
     console.error('Greska povlacenja dobijenih pozivnica:', error);
   }
 };
 
-//Na klik Prihvati poziv, mijenja se status invite-a na 1 (Accepted) i dodaje se novi termin kod usera
-  const acceptInvite = async (inviteId, received_invite) => {
+
+  //Na klik Prihvati poziv, mijenja se status invite-a na 1 (Accepted) i dodaje se novi termin kod usera
+    const acceptInvite = async (inviteId, received_invite) => {
 
 
-    const app_res = await axios.get(`http://127.0.0.1:8000/get_user_appointment_by_user_appointment_id/${received_invite.appointment}/`);
-    const app_sender = await axios.get(`http://127.0.0.1:8000/get_user/${received_invite.sender}/`);
-    const app_receiver = await axios.get(`http://127.0.0.1:8000/get_user/${received_invite.receiver}/`);
+      const app_res = await axios.get(`http://127.0.0.1:8000/get_user_appointment_by_user_appointment_id/${received_invite.appointment}/`);
+      const app_sender = await axios.get(`http://127.0.0.1:8000/get_user/${received_invite.sender}/`);
+      const app_receiver = await axios.get(`http://127.0.0.1:8000/get_user/${received_invite.receiver}/`);
 
 //stavljeno radi orentacije
       //app_res.data
@@ -114,10 +154,8 @@ const getReceivedInvites = async () => {
             {receivedInvites.map((received_invite) => (
               <tr key={received_invite.id}>
                 <td style={{ padding: '8px' }}>
-                  Korisnik sa ID: {received_invite.sender} vam šalje poziv da mu se pridružite!
+                  Korisnik {received_invite.senderData.user_username} vam šalje poziv da mu se pridružite!
                 </td>
-                <td style={{ padding: '8px' }}>ID app: {received_invite.appointment}</td>
-                <td style={{ padding: '8px' }}>ID inv: {received_invite.id}</td>
                 <td style={{ padding: '8px' }}>
                   <button className="accept-invite-friend" onClick={() => acceptInvite(received_invite.id, received_invite)}>
                     Prihvati poziv
@@ -130,26 +168,24 @@ const getReceivedInvites = async () => {
                 </td>
               </tr>
             ))}
-            {sentInvites.map((notification) => (
-              <tr key={notification.id}>
+            {sentInvites.map((sent_invite) => (
+              <tr key={sent_invite.id}>
                 <td colSpan="3"
                   style={{
                     padding: '20px',
-                    backgroundColor: notification.status === 1 ? '#d7fce1' : notification.status === 0 ? '#fcf8d7' : '#fff0f0',
+                    backgroundColor: sent_invite.status === 1 ? '#d7fce1' : sent_invite.status === 0 ? '#fcf8d7' : '#fff0f0',
                     borderRadius: '25px',
                     border: "solid 1px rgba(0, 0, 0, 0.176)"
                   }}
                 >
                   {
-                  notification.status === 1
-                    ? `Korisnik sa ID: ${notification.receiver} je prihvatio vaš zahtjev za termin!`
-                    : notification.status === 0
-                    ? `Korisniku sa ID: ${notification.receiver} ste poslali zahtjev za termin!`
-                    : `Korisnik sa ID: ${notification.receiver} je odbio vaš zahtjev za termin!`
+                  sent_invite.status === 1
+                    ? `Korisnik ${sent_invite.receiverData.user_username} je prihvatio vaš zahtjev za termin!`
+                    : sent_invite.status === 0
+                    ? `Korisniku ${sent_invite.receiverData.user_username} ste poslali zahtjev za termin!`
+                    : `Korisnik ${sent_invite.receiverData.user_username} je odbio vaš zahtjev za termin!`
                     }
                 </td>
-                <td style={{ padding: '8px' }}>ID inv: {notification.id}</td>
-                <td style={{ padding: '8px' }}>ID inv: {notification.id}</td>
               </tr>
             ))}
           </tbody>

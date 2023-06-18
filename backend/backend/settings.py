@@ -150,3 +150,14 @@ LOGGING = {
         # Other loggers...
     },
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_PORT = 587  # Use port 465 if using SSL
+EMAIL_HOST_USER = 'my-api-key'
+EMAIL_HOST_PASSWORD = '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'
+DEFAULT_FROM_EMAIL = 'sportista.management@gmail.com'
+
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+

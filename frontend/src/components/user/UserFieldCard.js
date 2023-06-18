@@ -4,6 +4,7 @@ import './styles_user.css';
 import axios from 'axios';
 import DropDownCompSports from './DropdownCompSports';
 
+
 function UserFieldCard({ appointment, booked, availableSpots1, fetchAppointmentsData }) {
   const user_id = sessionStorage.getItem('id')
   const { id: appointmentId, time_start, time_end, sport_hall, date, capacity, price, sports } = appointment;
@@ -13,8 +14,9 @@ function UserFieldCard({ appointment, booked, availableSpots1, fetchAppointments
   const [selectedSport, setSelectedSport] = useState();
   const [sportObjects, setSportsObjects] = useState([]);
   const [numberOfPlayers, setNumberOfPlayers] = useState(1);
-  const [allowOtherPlayers, setAllowOtherPlayers] = useState(false);
+  const [allowOtherPlayers, setAllowOtherPlayers] = useState(true);
   const [availableSpots, setAvailableSpots] = useState(capacity - numberOfPlayers);
+
   const [users, setUsers] = useState([parseInt(sessionStorage.getItem('id'))]);
   console.log(users)
   
@@ -37,7 +39,7 @@ function UserFieldCard({ appointment, booked, availableSpots1, fetchAppointments
 
   useEffect(() => {
     axios
-      .get(`http://127.0.0.1:8000/get_sport_hall_by_id/${sport_hall}`)
+      .get(`http://127.0.0.1:8000/get_sport_hall_by_id/${sport_hall}/`)
       .then(
         (response) => {
           setSportHallObject(response.data);
@@ -90,6 +92,31 @@ function UserFieldCard({ appointment, booked, availableSpots1, fetchAppointments
     setOpenModal(false);
   };
 
+  const handleUpdateSubmit = (event) => {
+    event.preventDefault();
+  
+    const formData = new FormData();
+    console.log('numberOfPlayers',numberOfPlayers)
+    console.log('availableSpots',availableSpots)
+    formData.append('used_spots', numberOfPlayers);
+    formData.append('available_spots', availableSpots - numberOfPlayers);
+    formData.append('user_id', user_id)
+  
+    axios
+      .put(`http://127.0.0.1:8000/join_user_appointment/${appointment.id}/`, formData)
+      .then((response) => {
+        console.log(response.data);
+        setOpenModal(false);
+        fetchAppointmentsData();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  
+    setOpenModal(false);
+  };
+  
+
   const formatTime = (time) => {
     if (!time) {
       return '';
@@ -121,10 +148,14 @@ function UserFieldCard({ appointment, booked, availableSpots1, fetchAppointments
 
   const handleNumberOfPlayersChange = (event) => {
     const players = parseInt(event.target.value);
+    console.log(players)
     setNumberOfPlayers(players);
-    setAllowOtherPlayers(players < capacity);
+    if(capacity===players){
+      setAllowOtherPlayers(false);
+    }
     setAvailableSpots(capacity - players);
   };
+
 
   return (
     <div>
@@ -142,6 +173,59 @@ function UserFieldCard({ appointment, booked, availableSpots1, fetchAppointments
         </div>
         <div className='user-card-price'>Cijena: {price} KM</div>
       </div>
+      {booked && appointment.available && 
+       <Modal show={openModal} onHide={showModal}>
+       <Modal.Header closeButton>
+         <h3>Prikljuci se necijem terminu</h3>
+       </Modal.Header>
+       <Modal.Body>
+         <form className='appointment-form ' onSubmit={handleUpdateSubmit}>
+           <table>
+             <tbody>
+               <tr>
+                 <th>Naziv terena: </th>
+                 <td>{sportHallObject.name}</td>
+               </tr>
+               <tr>
+                 <th>Vrijeme:</th>
+                 <td>
+                   {formatTime(time_start)} - {formatTime(time_end)}
+                 </td>
+               </tr>
+               <tr>
+                 <th>Cijena:</th>
+                 <td>{price} KM</td>
+               </tr>
+               <tr>
+                 <th>Broj igrača:</th>
+                 <td>
+                 <select name="numberOfPlayers" value={numberOfPlayers} onChange={handleNumberOfPlayersChange}>
+                      {Array.from({ length: availableSpots }, (_, i) => (
+                        <option key={i + 1} value={i + 1}>
+                          {i + 1}
+                        </option>
+                      ))}
+                    </select>
+                 </td>
+               </tr>
+               <tr>
+                 <th>Sport:</th>
+                 <td>
+                  {sportNames[0]}
+                </td>
+               </tr>
+             </tbody>
+           </table>
+           <Modal.Footer>
+             <button type="submit" className='add-button'>
+               Prijavi se 
+             </button>
+           </Modal.Footer>
+         </form>
+       </Modal.Body>
+     </Modal>
+      }
+      {!booked &&
       <Modal show={openModal} onHide={showModal}>
         <Modal.Header closeButton>
           <h3>Rezerviši termin</h3>
@@ -214,6 +298,7 @@ function UserFieldCard({ appointment, booked, availableSpots1, fetchAppointments
           </form>
         </Modal.Body>
       </Modal>
+      }
     </div>
   );
 }

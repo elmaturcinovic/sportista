@@ -12,7 +12,18 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from django.core import serializers
+from django.core.mail import send_mail
+
 import logging
+import requests
+import random
+import string
+
+# using SendGrid's Python Library
+# https://github.com/sendgrid/sendgrid-python
+import os
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 
 logger = logging.getLogger(__name__)
@@ -30,20 +41,44 @@ def index(request):
     else:
         return HttpResponse("-1")
     
-
 @api_view(['POST'])
-def emailReset(request):
+def password_reset(request):
 
     email = request.data.get('email')
-    print(email)
-
     exists = User.objects.filter(user_email=email).exists()
-
     print(exists)
 
-    if (exists):
-        new_password = 'sifrica123'
-        send_mail('Nova sifra', new_password, None, [email], fail_silently=False)
+    if exists:
+        # Generate a random password
+        new_password = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+
+        # Update the user's password
+        user = User.objects.get(user_email=email)
+        user.user_password = new_password
+        logger.info('The value of my_variable is: %s', user.user_password)
+
+        user.save()
+
+        logger.info('The value of my_variable is: %s', user.user_password)
+
+        # Send the email
+        try:
+            response = requests.post(
+                'https://api.sendgrid.com/v3/mail/send',
+                headers={'Authorization': 'Bearer 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'},
+                json={
+                    'from': {'email': 'sportista.management@gmail.com'},
+                    'subject': 'Ponovno postavljanje lozinke',
+                    'personalizations': [{'to': [{'email': email}]}],
+                    'content': [{'type': 'text/html', 'value': f'<strong>Vaša nova lozinka je: </strong>{new_password}'}]
+                },
+                verify=False
+            )
+            print(response.status_code)
+            print(response.text)
+        except Exception as e:
+            print(e)
+        print(user)
         return HttpResponse('1')
     else:
         return HttpResponse('-1')
@@ -147,21 +182,6 @@ def add_sport_hall(request):
     sport_hall.save()
     return Response({'message': 'Sport hall created', 'id' : sport_hall.id}, status=status.HTTP_201_CREATED)
 
-
-@api_view(['PUT'])
-def password_reset(request):
-    try:
-        user_id = request.data.get('id')
-        user = User.objects.get(id=user_id)
-    except User.DoesNotExist:
-        return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
-
-    new_password = request.data.get('newpass')
-
-    user.user_password = new_password
-    user.save()
-
-    return Response({'message': 'Password updated successfully'}, status=status.HTTP_200_OK)
 
 @api_view(['PUT'])
 def update_profile(request):
@@ -532,6 +552,23 @@ def add_user_appointment(request):
     # Return a response indicating successful creation
     return Response({'message': 'UserAppointment created successfully'}, status=201)
 
+
+@api_view(['PUT'])
+def join_user_appointment(request, user_appointment_id):
+    try:
+        user_appointment = UserAppointment.objects.get(id=user_appointment_id)
+    except UserAppointment.DoesNotExist:
+        return Response({'error': 'UserAppointment not found'}, status=404)
+
+    used_spots = request.data.get('used_spots')
+    available_spots = request.data.get('available_spots')
+    
+    user_appointment.used_spots = used_spots
+    user_appointment.available_spots = available_spots
+    user_appointment.save()
+
+    return Response({'message': 'UserAppointment updated successfully'}, status=200)
+    
 @api_view(['GET'])
 def get_user_appointments_by_appointments(request):
     appointment_ids = request.GET.getlist('appointmentIds[]')

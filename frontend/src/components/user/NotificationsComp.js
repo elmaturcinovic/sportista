@@ -81,6 +81,7 @@ const getReceivedInvites = async () => {
         >
           <tbody>
             {receivedInvites.map((notification) => (
+              
               <tr key={notification.id}>
                 <td style={{ padding: '8px' }}>
                   Korisnik {notification.sender.user_username} vam šalje poziv da mu se pridružite!

@@ -131,4 +131,4 @@ class Invites(models.Model):
     status = models.IntegerField(choices=STATUS_CHOICES, default=0)
 
     def __str__(self):
-        return f"Invite from {self.sender.user_username} to {self.receiver.user_name} for appointment at {self.appointment.appointment.sport_hall.name}: {self.status}"
+        return f"Invite from {self.sender.user_username} to {self.receiver.user_name} for appointment at {self.appointment.appointment.sport_hall.name}: {self.status}, user?app {self.appointment.id}, app {self.appointment.appointment.id}"

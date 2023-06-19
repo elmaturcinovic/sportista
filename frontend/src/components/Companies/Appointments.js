@@ -73,16 +73,6 @@ const Appointments = () => {
         );
     }
 
-    /* function fetchAppointments() {
-        axios.get(`http://127.0.0.1:8000/get_all_appointments_by_owner/${id}/`).then((response) => {
-          setAppointments(response.data);
-          console.log("ALLALLALALALAL", response.data);
-        }, (error) => {
-          console.log(error);
-        }
-        );
-    }
- */
     const fetchAppointments = async () => {
         try {
           const response = await axios.get(`http://127.0.0.1:8000//get_all_appointments_by_owner/${id}/`);
@@ -128,7 +118,14 @@ const Appointments = () => {
       };
 
     const handleFilterToggle = () => {
+
         setShowFilter(!showFilter);
+        fetchAppointments()
+        setFilterData({
+            sportHall: '',
+            sports: new Set(),
+            date: '',
+        })
     };
 
     const handleSportHallSelect = (event) => {

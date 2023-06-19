@@ -11,7 +11,7 @@ function ResetPassword(props){
     function resetujMail() {
         var email = emailRef.current.value;
         console.log(email)
-        axios.post('http://127.0.0.1:8000/sportista/password_reset/', {
+        axios.post('http://127.0.0.1:8000/sportista/password_reset_forgot/', {
             email: email,
         }).then((response)=>{
             }, (error) => {

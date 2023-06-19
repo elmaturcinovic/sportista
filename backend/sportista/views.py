@@ -42,7 +42,7 @@ def index(request):
         return HttpResponse("-1")
     
 @api_view(['POST'])
-def password_reset(request):
+def password_reset_forgot(request):
 
     email = request.data.get('email')
     exists = User.objects.filter(user_email=email).exists()
@@ -62,26 +62,19 @@ def password_reset(request):
         logger.info('The value of my_variable is: %s', user.user_password)
 
         # Send the email
+        message = Mail(
+            from_email='sportista.management@gmail.com',
+            to_emails=email,
+            subject='Ponovno postavljanje lozinke',
+            html_content='<strong>Vaša nova lozinka je: </strong>' + new_password)
         try:
-            response = requests.post(
-                'https://api.sendgrid.com/v3/mail/send',
-                headers={'Authorization': 'Bearer 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'},
-                json={
-                    'from': {'email': 'sportista.management@gmail.com'},
-                    'subject': 'Ponovno postavljanje lozinke',
-                    'personalizations': [{'to': [{'email': email}]}],
-                    'content': [{'type': 'text/html', 'value': f'<strong>Vaša nova lozinka je: </strong>{new_password}'}]
-                },
-                verify=False
-            )
+            sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+            response = sg.send(message)
             print(response.status_code)
-            print(response.text)
+            print(response.body)
+            print(response.headers)
         except Exception as e:
-            print(e)
-        print(user)
-        return HttpResponse('1')
-    else:
-        return HttpResponse('-1')
+            print(e.message)
 
 @api_view(['POST'])
 def register(request):
@@ -159,7 +152,8 @@ def add_sport_hall(request):
     city = request.data.get('city')
     email = request.data.get('email')
     phone_number = request.data.get('phone_number')
-    sports = request.data.get('sports', [])
+    sports = request.data.get('sports', '').split(',')  # Split the string into a list of values
+    sports = [int(sport_id) for sport_id in sports if sport_id.isdigit()]  # Convert string values to integers
     photo = request.data.get('photo')
     owner_id = request.data.get('owner')
     try:
@@ -173,14 +167,14 @@ def add_sport_hall(request):
         city=city,
         email=email,
         phone_number=phone_number,
-        owner= owner, 
+        owner=owner,
         photo=photo,
     )
     print(sport_hall)
     sport_hall.save()
     sport_hall.sports.set(sports)
     sport_hall.save()
-    return Response({'message': 'Sport hall created', 'id' : sport_hall.id}, status=status.HTTP_201_CREATED)
+    return Response({'message': 'Sport hall created', 'id': sport_hall.id}, status=status.HTTP_201_CREATED)
 
 
 @api_view(['PUT'])
@@ -644,3 +638,18 @@ def get_user_appointment(request, user_appointment_id):
         return Response(serializer.data)
     except UserAppointment.DoesNotExist:
         return Response(status=404)
+
+@api_view(['PUT'])
+def password_reset(request):
+    new_password = request.data.get('newpass')
+    id_user = request.data.get('id')
+
+    # Perform logic to update the password for the user with the given ID
+    # Example code:
+    try:
+        user = User.objects.get(id=id_user)
+        user.user_password=new_password
+        user.save()
+        return Response({'success': True})
+    except User.DoesNotExist:
+        return Response({'success': False}, status=400)

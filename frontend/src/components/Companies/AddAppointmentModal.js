@@ -84,7 +84,7 @@ const AddAppointmentModal = ({showModal, setShowModal, handleAddAppointment, all
     async function fetchSportHall(sportHallId) {
         try {
             const response = await axios
-                .get(`http://127.0.0.1:8000/get_sport_hall_by_id/${sportHallId}`);
+                .get(`http://127.0.0.1:8000/get_sport_hall_by_id/${sportHallId}/`);
             setSportHall(response.data);
             console.log(response.data);
             setSportOptions(allSports.filter((sport) => response.data.sports.includes(sport.id)));
@@ -220,7 +220,7 @@ const AddAppointmentModal = ({showModal, setShowModal, handleAddAppointment, all
                 </table>
                 <br></br>
                 <Modal.Footer>
-                    <button type="submit" className='add-button'>Dodaj teren</button>
+                    <button type="submit" className='add-button'>Dodaj termin</button>
                 </Modal.Footer>
             </form>
         </Modal.Body>

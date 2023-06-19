@@ -37,7 +37,7 @@ const CoverPhotoSelectionForm = ({showPhotoSelectionForm, setShowPhotoSelectionF
         console.log(updatedUser)
       
         try {
-          await axios.put(`http://127.0.0.1:8000/update_user/${id}`, updatedUser);
+          await axios.put(`http://127.0.0.1:8000/update_user/${id}/`, updatedUser);
           fetchUser(id);
           setShowPhotoSelectionForm(false)
           //setSelectedPhoto(user.user_photo)

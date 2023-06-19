@@ -78,14 +78,14 @@ const ModalComp = ({ showModal, setShowModal, selectedSports, setSelectedSports,
         ...prevFormState,
         sports: new Set([...prevFormState.sports].filter((sportId) => sportId !== selectedSportId)),
       }));
-      console.log(selectedSports)
+      console.log(sports)
     } else {
       setSelectedSports((prevSelectedSports) => new Set([...prevSelectedSports, selectedSportId]));
       setFormState((prevFormState) => ({
         ...prevFormState,
         sports: new Set([...prevFormState.sports, selectedSportId]),
       }));
-      console.log(selectedSports)
+      console.log(sports)
     }
   };
 
@@ -268,14 +268,15 @@ const CompanyHomepage = () => {
     formData.append('email', formState.email)
     formData.append('phone_number', formState.phone_number)    
     formData.append('owner', id)
+    console.log(formState)
+    const sportsArray = Array.from(formState.sports)
+    console.log(sportsArray)
 
-    formState.sports.forEach((sport) => {
-      formData.append('sports', sport);
-      console.log(sport)
-    });
-    console.log(formState.sports)
+    // Append the array of sports to the FormData object
+    formData.append('sports', sportsArray);
 
-  formData.append('photo', formState.photo);
+
+    formData.append('photo', formState.photo);
   try {
     const response = await axios.post('http://127.0.0.1:8000/add_sport_hall/', formData);
     console.log('Sport hall created:', response.data);
@@ -342,7 +343,7 @@ const navigateToSportHallDetails = (sportHallId) => {
           <tbody>
             {sportHalls.map(sportHall => (
               <tr key={sportHall.id} >
-                <td><img className='sport_hall_photo_table' src={`http://localhost:8000${user.user_photo}`} /></td>
+                <td><img className='sport_hall_photo_table' src={`http://localhost:8000${sportHall.photo}`} /></td>
                 <td onClick={() => navigateToSportHallDetails(sportHall.id)}>{sportHall.name}</td>
                 <td>{sportHall.address}, {sportHall.city}</td>
                 <td>{determineStatus(sportHall.working_days, sportHall.work_time_begin, sportHall.work_time_end)}</td>

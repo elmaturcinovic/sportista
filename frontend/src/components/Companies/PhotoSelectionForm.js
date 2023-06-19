@@ -34,7 +34,7 @@ const PhotoSelectionForm = ({sportHall, fetchSportHall}) => {
             photo: photo,
         };
         try {
-            await axios.put(`http://127.0.0.1:8000/update_sport_hall/${sportHall.id}`, updatedSportHall);
+            await axios.put(`http://127.0.0.1:8000/update_sport_hall/${sportHall.id}/`, updatedSportHall);
             fetchSportHall(sportHall.id);
         } catch (error) {
             console.error('Error updating sport hall:', error);
